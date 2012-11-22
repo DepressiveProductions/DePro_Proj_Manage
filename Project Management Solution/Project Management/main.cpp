@@ -1,3 +1,6 @@
+//STATES:
+//#define HOUSE_DEBUG
+
 #include <GLTools.h>
 #include <GLMatrixStack.h>
 #include <GLShaderManager.h>
@@ -8,6 +11,10 @@
 
 #include <math.h>
 #include <ctime>
+
+#ifdef HOUSE_DEBUG
+#include "House.h"
+#endif
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -30,6 +37,9 @@ GLFrustum viewFrustum;
 GLFrame cameraFrame;
 
 GLBatch testBatch;
+#ifdef HOUSE_DEBUG
+House testHouse;
+#endif
 
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
@@ -49,6 +59,12 @@ void setupRC()
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-5.0f);
+
+	#ifdef HOUSE_DEBUG
+	M3DVector3f pos = {4.0f, 0.0f, -5.0f};
+	GLfloat radius = 1.0f;
+	testHouse.init(pos, pos, radius);
+	#endif
 
 	//Init debug batches:
 	testBatch.Begin(GL_TRIANGLES, 3);
@@ -96,6 +112,11 @@ void renderScene()
 	//Draw debug batches:
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
 	testBatch.Draw();
+
+	//House drawing:
+	#ifdef HOUSE_DEBUG
+	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
+	#endif
 
 	//End cam push:
 	modelViewStack.PopMatrix();
