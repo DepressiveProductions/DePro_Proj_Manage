@@ -18,12 +18,12 @@ public:
 	void init(int x, int y, int width, int height, std::string texFileName); //Goes in SetupRC
 	void draw(GLfloat wWidth, GLfloat wHeight); //Goes in renderScene
 	void clearTexture(void); // Goes in main before terminating program
-	/*
+	
 	int getXPos();
 	int getYPos();
 	int getWidth();
 	int getHeight();
-	*/
+	
 	bool loadTGATextureRect(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 
 private:
@@ -33,10 +33,10 @@ private:
 	GLint		rectReplaceShader;
 	GLint		locRectMVP;
 	GLint		locRectTexture;
-/*
+
 	int xVal;
 	int yVal;
 	int widthVal;
-	int heightVal;*/
+	int heightVal;
 };
 

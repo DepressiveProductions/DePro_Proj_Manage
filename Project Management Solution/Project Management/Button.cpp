@@ -13,11 +13,11 @@ Button::~Button(void)
 
 void Button::init(int x, int y, int width, int height, std::string texFileName)
 {
-/*	xVal = x;
+	xVal = x;
 	yVal = y;
 	widthVal = width;
 	heightVal = height;
-	*/
+
 	buttonBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
 	// Upper left hand corner
@@ -83,31 +83,31 @@ void Button::clearTexture(void)
 	glDeleteTextures(1, &uiTexture);
 }
 
-/*
-int getXPos()
+
+int Button::getXPos()
 {
 	return xVal;
 }
 
 
-int getYPos()
+int Button::getYPos()
 {
 	return yVal;
 }
 
 
-int getWidth()
+int Button::getWidth()
 {
 	return widthVal;
 }
 
 
-int getHeight()
+int Button::getHeight()
 {
 	return heightVal;
 }
 
-*/
+
 bool Button::loadTGATextureRect(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode)
 {
 	GLbyte *pBits;
