@@ -14,11 +14,11 @@
 #include <math.h>
 #include <ctime>
 
-#ifdef HOUSE_DEBUG
 #include "House.h"
-#endif
-
 #include "Button.h"
+#include "Grid.h"
+#include "Floor.h"
+#include "input.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -40,6 +40,12 @@ GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
 
+House baracks;
+Floor ground;
+Grid stdGrid;
+Input mainInput;
+Button buildButton;
+
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
 #endif
@@ -48,12 +54,10 @@ GLBatch testBatch;
 House testHouse;
 #endif
 
-Button buildButton;
-
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void input();
+void input();							//Handling input since 1962
 
 void setupRC()
 {
@@ -86,6 +90,9 @@ void setupRC()
 	testBatch.End();
 	#endif
 
+	ground.init(40, 40, 40);
+	stdGrid.initGrid(40, -20, -20, 40, 40);
+	baracks.init(1.0f);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 }
 
@@ -130,7 +137,7 @@ void renderScene()
 	testBatch.Draw();
 	#endif
 
-	//House drawing:
+	//House debug drawing:
 	#ifdef HOUSE_DEBUG
 	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
 	#endif
