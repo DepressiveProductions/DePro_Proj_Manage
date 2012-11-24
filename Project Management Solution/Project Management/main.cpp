@@ -17,6 +17,8 @@
 #include "House.h"
 #endif
 
+#include "Button.h"
+
 #ifdef __APPLE__
 #include <glut/glut.h>
 #else
@@ -41,6 +43,8 @@ GLBatch testBatch;
 #ifdef HOUSE_DEBUG
 House testHouse;
 #endif
+
+Button buildButton;
 
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
@@ -75,6 +79,8 @@ void setupRC()
 		testBatch.Vertex3f(0.0f, 1.0f, 0.0f);
 		testBatch.Vertex3f(-1.0f, -1.0f, 0.0f);
 	testBatch.End();
+
+	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 }
 
 void changeSize(int w, int h)
@@ -127,6 +133,8 @@ void renderScene()
 	//End pop:
 	modelViewStack.PopMatrix();
 	
+	buildButton.draw(W_WIDTH, W_HEIGHT);
+
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
@@ -186,5 +194,6 @@ int main(int argc, char* argv[])
 	//Setup stuff and start looping:
 	setupRC();
 	glutMainLoop();
+	buildButton.clearTexture();
 	return 0;
 }
