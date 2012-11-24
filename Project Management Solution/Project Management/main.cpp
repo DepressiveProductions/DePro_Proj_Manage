@@ -1,5 +1,6 @@
 //STATES:
 //#define HOUSE_DEBUG
+//#define TRIANGLE_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -39,7 +40,10 @@ GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
 
+#ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
+#endif
+
 #ifdef HOUSE_DEBUG
 House testHouse;
 #endif
@@ -74,11 +78,13 @@ void setupRC()
 	#endif
 
 	//Init debug batches:
+	#ifdef TRIANGLE_DEBUG
 	testBatch.Begin(GL_TRIANGLES, 3);
 		testBatch.Vertex3f(1.0f, -1.0f, 0.0f);
 		testBatch.Vertex3f(0.0f, 1.0f, 0.0f);
 		testBatch.Vertex3f(-1.0f, -1.0f, 0.0f);
 	testBatch.End();
+	#endif
 
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 }
@@ -119,8 +125,10 @@ void renderScene()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
 	//Draw debug batches:
+	#ifdef TRIANGLE_DEBUG
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
 	testBatch.Draw();
+	#endif
 
 	//House drawing:
 	#ifdef HOUSE_DEBUG
