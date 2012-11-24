@@ -14,6 +14,17 @@ House::~House(void)
 //Changing the position to draw a cube at:
 void House::nextPos()
 {
+	
+	if(vCurrentPos[0] < vEndingPos[0])
+	{
+		vCurrentPos[0] += radius*2;
+	}
+
+	else if(vCurrentPos[1] >= vEndingPos[1])
+	{
+		vCurrentPos[0] = vStartingPos[0];
+		vCurrentPos[1] -= radius*2;
+	}
 }
 
 //Drawing the house:
@@ -22,6 +33,7 @@ void House::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline,
 	vCurrentPos[0] = vStartingPos[0];
 	vCurrentPos[1] = vStartingPos[1];
 	vCurrentPos[2] = vStartingPos[2];
+	houseFrame.SetOrigin(vCurrentPos);
 	
 	for(int i = 0 ; i < cubes ; i++)
 	{
@@ -38,16 +50,23 @@ void House::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline,
 	}
 }
 
-//Constructor, kind of:
-void House::init(M3DVector4f vStartingPos, M3DVector4f vEndingPos, GLfloat fRadius)
+//Creating the house:
+void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 {
-	setColor(0.0f, 1.0f, 0.0f, 1.0f);
-	radius = fRadius;
+	cubes = iCubes;
 	for(int i = 0 ; i < 3 ; i++)
 	{
 		this->vStartingPos[i] = vStartingPos[i];
 		this->vEndingPos[i] = vEndingPos[i];
 	}
+}
+
+
+//Constructor, kind of:
+void House::init(GLfloat fRadius)
+{
+	setColor(0.0f, 1.0f, 0.0f, 1.0f);
+	radius = fRadius;
 	gltMakeCube(houseBatch, radius);
 	cubes = 1;
 }

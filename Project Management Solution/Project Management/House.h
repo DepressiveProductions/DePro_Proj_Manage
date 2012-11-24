@@ -11,7 +11,8 @@ class House
 		House(void);
 		~House(void);
 		
-		void init(M3DVector4f vStartingPos, M3DVector4f vEndingPos, GLfloat fRadius);
+		void init(GLfloat fRadius);
+		void create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes);
 		void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack);
 		void nextPos();
 
@@ -30,7 +31,7 @@ class House
 		GLBatch houseBatch;
 		GLFrame houseFrame;
 		
-		float radius;
+		GLfloat radius;
 		int cubes;
 };
 

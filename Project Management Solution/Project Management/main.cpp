@@ -1,6 +1,7 @@
 //STATES:
 //#define HOUSE_DEBUG
 
+//Includes:
 #include <GLTools.h>
 #include <GLMatrixStack.h>
 #include <GLShaderManager.h>
@@ -62,8 +63,10 @@ void setupRC()
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {4.0f, 0.0f, -5.0f};
+	M3DVector3f pos2 = {10.0f, -20.0f, -5.0f};
 	GLfloat radius = 1.0f;
-	testHouse.init(pos, pos, radius);
+	testHouse.init(radius);
+	testHouse.create(pos, pos2, 20);
 	#endif
 
 	//Init debug batches:
@@ -105,7 +108,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
-	static M3DVector4f vLightPos = {3.0f, 8.0f, -20.0f, 1.0f};
+	static M3DVector4f vLightPos = {0.0f, 5.0f, 0.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
