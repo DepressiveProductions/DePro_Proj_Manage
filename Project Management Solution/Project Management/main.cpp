@@ -1,6 +1,7 @@
 //STATES:
 //#define HOUSE_DEBUG
 
+//Includes:
 #include <GLTools.h>
 #include <GLMatrixStack.h>
 #include <GLShaderManager.h>
@@ -15,6 +16,8 @@
 #ifdef HOUSE_DEBUG
 #include "House.h"
 #endif
+
+#include "Button.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -41,6 +44,8 @@ GLBatch testBatch;
 House testHouse;
 #endif
 
+Button buildButton;
+
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
@@ -62,8 +67,10 @@ void setupRC()
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {4.0f, 0.0f, -5.0f};
+	M3DVector3f pos2 = {10.0f, -20.0f, -5.0f};
 	GLfloat radius = 1.0f;
-	testHouse.init(pos, pos, radius);
+	testHouse.init(radius);
+	testHouse.create(pos, pos2, 20);
 	#endif
 
 	//Init debug batches:
@@ -72,6 +79,8 @@ void setupRC()
 		testBatch.Vertex3f(0.0f, 1.0f, 0.0f);
 		testBatch.Vertex3f(-1.0f, -1.0f, 0.0f);
 	testBatch.End();
+
+	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 }
 
 void changeSize(int w, int h)
@@ -105,7 +114,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
-	static M3DVector4f vLightPos = {3.0f, 8.0f, -20.0f, 1.0f};
+	static M3DVector4f vLightPos = {0.0f, 5.0f, 0.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
@@ -124,6 +133,8 @@ void renderScene()
 	//End pop:
 	modelViewStack.PopMatrix();
 	
+	buildButton.draw(W_WIDTH, W_HEIGHT);
+
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
@@ -183,5 +194,6 @@ int main(int argc, char* argv[])
 	//Setup stuff and start looping:
 	setupRC();
 	glutMainLoop();
+	buildButton.clearTexture();
 	return 0;
 }
