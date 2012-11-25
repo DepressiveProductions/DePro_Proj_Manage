@@ -38,7 +38,7 @@
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
 
-float camSpeed = 4.0f;
+float camSpeed = 4.8f;
 bool drawGrid = false;
 
 //Some important objects:
