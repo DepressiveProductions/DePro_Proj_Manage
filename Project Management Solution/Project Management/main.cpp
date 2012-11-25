@@ -15,6 +15,7 @@
 
 #include <math.h>
 #include <ctime>
+#include <iostream>
 
 #include "House.h"
 #include "Button.h"
@@ -207,7 +208,7 @@ void handleInput()
 		cameraFrame.MoveRight(-camSpeed);
 
 	// Mouse-clicks
-	if (in.mouseButtonPressed(sf::Mouse::Left))
+	/*if (in.mouseButtonPressed(sf::Mouse::Left))
 	{
 		sf::Vector2i pos;
 		in.getMousePos2(pos);
@@ -216,6 +217,18 @@ void handleInput()
 		if ((pos.x >= buildButton.getXPos()) && (pos.x <= buildButton.getXPos() + buildButton.getWidth()) && (pos.y >= buildButton.getYPos()) && (pos.y <= buildButton.getYPos() + buildButton.getHeight()))
 		{
 			ground.addHLSquare(0.25f, 0.25f);
+		}
+	}*/
+}
+
+void clickFunc(int key, int state, int x, int y)
+{
+	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
+	{
+		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
+		{
+			ground.addHLSquare(C_RAD, C_RAD);
+			std::cout << "sdugh";
 		}
 	}
 }
@@ -235,6 +248,7 @@ int main(int argc, char* argv[])
 	//Send funcs to gluttis:
 	glutReshapeFunc(changeSize);
 	glutDisplayFunc(renderScene);
+	glutMouseFunc(clickFunc);
 
 	GLenum result = glewInit();
 	if(result != GLEW_OK)

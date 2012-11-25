@@ -45,8 +45,6 @@ void Floor::generate()
 
 	grid.init(scale, 0.0f, 0.0f, width/scale, height/scale);
 	grid.generate();
-
-	addHLSquare(-0.25f, -0.25f);
 }
 
 void Floor::addHLSquare(GLfloat x, GLfloat y)
