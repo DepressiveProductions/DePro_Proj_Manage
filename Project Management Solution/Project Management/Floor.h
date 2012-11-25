@@ -25,6 +25,7 @@ public:
 	void init(int Width, int Height, GLfloat Scale);
 	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void generate();
+	void addHLSquare(GLfloat x, GLfloat y);
 	
 	GLBatch fBatch;
 	Grid grid;

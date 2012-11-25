@@ -17,8 +17,8 @@ class Grid
 {
 public:
 	Grid();
-	void initSquare(GLfloat Scale, GLfloat X, GLfloat Y);
-	void initGrid(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int SquareAmountY);
+	void init(GLfloat Scale, GLfloat X, GLfloat Y);
+	void init(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int SquareAmountY);
 	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setLineWidth(GLfloat width);
 	void generate();
@@ -31,4 +31,5 @@ private:
 	GLfloat gridScale;
 	GLfloat lineWidth;
 	int squaresX, squaresY;
+	bool isSquare;
 };

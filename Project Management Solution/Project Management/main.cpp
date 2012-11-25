@@ -9,6 +9,9 @@
 #include <GLFrustum.h>
 #include <GLFrame.h>
 #include <GLBatch.h>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include "Input.h"
 
 #include <math.h>
 #include <ctime>
@@ -18,6 +21,7 @@
 #endif
 
 #include "Button.h"
+#include "Floor.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -38,6 +42,7 @@ GLMatrixStack projectionStack;
 GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
+Input in;
 
 GLBatch testBatch;
 #ifdef HOUSE_DEBUG
@@ -45,11 +50,12 @@ House testHouse;
 #endif
 
 Button buildButton;
+Floor ground;
 
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void input();
+void handleInput();
 
 void setupRC()
 {
@@ -58,6 +64,8 @@ void setupRC()
 
 	//Enable depth testing so things won't look effed up:
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
 
 	//Initialize stock shaders from GLTools:
 	shaderManager.InitializeStockShaders();
@@ -81,6 +89,10 @@ void setupRC()
 	testBatch.End();
 
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
+	
+	ground.init(20, 20, 0.5);
+	ground.setColour(0.05f, 0.05f, 0.2f, 1.0f);
+	ground.generate();
 }
 
 void changeSize(int w, int h)
@@ -105,9 +117,6 @@ void renderScene()
 	//Beginning push:
 	modelViewStack.PushMatrix();
 
-	//Get input:
-	input();
-
 	//Camera matrix:
 	M3DMatrix44f mCamera;
 	cameraFrame.GetCameraMatrix(mCamera);
@@ -118,9 +127,32 @@ void renderScene()
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
+	// Floor
+	modelViewStack.PushMatrix();
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.vFloorColour);
+	ground.fBatch.Draw();
+	modelViewStack.PopMatrix();
+	
+	// Grid
+	modelViewStack.PushMatrix();
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
+	ground.grid.gBatch.Draw();
+	modelViewStack.PopMatrix();
+
+	// Highlight grid. Grid-square by grid-square
+	for (unsigned int i=0; i < ground.hlGrid.size(); i++)
+	{
+		modelViewStack.PushMatrix();
+		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
+		ground.hlGrid[i]->gBatch.Draw();
+		modelViewStack.PopMatrix();
+	}
+	
 	//Draw debug batches:
+	modelViewStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
 	testBatch.Draw();
+	modelViewStack.PopMatrix();
 
 	//House drawing:
 	#ifdef HOUSE_DEBUG
@@ -137,37 +169,39 @@ void renderScene()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+
+	// Input
+	handleInput();
 }
 
-void input()
+void handleInput()
 {	
-	short keyLeft = GetKeyState(VK_LEFT);
-    bool pushLeft = keyLeft < 0;
-    if (pushLeft == true)
-    {
-		cameraFrame.MoveRight(camSpeed);
-    }
- 
-	short keyRight = GetKeyState(VK_RIGHT);
-	bool pushRight = keyRight < 0;
-	if (pushRight == true)
-	{
-		cameraFrame.MoveRight(-camSpeed);
-	}
- 
-	short keyUp = GetKeyState(VK_UP);
-	bool pushUp = keyUp < 0;
-	if (pushUp == true)
-	{
+	// Exit
+	if (in.keyPressed(sf::Keyboard::Escape))
+		exit(0);
+
+	// Camera movement
+	if (in.keyPressed(sf::Keyboard::W))
 		cameraFrame.MoveUp(camSpeed);
-	}
- 
-	short keyDown = GetKeyState(VK_DOWN);
-	bool pushDown = keyDown < 0;
-	if (pushDown == true)
-	{
+	if (in.keyPressed(sf::Keyboard::S))
 		cameraFrame.MoveUp(-camSpeed);
-	}      
+	if (in.keyPressed(sf::Keyboard::A))
+		cameraFrame.MoveRight(camSpeed);
+	if (in.keyPressed(sf::Keyboard::D))
+		cameraFrame.MoveRight(-camSpeed);
+
+	// Mouse-clicks
+	if (in.mouseButtonPressed(sf::Mouse::Left))
+	{
+		sf::Vector2i pos;
+		in.getMousePos2(pos);
+		
+		// Check if cursor is over the build-button
+		if ((pos.x >= buildButton.getXPos()) && (pos.x <= buildButton.getXPos() + buildButton.getWidth()) && (pos.y >= buildButton.getYPos()) && (pos.y <= buildButton.getYPos() + buildButton.getHeight()))
+		{
+			ground.addHLSquare(0.25f, 0.25f);
+		}
+	}
 }
 
 int main(int argc, char* argv[])
@@ -178,6 +212,8 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(W_WIDTH, W_HEIGHT);
+	glutInitWindowPosition( (glutGet(GLUT_SCREEN_WIDTH)-W_WIDTH)/2, // Places the window in the middle of the screen
+							(glutGet(GLUT_SCREEN_HEIGHT)-W_HEIGHT)/2);
 	glutCreateWindow(W_TITLE);
 
 	//Send funcs to gluttis:

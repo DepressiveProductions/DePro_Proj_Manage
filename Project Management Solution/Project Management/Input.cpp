@@ -2,14 +2,24 @@
 
 Input::Input() {}
 
-void Input::passiveMouseFunc(int x, int y)
+bool Input::keyPressed(sf::Keyboard::Key key)
 {
-	screenX = x;
-	screenY = y;
+	return sf::Keyboard::isKeyPressed(key);
 }
 
-void Input::updatePosition(GLFrame &camFrame, GLMatrixStack &projStack)
+bool Input::mouseButtonPressed(sf::Mouse::Button button)
 {
+	return sf::Mouse::isButtonPressed(button);
+}
+
+void Input::getMousePos2(sf::Vector2i &pos)
+{
+	pos = sf::Mouse::getPosition();
+}
+
+void Input::getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &projStack)
+{
+	sf::Vector2i cursorPos = sf::Mouse::getPosition();
 	M3DMatrix44f mCamera;
 	camFrame.GetCameraMatrix(mCamera);
 	M3DMatrix44f mProjection;
@@ -29,59 +39,15 @@ void Input::updatePosition(GLFrame &camFrame, GLMatrixStack &projStack)
 
 	glGetIntegerv(GL_VIEWPORT, viewport);
 
-	winX = (float)screenX;
-	winY = viewport[3] - (float)screenY;
-	glReadPixels(screenX, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+	winX = (float)cursorPos.x;
+	winY = viewport[3] - (float)cursorPos.y;
+	glReadPixels(cursorPos.x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
 
 	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
 	
-	mousePos3[0] = posX;
-	mousePos3[1] = posY;
-	mousePos3[2] = posZ;
-}
-
-void Input::mouseClick(int key, int state, int x, int y)
-{
-	screenX = x;
-	screenY = y;
-	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_KEY_DOWN))
-	{
-		clickStartX = x;
-		clickStartY = y;
-		leftClick = true;
-	}
-	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_KEY_UP))
-	{
-		clickEndX = x;
-		clickEndY = y;
-		leftClick = false;
-	}
-}
-
-bool Input::keyPressed(int key)
-{
-	if (GetKeyState(key) < 0)
-		return true;
-	else
-		return false;
-}
-
-bool Input::getClickState()
-{
-	return leftClick;
-}
-
-void Input::getMousePos2(M3DVector2f &pos)
-{
-	pos[0] = screenX;
-	pos[1] = screenY;
-}
-
-void Input::getMousePos3(M3DVector3f &pos)
-{
-	pos[0] = mousePos3[0];
-	pos[1] = mousePos3[1];
-	pos[2] = mousePos3[2];
+	pos.x = posX;
+	pos.y = posY;
+	pos.z = posZ;
 }
 
 Input::~Input(void)

@@ -5,6 +5,8 @@
 #include <GLBatch.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -13,29 +15,19 @@
 #include <GL/glut.h>
 #endif
 
-#include <vector>
-using std::vector;
-
 class Input
 {
 public:
 	Input();
-	void passiveMouseFunc(int x, int y);
-	void updatePosition(GLFrame &camFrame, GLMatrixStack &projStack);
-	void mouseClick(int key, int state, int x, int y);
-	
-	bool keyPressed(int key);
-	bool getClickState(); // Returns true if left-click is down
-	void getMousePos2(M3DVector2f &pos);
-	void getMousePos3(M3DVector3f &pos);
+	bool keyPressed(sf::Keyboard::Key key);
+	bool mouseButtonPressed(sf::Mouse::Button button); // Returns true if left-click is down
+	void getMousePos2(sf::Vector2i &pos);
+	void getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &projStack);
 	~Input();
 
 private:
-	M3DVector3f mousePos3;
 	float camSpeed;
 	bool leftClick;
-	int screenX;
-	int screenY;
 	int clickStartX;
 	int clickStartY;
 	int clickEndX;

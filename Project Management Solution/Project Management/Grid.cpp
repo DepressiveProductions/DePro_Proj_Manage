@@ -10,24 +10,24 @@ int squaresX, squaresY;
 bool isSquare;
 
 Grid::Grid() {}
-// Initialize grid. XY is center of square. 
-void Grid::initSquare(GLfloat Scale, GLfloat X, GLfloat Y)
+
+void Grid::init(GLfloat Scale, GLfloat X, GLfloat Y) // Initialize grid-square. XY is center of square.
 {
 	gridScale = Scale/2;
 	position[0] = X;
 	position[1] = Y;
-	position[2] = 0.06f;
+	position[2] = 0.02f;
 	lineWidth = 2.0f;
 	setColour(0.0f, 1.0f, 0.0f, 0.8f);
 	isSquare = true;
 }
 
-void Grid::initGrid(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int SquareAmountY)
+void Grid::init(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int SquareAmountY) // Initialize grid. XY is center of grid. 
 {
 	gridScale = Scale/2;
 	position[0] = X;
 	position[1] = Y;
-	position[2] = 0.05f;
+	position[2] = 0.01f;
 	squaresX = SquareAmountX;
 	squaresY = SquareAmountY;
 	lineWidth = 2.0f;

@@ -14,8 +14,8 @@ GLfloat width;
 GLfloat height;
 GLfloat scale;
 
-
 Floor::Floor() {}
+
 // Width and Height is number of grid-squares in X- and Y-axis
 void Floor::init(int Width, int Height, GLfloat Scale)
 {
@@ -43,10 +43,15 @@ void Floor::generate()
 	fBatch.CopyVertexData3f(vVerts);
 	fBatch.End();
 
-	grid.initGrid(scale, 0.0f, 0.0f, width/scale, height/scale);
+	grid.init(scale, 0.0f, 0.0f, width/scale, height/scale);
 	grid.generate();
 
+	addHLSquare(-0.25f, -0.25f);
+}
+
+void Floor::addHLSquare(GLfloat x, GLfloat y)
+{
 	hlGrid.push_back(new Grid());
-	hlGrid[0]->initSquare(scale, 0.25f, 0.25f);
-	hlGrid[0]->generate();
+	hlGrid[hlGrid.size()-1]->init(scale, x, y);
+	hlGrid[hlGrid.size()-1]->generate();
 }
