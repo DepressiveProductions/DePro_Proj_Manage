@@ -65,10 +65,10 @@ GLBatch testBatch;
 House testHouse;
 #endif
 
-void setupRC();							//One-time setup function (RC = Rendering Context)
-void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
-void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void handleInput(CStopWatch &inputTimer);
+void setupRC();								//One-time setup function (RC = Rendering Context)
+void changeSize(int w, int h);				//Runs everytime the window 'changes size', for example when the window is created
+void renderScene();							//Basic glutfunc for rendering stuff. Runs every frame
+void handleInput(CStopWatch &inputTimer);	//Handles input ...
 
 void setupRC()
 {
@@ -113,11 +113,8 @@ void setupRC()
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
-<<<<<<< HEAD
-=======
 
 	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
->>>>>>> 1046f8f58c1a5ea9e4bf4cc74d837263dd3856fb
 }
 
 void changeSize(int w, int h)
