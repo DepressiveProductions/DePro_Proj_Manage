@@ -43,10 +43,6 @@
 float camSpeed = 4.0f;
 bool drawGrid = false;
 
-#ifdef TIMEBASED_DEBUG
-time_t oldTime;
-#endif
-
 //Some important objects:
 MyShaderManager emilShaders;
 GLShaderManager shaderManager;
