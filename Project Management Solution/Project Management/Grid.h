@@ -5,6 +5,8 @@
 #include <GLBatch.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
+#include <vector>
+using std::vector;
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -17,19 +19,22 @@ class Grid
 {
 public:
 	Grid();
-	void init(GLfloat Scale, GLfloat X, GLfloat Y);
-	void init(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int SquareAmountY);
+	void init(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat Scale);
 	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-	void setLineWidth(GLfloat width);
-	void generate();
-
-	GLBatch gBatch;
-	GLfloat vGridColour[4];
-	GLfloat position[3];
+	void setLineWidth(GLfloat w);
+	void addSquare(M3DVector3f &pos);
+	void removeSquare(M3DVector3f &pos);
+	void removeAllSquares();
+	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
+	struct highlighted {GLBatch batch; M3DVector3f pos;};
+	vector<highlighted *> hl;
 	GLfloat gridScale;
+	GLfloat vGridColour[4];
 	GLfloat lineWidth;
-	int squaresX, squaresY;
-	bool isSquare;
+	GLfloat center[3]; // Coords for the center of floor and center of the full grid
+
+	void calculateExactPos(M3DVector3f &pos); // Changes pos to the corresponding square-position
+	void highlightSquare(M3DVector3f pos);
 };

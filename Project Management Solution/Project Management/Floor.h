@@ -13,28 +13,27 @@
 #include <GL/glut.h>
 #endif
 
-#include "Grid.h"
-#include <vector>
-
-using std::vector;
-
 class Floor
 {
 public:
 	Floor();
-	void init(int Width, int Height, GLfloat Scale);
-	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-	void generate();
-	void addHLSquare(GLfloat x, GLfloat y);
-	
-	GLBatch fBatch;
-	Grid grid;
-	vector<Grid *> hlGrid;
-	GLfloat vFloorColour[4];
+	void init(GLfloat X, GLfloat Y, GLfloat Z, int Width, int Height, GLfloat Scale);
+	void setFloorColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+	void setGridColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+	void setGridLineWidth(GLfloat w);
+	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
+	GLfloat position[3];
 	float width;
 	float height;
 	GLfloat scale;
+	GLfloat vFloorColour[4];
+	GLBatch fBatch;
+	
+	GLBatch gBatch;
+	GLfloat vGridColour[4];
+	GLfloat gLineWidth;
+	bool drawGrid;
 };
 

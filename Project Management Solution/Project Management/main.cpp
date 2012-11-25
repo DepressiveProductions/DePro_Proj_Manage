@@ -21,7 +21,6 @@
 #include "Button.h"
 #include "Floor.h"
 #include "Grid.h"
-#include "Floor.h"
 #include "Input.h"
 
 #ifdef __APPLE__
@@ -49,6 +48,8 @@ Input in;
 
 House baracks;
 Floor ground;
+Grid fGrid; // Full grid
+Grid hlGrid; // Highlight grid
 Button buildButton;
 
 #ifdef TRIANGLE_DEBUG
@@ -98,10 +99,8 @@ void setupRC()
 
 	baracks.init(C_RAD);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
-	
+
 	ground.init(20, 20, C_RAD*2);
-	ground.setColour(1.0f, 1.0f, 1.0f, 1.0f);
-	ground.generate();
 }
 
 void changeSize(int w, int h)
@@ -137,13 +136,7 @@ void renderScene()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
 	// Floor
-	glPolygonOffset(1.0f, 1.0f);
-	glEnable(GL_POLYGON_OFFSET_FILL);
-	modelViewStack.PushMatrix();
-	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.vFloorColour);
-	ground.fBatch.Draw();
-	modelViewStack.PopMatrix();
-	glDisable(GL_POLYGON_OFFSET_FILL);
+	ground.draw(shaderManager, tPipeline, modelViewStack);
 	
 	// Grid
 	if (drawGrid)
