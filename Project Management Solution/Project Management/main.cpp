@@ -1,5 +1,5 @@
 //STATES:
-//#define HOUSE_DEBUG
+#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 
 //Includes:
@@ -30,6 +30,7 @@
 #include <GL/glut.h>
 #endif
 
+#define C_RAD 1.0f
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
@@ -94,10 +95,10 @@ void setupRC()
 	testBatch.End();
 	#endif
 
-	baracks.init(1.0f);
+	baracks.init(C_RAD);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
-	ground.init(20, 20, 0.5);
+	ground.init(20, 20, C_RAD/2);
 	ground.setColour(1.0f, 1.0f, 1.0f, 1.0f);
 	ground.generate();
 }
@@ -135,10 +136,14 @@ void renderScene()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
 	// Floor
+	glPolygonOffset(1.0f, 1.0f);
+	glEnable(GL_POLYGON_OFFSET_FILL);
 	modelViewStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.vFloorColour);
 	ground.fBatch.Draw();
 	modelViewStack.PopMatrix();
+	
+	glDisable(GL_POLYGON_OFFSET_FILL);
 	
 	// Grid
 	modelViewStack.PushMatrix();
@@ -147,6 +152,7 @@ void renderScene()
 	modelViewStack.PopMatrix();
 
 	// Highlight grid. Grid-square by grid-square
+	glPolygonOffset(-2.0f, -2.0f);
 	for (unsigned int i=0; i < ground.hlGrid.size(); i++)
 	{
 		modelViewStack.PushMatrix();
@@ -154,6 +160,8 @@ void renderScene()
 		ground.hlGrid[i]->gBatch.Draw();
 		modelViewStack.PopMatrix();
 	}
+
+	
 	
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
