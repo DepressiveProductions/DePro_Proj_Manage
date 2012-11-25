@@ -1,6 +1,7 @@
 //STATES:
 #define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
+//#define DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -23,6 +24,7 @@
 #include "Grid.h"
 #include "Floor.h"
 #include "Input.h"
+#include "MyShaderManager.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -35,10 +37,12 @@
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
+
 float camSpeed = 0.1f;
 bool drawGrid = false;
 
 //Some important objects:
+MyShaderManager emilShaders;
 GLShaderManager shaderManager;
 GLGeometryTransform tPipeline;
 GLMatrixStack projectionStack;
@@ -50,6 +54,7 @@ Input in;
 House baracks;
 Floor ground;
 Button buildButton;
+
 
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
@@ -76,6 +81,9 @@ void setupRC()
 
 	//Initialize stock shaders from GLTools:
 	shaderManager.InitializeStockShaders();
+
+	//Experimental first self-written shader:
+	emilShaders.initADS();
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-5.0f);
@@ -146,7 +154,7 @@ void renderScene()
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	
 	// Grid
-	if (drawGrid)
+	if(drawGrid)
 	{
 		modelViewStack.PushMatrix();
 		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
@@ -155,7 +163,7 @@ void renderScene()
 			
 		// Highlight grid. Grid-square by grid-square
 		glDisable(GL_DEPTH_TEST);
-		for (unsigned int i=0; i < ground.hlGrid.size(); i++)
+		for(unsigned int i=0; i < ground.hlGrid.size(); i++)
 		{
 			modelViewStack.PushMatrix();
 			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
@@ -176,7 +184,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
+	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack);
 	#endif
 
 	//End cam push:
@@ -263,5 +271,6 @@ int main(int argc, char* argv[])
 	setupRC();
 	glutMainLoop();
 	buildButton.clearTexture();
+	system("PAUSE");
 	return 0;
 }
