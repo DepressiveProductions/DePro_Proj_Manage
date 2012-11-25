@@ -79,11 +79,10 @@ void setupRC()
 	cameraFrame.MoveForward(-5.0f);
 
 	#ifdef HOUSE_DEBUG
-	M3DVector3f pos = {4.0f, 0.0f, -5.0f};
-	M3DVector3f pos2 = {10.0f, -20.0f, -5.0f};
-	GLfloat radius = 1.0f;
-	testHouse.init(radius);
-	testHouse.create(pos, pos2, 20);
+	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
+	M3DVector3f pos2 = {10*C_RAD, -10*C_RAD, 0.0f};
+	testHouse.init(C_RAD);
+	testHouse.create(pos, pos2, 15);
 	#endif
 
 	//Init debug batches:
