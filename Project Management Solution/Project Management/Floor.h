@@ -35,6 +35,6 @@ public:
 private:
 	float width;
 	float height;
-	float scale;
+	GLfloat scale;
 };
 
