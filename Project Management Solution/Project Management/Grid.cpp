@@ -18,7 +18,7 @@ void Grid::init(GLfloat Scale, GLfloat X, GLfloat Y) // Initialize grid-square. 
 	position[1] = Y;
 	position[2] = 0.02f;
 	lineWidth = 2.0f;
-	setColour(0.0f, 1.0f, 0.0f, 0.8f);
+	setColour(0.8f, 0.8f, 0.8f, 0.4f);
 	isSquare = true;
 }
 
@@ -31,7 +31,7 @@ void Grid::init(GLfloat Scale, GLfloat X, GLfloat Y, int SquareAmountX, int Squa
 	squaresX = SquareAmountX;
 	squaresY = SquareAmountY;
 	lineWidth = 2.0f;
-	setColour(0.0f, 1.0f, 0.0f, 0.4f);
+	setColour(0.8f, 0.8f, 0.8f, 0.4f);
 	isSquare = false;
 }
 

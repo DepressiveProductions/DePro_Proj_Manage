@@ -98,7 +98,7 @@ void setupRC()
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
 	ground.init(20, 20, 0.5);
-	ground.setColour(0.2f, 0.1f, 1.0f, 1.0f);
+	ground.setColour(1.0f, 1.0f, 1.0f, 1.0f);
 	ground.generate();
 }
 
