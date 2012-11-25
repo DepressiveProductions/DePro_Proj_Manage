@@ -2,7 +2,6 @@
 #define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
-// STAFFAN
 
 //Includes:
 #include <GLTools.h>
