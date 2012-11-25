@@ -83,7 +83,8 @@ void setupRC()
 	shaderManager.InitializeStockShaders();
 
 	//Experimental first self-written shader:
-	emilShaders.initADS();
+	emilShaders.initDiffVert();
+	emilShaders.initADSVert();
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-5.0f);
@@ -140,6 +141,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
+	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 	static M3DVector4f vLightPos = {0.0f, 0.0f, 4.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
@@ -184,7 +186,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack);
+	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 	#endif
 
 	//End cam push:

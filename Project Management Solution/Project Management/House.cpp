@@ -28,19 +28,19 @@ void House::nextPos()
 }
 
 //Drawing the house:
-void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack)
+void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient)
 {
 	vCurrentPos[0] = vStartingPos[0];
 	vCurrentPos[1] = vStartingPos[1];
 	vCurrentPos[2] = vStartingPos[2]+radius;
 	houseFrame.SetOrigin(vCurrentPos);
-	
+
 	for(int i = 0 ; i < cubes ; i++)
 	{
 		mvStack.PushMatrix();
 		
 		mvStack.MultMatrix(houseFrame);
-		emilShaders.useADS(vColor, vLightPos, tPipeline);
+		emilShaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline);
 		houseBatch.Draw();
 		
 		nextPos();
@@ -53,6 +53,9 @@ void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M
 //Creating the house:
 void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 {
+	setColor(vSpecular, 0.1f, 0.1f, 0.1f, 1.0f);
+	setColor(0.3f, 0.3f, 0.3f, 1.0f);
+
 	cubes = iCubes;
 	for(int i = 0 ; i < 3 ; i++)
 	{
@@ -65,7 +68,6 @@ void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 //Constructor, kind of:
 void House::init(GLfloat fRadius)
 {
-	setColor(0.3f, 0.3f, 0.3f, 1.0f);
 	radius = fRadius;
 	gltMakeCube(houseBatch, radius);
 }
@@ -100,5 +102,13 @@ void House::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	vColor[1] = g;
 	vColor[2] = b;
 	vColor[3] = a;
+}
+
+void House::setColor(M3DVector4f vCustColor, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+{
+	vCustColor[0] = r;
+	vCustColor[1] = g;
+	vCustColor[2] = b;
+	vCustColor[3] = a;
 }
 

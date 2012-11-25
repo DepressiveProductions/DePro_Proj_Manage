@@ -58,10 +58,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\simpleADS.fp">
+    <None Include="Shaders\ADS_vertex.vp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\simpleADS.vp">
+    <None Include="Shaders\diffuse_vertex.fp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\diffuse_vertex.vp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\ADS_vertex.fp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

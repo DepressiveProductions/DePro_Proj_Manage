@@ -11,14 +11,21 @@ class MyShaderManager
 		MyShaderManager(void);
 		~MyShaderManager(void);
 	
-		void initADS();
-		void useADS(M3DVector4f vDiffuseColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
+		//Diffuse lighting, per vertex:
+		void initDiffVert();
+		void useDiffVert(M3DVector4f vDiffuseColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
+
+		//ADS lighting, per vertex:
+		void initADSVert();
+		void useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
 
 	private:
 		//Shaders:
-		GLuint ADS;
+		GLuint diffVert;
+		GLuint ADSVert;
 
 		//Uniform locators:
-		GLint locColor, locLight, locMVP, locMV, locNM;
+		GLint diffColor, diffLight, diffMVP, diffMV, diffNM;
+		GLint ADSambColor, ADSspecColor, ADSdiffColor, ADSLight, ADSMVP, ADSMV, ADSNM;
 };
 

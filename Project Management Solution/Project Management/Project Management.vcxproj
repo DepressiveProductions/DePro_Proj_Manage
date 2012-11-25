@@ -99,8 +99,10 @@
     <ClInclude Include="MyShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\simpleADS.fp" />
-    <None Include="Shaders\simpleADS.vp" />
+    <None Include="Shaders\ADS_vertex.fp" />
+    <None Include="Shaders\ADS_vertex.vp" />
+    <None Include="Shaders\diffuse_vertex.fp" />
+    <None Include="Shaders\diffuse_vertex.vp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
