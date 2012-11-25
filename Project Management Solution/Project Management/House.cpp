@@ -53,9 +53,6 @@ void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M
 //Creating the house:
 void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 {
-	setColor(vSpecular, 0.1f, 0.1f, 0.1f, 1.0f);
-	setColor(0.3f, 0.3f, 0.3f, 1.0f);
-
 	cubes = iCubes;
 	for(int i = 0 ; i < 3 ; i++)
 	{
@@ -66,9 +63,19 @@ void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 
 
 //Constructor, kind of:
+void House::init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color)
+{
+	radius = fRadius;
+	setColor(vSpecular, shine);
+	setColor(vColor, color);
+	gltMakeCube(houseBatch, radius);
+}
+
 void House::init(GLfloat fRadius)
 {
 	radius = fRadius;
+	setColor(0.3f, 0.3f, 0.3f, 1.0f);
+	setColor(vSpecular, 0.2f, 0.2f, 0.2f, 1.0f);
 	gltMakeCube(houseBatch, radius);
 }
 
@@ -104,11 +111,19 @@ void House::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	vColor[3] = a;
 }
 
-void House::setColor(M3DVector4f vCustColor, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+void House::setColor(M3DVector4f &vCustColor, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 {
 	vCustColor[0] = r;
 	vCustColor[1] = g;
 	vCustColor[2] = b;
 	vCustColor[3] = a;
+}
+
+void House::setColor(M3DVector4f &vOldColor, M3DVector4f vNewColor)
+{
+	vOldColor[0] = vNewColor[0];
+	vOldColor[1] = vNewColor[1];
+	vOldColor[2] = vNewColor[2];
+	vOldColor[3] = vNewColor[3];
 }
 
