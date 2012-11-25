@@ -65,10 +65,9 @@ void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 //Constructor, kind of:
 void House::init(GLfloat fRadius)
 {
-	setColor(0.0f, 0.0f, 0.0f, 1.0f);
+	setColor(0.1f, 0.1f, 0.1f, 1.0f);
 	radius = fRadius;
 	gltMakeCube(houseBatch, radius);
-	cubes = 1;
 }
 
 //Getters:

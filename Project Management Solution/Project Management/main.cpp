@@ -130,7 +130,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
-	static M3DVector4f vLightPos = {0.0f, 5.0f, 0.0f, 1.0f};
+	static M3DVector4f vLightPos = {0.0f, 0.0f, 4.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
