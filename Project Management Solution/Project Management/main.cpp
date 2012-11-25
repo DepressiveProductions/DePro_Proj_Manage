@@ -1,5 +1,6 @@
 //STATES:
 //#define HOUSE_DEBUG
+//#define TRIANGLE_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -16,12 +17,15 @@
 #include <math.h>
 #include <ctime>
 
-#ifdef HOUSE_DEBUG
 #include "House.h"
-#endif
-
 #include "Button.h"
+<<<<<<< HEAD
 #include "Floor.h"
+=======
+#include "Grid.h"
+#include "Floor.h"
+#include "input.h"
+>>>>>>> origin
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -44,11 +48,21 @@ GLFrustum viewFrustum;
 GLFrame cameraFrame;
 Input in;
 
+House baracks;
+Floor ground;
+Grid stdGrid;
+Input mainInput;
+Button buildButton;
+
+#ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
+#endif
+
 #ifdef HOUSE_DEBUG
 House testHouse;
 #endif
 
+<<<<<<< HEAD
 Button buildButton;
 Floor ground;
 
@@ -56,6 +70,12 @@ void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
 void handleInput();
+=======
+void setupRC();							//One-time setup function (RC = Rendering Context)
+void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
+void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
+void input();							//Handling input since 1962
+>>>>>>> origin
 
 void setupRC()
 {
@@ -82,12 +102,17 @@ void setupRC()
 	#endif
 
 	//Init debug batches:
+	#ifdef TRIANGLE_DEBUG
 	testBatch.Begin(GL_TRIANGLES, 3);
 		testBatch.Vertex3f(1.0f, -1.0f, 0.0f);
 		testBatch.Vertex3f(0.0f, 1.0f, 0.0f);
 		testBatch.Vertex3f(-1.0f, -1.0f, 0.0f);
 	testBatch.End();
+	#endif
 
+	ground.init(40, 40, 40);
+	stdGrid.initGrid(40, -20, -20, 40, 40);
+	baracks.init(1.0f);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
 	ground.init(20, 20, 0.5);
@@ -149,12 +174,19 @@ void renderScene()
 	}
 	
 	//Draw debug batches:
+<<<<<<< HEAD
 	modelViewStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
 	testBatch.Draw();
 	modelViewStack.PopMatrix();
+=======
+	#ifdef TRIANGLE_DEBUG
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
+	testBatch.Draw();
+	#endif
+>>>>>>> origin
 
-	//House drawing:
+	//House debug drawing:
 	#ifdef HOUSE_DEBUG
 	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
 	#endif
