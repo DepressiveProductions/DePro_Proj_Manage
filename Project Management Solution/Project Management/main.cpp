@@ -1,6 +1,7 @@
 //STATES:
 #define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
+//#define TIMEBASED_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -36,6 +37,10 @@
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
 float camSpeed = 0.1f;
+
+#ifdef TIMEBASED_DEBUG
+time_t oldTime;
+#endif
 
 //Some important objects:
 GLShaderManager shaderManager;
@@ -96,6 +101,7 @@ void setupRC()
 	#endif
 
 	baracks.init(C_RAD);
+
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
 	ground.init(20, 20, C_RAD*2);
@@ -116,6 +122,11 @@ void changeSize(int w, int h)
 
 void renderScene()
 {
+	//Time how many time to render frame scene
+	#ifdef TIMEBASED_DEBUG
+	oldTime = time(NULL);
+	#endif
+
 	//Colours:
 	static GLfloat vDarkRed[] = {0.5f, 0.1f, 0.1f, 1.0f};
 
@@ -197,6 +208,20 @@ void handleInput()
 		exit(0);
 
 	// Camera movement
+	#ifdef TIMEBASED_DEBUG
+	time_t currentTime = time(NULL);
+	double elapsedTime = difftime(currentTime, oldTime);
+	
+	if (in.keyPressed(sf::Keyboard::W))
+		cameraFrame.MoveUp(camSpeed*elapsedTime);
+	if (in.keyPressed(sf::Keyboard::S))
+		cameraFrame.MoveUp(-camSpeed*elapsedTime);
+	if (in.keyPressed(sf::Keyboard::A))
+		cameraFrame.MoveRight(camSpeed*elapsedTime);
+	if (in.keyPressed(sf::Keyboard::D))
+		cameraFrame.MoveRight(-camSpeed*elapsedTime);
+
+	#else
 	if (in.keyPressed(sf::Keyboard::W))
 		cameraFrame.MoveUp(camSpeed);
 	if (in.keyPressed(sf::Keyboard::S))
@@ -205,6 +230,7 @@ void handleInput()
 		cameraFrame.MoveRight(camSpeed);
 	if (in.keyPressed(sf::Keyboard::D))
 		cameraFrame.MoveRight(-camSpeed);
+	#endif	
 
 	// Mouse-clicks
 	/*if (in.mouseButtonPressed(sf::Mouse::Left))
