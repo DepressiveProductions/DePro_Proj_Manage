@@ -113,8 +113,6 @@ void setupRC()
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
-
-	
 }
 
 void changeSize(int w, int h)
@@ -168,7 +166,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
+	testHouse.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 	#endif
 
 	//End cam push:
