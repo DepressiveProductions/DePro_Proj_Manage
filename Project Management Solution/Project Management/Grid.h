@@ -22,9 +22,9 @@ public:
 	void init(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat Scale);
 	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setLineWidth(GLfloat w);
-	void addSquare(M3DVector3f &pos);
-	void removeSquare(M3DVector3f &pos);
-	void removeAllSquares();
+	void activateSquare(M3DVector3f &pos);
+	void boxActivation(M3DVector3f &startPos, M3DVector3f &endPos);
+	void deactivateAllSquares();
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
@@ -36,5 +36,4 @@ private:
 	GLfloat center[3]; // Coords for the center of floor and center of the full grid
 
 	void calculateExactPos(M3DVector3f &pos); // Changes pos to the corresponding square-position
-	void highlightSquare(M3DVector3f pos);
 };

@@ -11,12 +11,13 @@ bool Input::mouseButtonPressed(sf::Mouse::Button button)
 {
 	return sf::Mouse::isButtonPressed(button);
 }
-
+/*
 void Input::getMousePos2(sf::Vector2i &pos)
 {
 	pos = sf::Mouse::getPosition();
 }
-
+*/
+/*
 void Input::getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &projStack)
 {
 	sf::Vector2i cursorPos = sf::Mouse::getPosition();
@@ -49,7 +50,7 @@ void Input::getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &pr
 	pos.y = posY;
 	pos.z = posZ;
 }
-
+*/
 Input::~Input(void)
 {
 }

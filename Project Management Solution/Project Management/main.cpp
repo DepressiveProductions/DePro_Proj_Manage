@@ -39,7 +39,9 @@
 #define W_TITLE "Project: Management - Prototype"
 
 float camSpeed = 4.0f;
-bool drawGrid = false;
+M3DVector3f clickPos;
+M3DVector3f releasePos;
+bool buttonDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -88,7 +90,7 @@ void setupRC()
 	emilShaders.initADSVert();
 	
 	//Move cam back:
-	cameraFrame.MoveForward(-8.0f);
+	cameraFrame.MoveForward(-20.0f);
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
@@ -107,8 +109,6 @@ void setupRC()
 		testBatch.Vertex3f(-1.0f, -1.0f, 0.0f);
 	testBatch.End();
 	#endif
-
-	baracks.init(C_RAD);
 
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
@@ -219,13 +219,64 @@ void handleInput(CStopWatch &inputTimer)
 	}*/
 }
 
+void getCursor3(int x, int y, M3DVector3f &pos)
+{
+	M3DVector2f cursor = {x, y};
+	M3DMatrix44f mCamera;
+	cameraFrame.GetCameraMatrix(mCamera);
+	M3DMatrix44f mProjection;
+	projectionStack.GetMatrix(mProjection);
+
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
+
+	for (int i=0; i < 16; i++)
+	{
+		modelview[i] = mCamera[i];
+		projection[i] = mProjection[i];
+	}
+
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	winX = (float)cursor[0];
+	winY = viewport[3] - (float)cursor[1];
+	glReadPixels(cursor[0], int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+
+	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+	
+	pos[0] = posX;
+	pos[1] = posY;
+	pos[2] = posZ;
+}
+
 void clickFunc(int key, int state, int x, int y)
 {
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
-		{
 			ground.toggleGrid();
+		else if (!buttonDown)
+		{
+			hlGrid.deactivateAllSquares();
+			getCursor3(x, y, clickPos);
+			hlGrid.activateSquare(clickPos); // DEBUG
+			buttonDown = true;
+		}
+	}
+	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
+	{
+		// Do not act as background if clicked on button
+		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
+		{
+			getCursor3(x, y, releasePos);
+			if (clickPos == releasePos)
+				hlGrid.activateSquare(releasePos);
+			else
+				hlGrid.boxActivation(clickPos, releasePos);
+			buttonDown = false;
 		}
 	}
 }

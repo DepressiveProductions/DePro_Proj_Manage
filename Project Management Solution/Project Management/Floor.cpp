@@ -29,10 +29,10 @@ void Floor::init(GLfloat X, GLfloat Y, GLfloat Z, int Width, int Height, GLfloat
 	gLineWidth = 2.0f;
 	
 	// Generate floor batch
-	GLfloat vVerts[] = {position[0]-(width/scale), position[1]-(height/scale), position[2],
-						position[0]-(width/scale), position[1]+(height/scale), position[2],
-						position[0]+(width/scale), position[1]-(height/scale), position[2],
-						position[0]+(width/scale), position[1]+(height/scale), position[2]};
+	GLfloat vVerts[] = {position[0]-width, position[1]-height, position[2],
+						position[0]-width, position[1]+height, position[2],
+						position[0]+width, position[1]-height, position[2],
+						position[0]+width, position[1]+height, position[2]};
 	fBatch.Begin(GL_TRIANGLE_STRIP, 4);
 	fBatch.CopyVertexData3f(vVerts);
 	fBatch.End();
@@ -40,16 +40,16 @@ void Floor::init(GLfloat X, GLfloat Y, GLfloat Z, int Width, int Height, GLfloat
 	// Generate grid batch
 	gBatch.Begin(GL_LINES, 10*(Width + Height + 2));
 	// Lines in Y-axis
-	for (GLfloat x = position[0] - (2*scale*((GLfloat)Width)); x <= position[0] + (2*scale*(Width)); x += 2*scale)
+	for (GLfloat x = position[0] - width; x <= position[0] + width; x += scale*2)
 	{
-		gBatch.Vertex3f(x, -scale*2*Height, position[2]);
-		gBatch.Vertex3f(x, scale*2*Height, position[2]);
+		gBatch.Vertex3f(x, -height, position[2]);
+		gBatch.Vertex3f(x, height, position[2]);
 	}
 	// Lines in X-axis
-	for (GLfloat y = position[1] - (2*scale*((GLfloat)Height)); y <= position[1] + (2*scale*(Height)); y += 2*scale)
+	for (GLfloat y = position[1] - height; y <= position[1] + height; y += scale*2)
 	{
-		gBatch.Vertex3f(-scale*2*Width, y, position[2]);
-		gBatch.Vertex3f(scale*2*Width, y, position[2]);
+		gBatch.Vertex3f(-width, y, position[2]);
+		gBatch.Vertex3f(width, y, position[2]);
 	}
 	gBatch.End();
 }
