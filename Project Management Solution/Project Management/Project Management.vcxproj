@@ -88,6 +88,7 @@
     <ClCompile Include="House.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -95,6 +96,13 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="MyShaderManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\ADS_vertex.fp" />
+    <None Include="Shaders\ADS_vertex.vp" />
+    <None Include="Shaders\diffuse_vertex.fp" />
+    <None Include="Shaders\diffuse_vertex.vp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

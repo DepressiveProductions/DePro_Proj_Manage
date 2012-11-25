@@ -1,7 +1,11 @@
 //STATES:
 #define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
+<<<<<<< HEAD
 //#define TIMEBASED_DEBUG
+=======
+//#define DEBUG
+>>>>>>> da51784efb2994f213f60b784ddf7b12227c19d0
 
 //Includes:
 #include <GLTools.h>
@@ -24,6 +28,7 @@
 #include "Grid.h"
 #include "Floor.h"
 #include "Input.h"
+#include "MyShaderManager.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -36,13 +41,16 @@
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
+
 float camSpeed = 0.1f;
+bool drawGrid = false;
 
 #ifdef TIMEBASED_DEBUG
 time_t oldTime;
 #endif
 
 //Some important objects:
+MyShaderManager emilShaders;
 GLShaderManager shaderManager;
 GLGeometryTransform tPipeline;
 GLMatrixStack projectionStack;
@@ -54,6 +62,7 @@ Input in;
 House baracks;
 Floor ground;
 Button buildButton;
+
 
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
@@ -80,6 +89,10 @@ void setupRC()
 
 	//Initialize stock shaders from GLTools:
 	shaderManager.InitializeStockShaders();
+
+	//Experimental first self-written shader:
+	emilShaders.initDiffVert();
+	emilShaders.initADSVert();
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-5.0f);
@@ -142,6 +155,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
+	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 	static M3DVector4f vLightPos = {0.0f, 0.0f, 4.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
@@ -156,23 +170,26 @@ void renderScene()
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	
 	// Grid
-	modelViewStack.PushMatrix();
-	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
-	ground.grid.gBatch.Draw();
-	modelViewStack.PopMatrix();
-
-	// Highlight grid. Grid-square by grid-square
-	glDisable(GL_DEPTH_TEST);
-	for (unsigned int i=0; i < ground.hlGrid.size(); i++)
+	if(drawGrid)
 	{
 		modelViewStack.PushMatrix();
-		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
-		ground.hlGrid[i]->gBatch.Draw();
+		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
+		ground.grid.gBatch.Draw();
 		modelViewStack.PopMatrix();
+			
+		// Highlight grid. Grid-square by grid-square
+		glDisable(GL_DEPTH_TEST);
+		for(unsigned int i=0; i < ground.hlGrid.size(); i++)
+		{
+			modelViewStack.PushMatrix();
+			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
+			ground.hlGrid[i]->gBatch.Draw();
+			modelViewStack.PopMatrix();
+		}
 	}
+
 	glEnable(GL_DEPTH_TEST);
-	
-	
+		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
 	modelViewStack.PushMatrix();
@@ -183,7 +200,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
+	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 	#endif
 
 	//End cam push:
@@ -252,8 +269,7 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
 		{
-			ground.addHLSquare(C_RAD, C_RAD);
-			std::cout << "sdugh";
+			drawGrid = !drawGrid;
 		}
 	}
 }
@@ -286,5 +302,6 @@ int main(int argc, char* argv[])
 	setupRC();
 	glutMainLoop();
 	buildButton.clearTexture();
+	system("PAUSE");
 	return 0;
 }
