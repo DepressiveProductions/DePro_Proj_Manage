@@ -33,7 +33,7 @@
 #include <GL/glut.h>
 #endif
 
-#define C_RAD 0.25f
+#define C_RAD 0.5f
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
@@ -114,7 +114,7 @@ void setupRC()
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
-	
+	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
 }
 
 void changeSize(int w, int h)
