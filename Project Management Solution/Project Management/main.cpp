@@ -19,13 +19,10 @@
 
 #include "House.h"
 #include "Button.h"
-<<<<<<< HEAD
 #include "Floor.h"
-=======
 #include "Grid.h"
 #include "Floor.h"
 #include "input.h"
->>>>>>> origin
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -50,8 +47,6 @@ Input in;
 
 House baracks;
 Floor ground;
-Grid stdGrid;
-Input mainInput;
 Button buildButton;
 
 #ifdef TRIANGLE_DEBUG
@@ -62,20 +57,14 @@ GLBatch testBatch;
 House testHouse;
 #endif
 
-<<<<<<< HEAD
-Button buildButton;
-Floor ground;
-
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
 void handleInput();
-=======
+
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void input();							//Handling input since 1962
->>>>>>> origin
 
 void setupRC()
 {
@@ -110,13 +99,11 @@ void setupRC()
 	testBatch.End();
 	#endif
 
-	ground.init(40, 40, 40);
-	stdGrid.initGrid(40, -20, -20, 40, 40);
 	baracks.init(1.0f);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
 	ground.init(20, 20, 0.5);
-	ground.setColour(0.05f, 0.05f, 0.2f, 1.0f);
+	ground.setColour(0.2f, 0.1f, 1.0f, 1.0f);
 	ground.generate();
 }
 
@@ -173,18 +160,13 @@ void renderScene()
 		modelViewStack.PopMatrix();
 	}
 	
+	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
-<<<<<<< HEAD
 	modelViewStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
 	testBatch.Draw();
 	modelViewStack.PopMatrix();
-=======
-	#ifdef TRIANGLE_DEBUG
-	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vDarkRed);
-	testBatch.Draw();
 	#endif
->>>>>>> origin
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
