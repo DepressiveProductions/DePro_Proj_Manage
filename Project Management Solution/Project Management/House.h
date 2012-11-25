@@ -5,6 +5,9 @@
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
 #include "MyShaderManager.h"
+#include <vector>
+
+using std::vector;
 
 class House
 {
@@ -16,6 +19,8 @@ class House
 		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
 		void create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes);
 		void draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);
+		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);
+		void inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
 		void nextPos();
 
 		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
@@ -37,6 +42,8 @@ class House
 		
 		GLBatch houseBatch;
 		GLFrame houseFrame;
+
+		vector<House *> houses;
 		
 		GLfloat radius;
 		int cubes;

@@ -50,14 +50,34 @@ void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M
 	}
 }
 
+void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient)
+{
+	for (unsigned int i = 0 ; i < houses.size() ; i++)
+	{
+		houses[i]->draw(emilShaders, tPipeline, vLightPos, mvStack, vAmbient);
+	}
+}
+
 //Creating the house:
 void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes)
 {
-	cubes = iCubes;
+	houses.push_back(new House());
+	houses[houses.size()-1]->cubes = iCubes;
+	houses[houses.size()-1]->inherit(this->radius, this->vSpecular, this->vColor);
 	for(int i = 0 ; i < 3 ; i++)
 	{
-		this->vStartingPos[i] = vStartingPos[i];
-		this->vEndingPos[i] = vEndingPos[i];
+		houses[houses.size()-1]->vStartingPos[i] = vStartingPos[i];
+		houses[houses.size()-1]->vEndingPos[i] = vEndingPos[i];
+	}
+}
+
+void House::inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color)
+{
+	this->radius = fRadius;
+	for (unsigned int i = 0 ; i < 4 ; i++)
+	{
+		this->vSpecular[i] = shine[i];
+		this->vColor[i] = color[i];
 	}
 }
 

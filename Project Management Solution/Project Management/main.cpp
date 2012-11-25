@@ -38,10 +38,15 @@
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
 
+<<<<<<< HEAD
 float camSpeed = 4.0f;
 M3DVector3f clickPos;
 M3DVector3f releasePos;
 bool buttonDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
+=======
+float camSpeed = 4.8f;
+bool drawGrid = false;
+>>>>>>> origin
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -67,10 +72,10 @@ GLBatch testBatch;
 House testHouse;
 #endif
 
-void setupRC();							//One-time setup function (RC = Rendering Context)
-void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
-void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void handleInput(CStopWatch &inputTimer);
+void setupRC();								//One-time setup function (RC = Rendering Context)
+void changeSize(int w, int h);				//Runs everytime the window 'changes size', for example when the window is created
+void renderScene();							//Basic glutfunc for rendering stuff. Runs every frame
+void handleInput(CStopWatch &inputTimer);	//Handles input ...
 
 void setupRC()
 {
@@ -168,7 +173,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
+	testHouse.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 	#endif
 
 	//End cam push:
