@@ -32,7 +32,7 @@ void House::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline,
 {
 	vCurrentPos[0] = vStartingPos[0];
 	vCurrentPos[1] = vStartingPos[1];
-	vCurrentPos[2] = vStartingPos[2];
+	vCurrentPos[2] = vStartingPos[2]+radius;
 	houseFrame.SetOrigin(vCurrentPos);
 	
 	for(int i = 0 ; i < cubes ; i++)

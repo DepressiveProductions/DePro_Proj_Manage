@@ -30,7 +30,7 @@
 #include <GL/glut.h>
 #endif
 
-#define C_RAD 1.0f
+#define C_RAD 0.25f
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
@@ -98,7 +98,7 @@ void setupRC()
 	baracks.init(C_RAD);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 	
-	ground.init(20, 20, C_RAD/2);
+	ground.init(20, 20, C_RAD*2);
 	ground.setColour(1.0f, 1.0f, 1.0f, 1.0f);
 	ground.generate();
 }
@@ -142,7 +142,6 @@ void renderScene()
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.vFloorColour);
 	ground.fBatch.Draw();
 	modelViewStack.PopMatrix();
-	
 	glDisable(GL_POLYGON_OFFSET_FILL);
 	
 	// Grid
@@ -152,7 +151,7 @@ void renderScene()
 	modelViewStack.PopMatrix();
 
 	// Highlight grid. Grid-square by grid-square
-	glPolygonOffset(-2.0f, -2.0f);
+	glDisable(GL_DEPTH_TEST);
 	for (unsigned int i=0; i < ground.hlGrid.size(); i++)
 	{
 		modelViewStack.PushMatrix();
@@ -160,7 +159,7 @@ void renderScene()
 		ground.hlGrid[i]->gBatch.Draw();
 		modelViewStack.PopMatrix();
 	}
-
+	glEnable(GL_DEPTH_TEST);
 	
 	
 	#ifdef TRIANGLE_DEBUG
