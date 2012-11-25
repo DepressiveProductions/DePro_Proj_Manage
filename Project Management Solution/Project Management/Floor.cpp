@@ -23,16 +23,16 @@ void Floor::init(GLfloat X, GLfloat Y, GLfloat Z, int Width, int Height, GLfloat
 	vGridColour[0] = 0.8f;
 	vGridColour[1] = 0.8f;
 	vGridColour[2] = 0.8f;
-	vGridColour[3] = 0.8f; // Some transparancy
+	vGridColour[3] = 0.4f; // Some transparancy
 
 	// Grid's line width
 	gLineWidth = 2.0f;
 	
 	// Generate floor batch
-	GLfloat vVerts[] = {-width, -height, 0.0f,
-						-width, height, 0.0f,
-						width, -height, 0.0f,
-						width, height, 0.0f};
+	GLfloat vVerts[] = {position[0]-(width/scale), position[1]-(height/scale), position[2],
+						position[0]-(width/scale), position[1]+(height/scale), position[2],
+						position[0]+(width/scale), position[1]-(height/scale), position[2],
+						position[0]+(width/scale), position[1]+(height/scale), position[2]};
 	fBatch.Begin(GL_TRIANGLE_STRIP, 4);
 	fBatch.CopyVertexData3f(vVerts);
 	fBatch.End();

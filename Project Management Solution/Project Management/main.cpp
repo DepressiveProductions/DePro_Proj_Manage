@@ -33,7 +33,7 @@
 #include <GL/glut.h>
 #endif
 
-#define C_RAD 0.25f
+#define C_RAD 0.5f
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
@@ -113,6 +113,11 @@ void setupRC()
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
+<<<<<<< HEAD
+=======
+
+	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
+>>>>>>> 1046f8f58c1a5ea9e4bf4cc74d837263dd3856fb
 }
 
 void changeSize(int w, int h)
