@@ -112,7 +112,7 @@ void setupRC()
 
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
-	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD*2);
+	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
 	
 }
@@ -154,32 +154,9 @@ void renderScene()
 
 	// Floor
 	ground.draw(shaderManager, tPipeline, modelViewStack);
-	
-<<<<<<< HEAD
+
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
-=======
-	// Grid
-	if(drawGrid)
-	{
-		modelViewStack.PushMatrix();
-		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
-		ground.grid.gBatch.Draw();
-		modelViewStack.PopMatrix();
-			
-		// Highlight grid. Grid-square by grid-square
-		glDisable(GL_DEPTH_TEST);
-		for(unsigned int i=0; i < ground.hlGrid.size(); i++)
-		{
-			modelViewStack.PushMatrix();
-			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
-			ground.hlGrid[i]->gBatch.Draw();
-			modelViewStack.PopMatrix();
-		}
-	}
-
-	glEnable(GL_DEPTH_TEST);
->>>>>>> origin
 		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
