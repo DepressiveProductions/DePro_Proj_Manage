@@ -33,6 +33,9 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyShaderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="House.h">
@@ -50,5 +53,22 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyShaderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\ADS_vertex.vp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\diffuse_vertex.fp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\diffuse_vertex.vp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\ADS_vertex.fp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

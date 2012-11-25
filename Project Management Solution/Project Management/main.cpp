@@ -1,6 +1,8 @@
 //STATES:
 #define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
+//#define DEBUG
+// STAFFAN
 
 //Includes:
 #include <GLTools.h>
@@ -15,6 +17,7 @@
 
 #include <math.h>
 #include <ctime>
+#include <StopWatch.h>
 #include <iostream>
 
 #include "House.h"
@@ -22,6 +25,7 @@
 #include "Floor.h"
 #include "Grid.h"
 #include "Input.h"
+#include "MyShaderManager.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -34,10 +38,12 @@
 #define W_WIDTH 800
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
-float camSpeed = 0.1f;
+
+float camSpeed = 4.0f;
 bool drawGrid = false;
 
 //Some important objects:
+MyShaderManager emilShaders;
 GLShaderManager shaderManager;
 GLGeometryTransform tPipeline;
 GLMatrixStack projectionStack;
@@ -51,6 +57,7 @@ Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
 
+
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
 #endif
@@ -62,7 +69,7 @@ House testHouse;
 void setupRC();							//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);			//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();						//Basic glutfunc for rendering stuff. Runs every frame
-void handleInput();
+void handleInput(CStopWatch &inputTimer);
 
 void setupRC()
 {
@@ -76,14 +83,20 @@ void setupRC()
 
 	//Initialize stock shaders from GLTools:
 	shaderManager.InitializeStockShaders();
+
+	//Experimental first self-written shader:
+	emilShaders.initDiffVert();
+	emilShaders.initADSVert();
 	
 	//Move cam back:
-	cameraFrame.MoveForward(-5.0f);
+	cameraFrame.MoveForward(-8.0f);
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
 	M3DVector3f pos2 = {10*C_RAD, -10*C_RAD, 0.0f};
-	testHouse.init(C_RAD);
+	M3DVector4f debugShine = {0.5, 0.5, 0.5, 1.0};
+	M3DVector4f debugColor = {0.3f, 0.3f, 0.3f, 1.0f};
+	testHouse.init(C_RAD, debugShine, debugColor);
 	testHouse.create(pos, pos2, 15);
 	#endif
 
@@ -97,6 +110,7 @@ void setupRC()
 	#endif
 
 	baracks.init(C_RAD);
+
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD*2);
@@ -120,6 +134,8 @@ void renderScene()
 	//Colours:
 	static GLfloat vDarkRed[] = {0.5f, 0.1f, 0.1f, 1.0f};
 
+	static CStopWatch inputTimer;
+
 	//Clear buffers
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	
@@ -132,6 +148,7 @@ void renderScene()
 	modelViewStack.PushMatrix(mCamera);
 
 	//Light source:
+	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 	static M3DVector4f vLightPos = {0.0f, 0.0f, 4.0f, 1.0f};
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
@@ -139,8 +156,31 @@ void renderScene()
 	// Floor
 	ground.draw(shaderManager, tPipeline, modelViewStack);
 	
+<<<<<<< HEAD
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
+=======
+	// Grid
+	if(drawGrid)
+	{
+		modelViewStack.PushMatrix();
+		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
+		ground.grid.gBatch.Draw();
+		modelViewStack.PopMatrix();
+			
+		// Highlight grid. Grid-square by grid-square
+		glDisable(GL_DEPTH_TEST);
+		for(unsigned int i=0; i < ground.hlGrid.size(); i++)
+		{
+			modelViewStack.PushMatrix();
+			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
+			ground.hlGrid[i]->gBatch.Draw();
+			modelViewStack.PopMatrix();
+		}
+	}
+
+	glEnable(GL_DEPTH_TEST);
+>>>>>>> origin
 		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -152,7 +192,7 @@ void renderScene()
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
-	testHouse.draw(shaderManager, tPipeline, vLightEyePos, modelViewStack);
+	testHouse.draw(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 	#endif
 
 	//End cam push:
@@ -167,24 +207,27 @@ void renderScene()
 	glutPostRedisplay();
 
 	// Input
-	handleInput();
+	handleInput(inputTimer);
 }
 
-void handleInput()
+void handleInput(CStopWatch &inputTimer)
 {	
 	// Exit
 	if (in.keyPressed(sf::Keyboard::Escape))
 		exit(0);
 
 	// Camera movement
+	float elapsedTime = inputTimer.GetElapsedSeconds();
+	inputTimer.Reset();
+	
 	if (in.keyPressed(sf::Keyboard::W))
-		cameraFrame.MoveUp(camSpeed);
+		cameraFrame.MoveUp(camSpeed*elapsedTime);
 	if (in.keyPressed(sf::Keyboard::S))
-		cameraFrame.MoveUp(-camSpeed);
+		cameraFrame.MoveUp(-camSpeed*elapsedTime);
 	if (in.keyPressed(sf::Keyboard::A))
-		cameraFrame.MoveRight(camSpeed);
+		cameraFrame.MoveRight(camSpeed*elapsedTime);
 	if (in.keyPressed(sf::Keyboard::D))
-		cameraFrame.MoveRight(-camSpeed);
+		cameraFrame.MoveRight(-camSpeed*elapsedTime);
 
 	// Mouse-clicks
 	/*if (in.mouseButtonPressed(sf::Mouse::Left))
@@ -239,5 +282,6 @@ int main(int argc, char* argv[])
 	setupRC();
 	glutMainLoop();
 	buildButton.clearTexture();
+	system("PAUSE");
 	return 0;
 }
