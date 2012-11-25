@@ -48,7 +48,6 @@ Input in;
 
 House baracks;
 Floor ground;
-Grid fGrid; // Full grid
 Grid hlGrid; // Highlight grid
 Button buildButton;
 
@@ -100,7 +99,9 @@ void setupRC()
 	baracks.init(C_RAD);
 	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
 
-	ground.init(20, 20, C_RAD*2);
+	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD*2);
+
+	
 }
 
 void changeSize(int w, int h)
@@ -138,26 +139,8 @@ void renderScene()
 	// Floor
 	ground.draw(shaderManager, tPipeline, modelViewStack);
 	
-	// Grid
-	if (drawGrid)
-	{
-		modelViewStack.PushMatrix();
-		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.grid.vGridColour);
-		ground.grid.gBatch.Draw();
-		modelViewStack.PopMatrix();
-			
-		// Highlight grid. Grid-square by grid-square
-		glDisable(GL_DEPTH_TEST);
-		for (unsigned int i=0; i < ground.hlGrid.size(); i++)
-		{
-			modelViewStack.PushMatrix();
-			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), ground.hlGrid[i]->vGridColour);
-			ground.hlGrid[i]->gBatch.Draw();
-			modelViewStack.PopMatrix();
-		}
-	}
-
-	glEnable(GL_DEPTH_TEST);
+	// Highlight grid
+	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
 		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -223,7 +206,7 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
 		{
-			drawGrid = !drawGrid;
+			ground.toggleGrid();
 		}
 	}
 }

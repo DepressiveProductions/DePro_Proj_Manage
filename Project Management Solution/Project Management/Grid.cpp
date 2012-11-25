@@ -88,12 +88,12 @@ void Grid::highlightSquare(M3DVector3f pos)
 
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
-	for (unsigned int i=0; i < hlBatch.size(); i++)
+	for (unsigned int i=0; i < hl.size(); i++)
 	{
 		glLineWidth(lineWidth);
 		mvStack.PushMatrix();
 		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
-		hlBatch[i]->Draw();
+		hl[i]->batch.Draw();
 		mvStack.PopMatrix();
 		glLineWidth(1.0f); // Standard width
 	}

@@ -21,6 +21,7 @@ public:
 	void setFloorColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setGridColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setGridLineWidth(GLfloat w);
+	void toggleGrid();
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:

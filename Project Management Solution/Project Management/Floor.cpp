@@ -75,6 +75,11 @@ void Floor::setGridLineWidth(GLfloat w)
 	gLineWidth = w;
 }
 
+void Floor::toggleGrid()
+{
+	drawGrid = !drawGrid;
+}
+
 void Floor::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
 	// Draw floor
@@ -87,10 +92,13 @@ void Floor::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline,
 	glDisable(GL_POLYGON_OFFSET_FILL);
 
 	// Draw grid
-	glLineWidth(gLineWidth);
-	mvStack.PushMatrix();
-	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
-	gBatch.Draw();
-	mvStack.PopMatrix();
-	glLineWidth(1.0f); // Reset standard width
+	if (drawGrid)
+	{
+		glLineWidth(gLineWidth);
+		mvStack.PushMatrix();
+		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
+		gBatch.Draw();
+		mvStack.PopMatrix();
+		glLineWidth(1.0f); // Reset standard width
+	}
 }
