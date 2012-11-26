@@ -14,16 +14,22 @@ House::~House(void)
 //Changing the position to draw a cube at:
 void House::nextPos()
 {
+	int xtype = 1;
+	int ytype = 1;
+	if (vEndingPos[0] - vStartingPos[0] < 0)
+		xtype = -1;
+	if (vEndingPos[1] - vStartingPos[1] > 0)
+		ytype = -1;
 	
-	if(vCurrentPos[0] < vEndingPos[0])
+	if (xtype*vCurrentPos[0] < xtype*vEndingPos[0])
 	{
-		vCurrentPos[0] += radius*2;
+		vCurrentPos[0] += xtype*radius*2;
 	}
-
-	else if(vCurrentPos[1] >= vEndingPos[1])
+	
+	else if (ytype*vCurrentPos[1] >= ytype*vEndingPos[1])
 	{
 		vCurrentPos[0] = vStartingPos[0];
-		vCurrentPos[1] -= radius*2;
+		vCurrentPos[1] -= ytype*radius*2;
 	}
 }
 
