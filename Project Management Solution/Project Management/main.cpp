@@ -284,7 +284,6 @@ void clickFunc(int key, int state, int x, int y)
 			{
 				getCursor3(x, y, actualPos);
 				hlGrid.boxActivation(clickPos, actualPos);
-				baracks.create(clickPos, actualPos, hlGrid.getSquareAmount());
 			}
 			else if (!buildMode)
 				trackCursor = false;
