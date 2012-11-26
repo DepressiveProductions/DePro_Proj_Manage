@@ -18,6 +18,7 @@
 #include <ctime>
 #include <StopWatch.h>
 #include <iostream>
+#include <vector>
 
 #include "House.h"
 #include "Button.h"
@@ -284,6 +285,7 @@ void clickFunc(int key, int state, int x, int y)
 			{
 				getCursor3(x, y, actualPos);
 				hlGrid.boxActivation(clickPos, actualPos);
+				baracks.create(hlGrid.getSquarePositions());
 			}
 			else if (!buildMode)
 				trackCursor = false;

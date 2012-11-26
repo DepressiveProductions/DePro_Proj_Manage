@@ -36,21 +36,14 @@ void House::nextPos()
 //Drawing the house:
 void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, GLBatch &batch)
 {
-	vCurrentPos[0] = vStartingPos[0];
-	vCurrentPos[1] = vStartingPos[1];
-	vCurrentPos[2] = vStartingPos[2]+radius;
-	houseFrame.SetOrigin(vCurrentPos);
-
-	for(int i = 0 ; i < cubes ; i++)
+	for(unsigned int i = 0 ; i < cubes ; i++)
 	{
 		mvStack.PushMatrix();
 		
+		houseFrame.SetOrigin(positions[i]);
 		mvStack.MultMatrix(houseFrame);
 		emilShaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline);
 		batch.Draw();
-		
-		nextPos();
-		houseFrame.SetOrigin(vCurrentPos);
 		
 		mvStack.PopMatrix();
 	}
@@ -65,19 +58,15 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 }
 
 //Creating the house:
-void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos)
+void House::create(vector< M3DVector3f > pos)
 {
-
-
 	houses.push_back(new House());
-	houses[houses.size()-1]->cubes = ((abs(vEndingPos[0] - vStartingPos[0]))/radius/2)*((abs(vEndingPos[1] - vStartingPos[1]))/radius/2);
-	houses[houses.size()-1]->inherit(this->radius, this->vSpecular, this->vColor);
-	
-	for(int i = 0 ; i < 3 ; i++)
+	houses[houses.size()-1]->cubes = pos.size();
+	for (unsigned int i = 0 ; i < pos.size() ; i++)
 	{
-		houses[houses.size()-1]->vStartingPos[i] = vStartingPos[i];
-		houses[houses.size()-1]->vEndingPos[i] = vEndingPos[i];
+		houses[houses.size()-1]->positions.push_back(pos[i]);
 	}
+	houses[houses.size()-1]->inherit(this->radius, this->vSpecular, this->vColor);
 }
 
 void House::inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color)

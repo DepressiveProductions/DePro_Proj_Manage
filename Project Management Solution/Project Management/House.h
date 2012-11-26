@@ -17,7 +17,7 @@ class House
 		
 		void init(GLfloat fRadius);
 		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
-		void create(M3DVector4f vStartingPos, M3DVector4f vEndingPos);
+		void create(vector< M3DVector3f > pos);
 		void draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, GLBatch &batch);
 		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);
 		void inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
@@ -43,9 +43,10 @@ class House
 		GLBatch houseBatch;
 		GLFrame houseFrame;
 
-		vector<House *> houses;
+		vector< House *> houses;
+		vector< M3DVector3f > positions;
 		
 		GLfloat radius;
-		int cubes;
+		unsigned int cubes;
 };
 
