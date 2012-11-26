@@ -38,15 +38,10 @@
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
 
-<<<<<<< HEAD
 float camSpeed = 4.0f;
 M3DVector3f clickPos;
 M3DVector3f releasePos;
 bool buttonDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
-=======
-float camSpeed = 4.8f;
-bool drawGrid = false;
->>>>>>> origin
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -95,7 +90,7 @@ void setupRC()
 	emilShaders.initADSVert();
 	
 	//Move cam back:
-	cameraFrame.MoveForward(-20.0f);
+	cameraFrame.MoveForward(-10.0f);
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
@@ -198,7 +193,7 @@ void handleInput(CStopWatch &inputTimer)
 		exit(0);
 
 	// Camera movement
-	float elapsedTime = inputTimer.GetElapsedSeconds();
+	float elapsedTime = inputTimer.GetElapsedSeconds() * 1.5f;
 	inputTimer.Reset();
 	
 	if (in.keyPressed(sf::Keyboard::W))

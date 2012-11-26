@@ -51,7 +51,7 @@ void Grid::calculateExactPos(M3DVector3f &pos)
 
 void Grid::activateSquare(M3DVector3f &pos)
 {
-	M3DVector3f inPos; // To prevent changes of 
+	M3DVector3f inPos; // To prevent changes of original pos
 	for (int i=0; i < 3; i++)
 		inPos[i] = pos[i];
 	calculateExactPos(inPos);
@@ -85,21 +85,21 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 	calculateExactPos(sPos);
 	calculateExactPos(ePos);
 
-	xDiff = abs(sPos[0] - ePos[0])/gridScale - 1;
-	yDiff = abs(sPos[1] - ePos[1])/gridScale - 1;
+	xDiff = abs((sPos[0] - ePos[0])/gridScale - 1);
+	yDiff = abs((sPos[1] - ePos[1])/gridScale - 1);
 
 	int modX = 1;
 	int	modY = 1;
-	if (sPos[0] > ePos[0]) modX = -1;
-	if (sPos[1] > ePos[1]) modY = -1;
+	if (sPos[0] >= ePos[0]) modX = -1;
+	if (sPos[1] >= ePos[1]) modY = -1;
 
 	// Activate all squares
 	for (int y=0; y < yDiff; y++)
 	{
-		squarePos[1] = sPos[1]+(modY *y*gridScale*2);
+		squarePos[1] = sPos[1]+(modY *y*gridScale);
 		for (int x=0; x < xDiff; x++)
 		{
-			squarePos[0] = sPos[0]+(modX*x*gridScale*2);
+			squarePos[0] = sPos[0]+(modX*x*gridScale);
 			activateSquare(squarePos);
 		}
 	}
