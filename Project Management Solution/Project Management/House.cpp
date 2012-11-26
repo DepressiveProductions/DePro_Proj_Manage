@@ -40,7 +40,7 @@ void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M
 	{
 		mvStack.PushMatrix();
 		
-		houseFrame.SetOrigin(positions[i]);
+		houseFrame.SetOrigin(*positions[i]);
 		mvStack.MultMatrix(houseFrame);
 		emilShaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline);
 		batch.Draw();
@@ -58,7 +58,7 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 }
 
 //Creating the house:
-void House::create(vector< M3DVector3f > pos)
+void House::create(vector<M3DVector3f *> &pos)
 {
 	houses.push_back(new House());
 	houses[houses.size()-1]->cubes = pos.size();

@@ -111,16 +111,16 @@ void Grid::deactivateAllSquares()
 		hl.erase(hl.begin()); // Erase first element
 }
 
-vector< M3DVector3f > Grid::getSquarePositions()
+vector<M3DVector3f *> Grid::getSquarePositions()
 {
-	vector< M3DVector3f > positions;
+	vector<M3DVector3f *> positions;
 	for (unsigned int i=0; i < hl.size(); i++)
 	{
 		M3DVector3f pos;
 		pos[0] = hl[i]->pos[0];
 		pos[1] = hl[i]->pos[1];
 		pos[2] = hl[i]->pos[2];
-		positions.push_back(pos);
+		positions.push_back(&pos);
 	}
 	return positions;
 }
