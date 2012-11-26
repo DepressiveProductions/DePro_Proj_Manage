@@ -25,8 +25,7 @@ public:
 	void activateSquare(M3DVector3f &pos);
 	void boxActivation(M3DVector3f &startPos, M3DVector3f &endPos);
 	void deactivateAllSquares();
-	int getSquareAmount();
-	void getSquarePosition(int index, M3DVector3f &pos);
+	void getSquarePosition(vector< M3DVector3f > &positions);
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
