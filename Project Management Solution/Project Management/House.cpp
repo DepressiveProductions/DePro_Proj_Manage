@@ -70,8 +70,9 @@ void House::create(M3DVector4f vStartingPos, M3DVector4f vEndingPos)
 
 
 	houses.push_back(new House());
-	houses[houses.size()-1]->cubes = ((vEndingPos[0] - vStartingPos[0])/radius/2)*((vEndingPos[1] - vStartingPos[1])/radius/2);
+	houses[houses.size()-1]->cubes = ((abs(vEndingPos[0] - vStartingPos[0]))/radius/2)*((abs(vEndingPos[1] - vStartingPos[1]))/radius/2);
 	houses[houses.size()-1]->inherit(this->radius, this->vSpecular, this->vColor);
+	
 	for(int i = 0 ; i < 3 ; i++)
 	{
 		houses[houses.size()-1]->vStartingPos[i] = vStartingPos[i];
