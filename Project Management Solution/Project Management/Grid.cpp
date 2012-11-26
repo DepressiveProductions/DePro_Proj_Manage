@@ -85,13 +85,13 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 	calculateExactPos(sPos);
 	calculateExactPos(ePos);
 
-	xDiff = abs((sPos[0] - ePos[0])/gridScale - 1);
-	yDiff = abs((sPos[1] - ePos[1])/gridScale - 1);
-
 	int modX = 1;
 	int	modY = 1;
 	if (sPos[0] >= ePos[0]) modX = -1;
 	if (sPos[1] >= ePos[1]) modY = -1;
+
+	xDiff = abs((sPos[0] - ePos[0])/gridScale - modX);
+	yDiff = abs((sPos[1] - ePos[1])/gridScale - modY);
 
 	// Activate all squares
 	for (int y=0; y < yDiff; y++)
