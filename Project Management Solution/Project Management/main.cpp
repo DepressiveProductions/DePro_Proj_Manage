@@ -40,8 +40,8 @@
 
 float camSpeed = 4.0f;
 M3DVector3f clickPos;
-M3DVector3f releasePos;
-bool buttonDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
+M3DVector3f actualPos;
+bool buttonWasDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -256,29 +256,41 @@ void clickFunc(int key, int state, int x, int y)
 {
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
+		// Click build-button
 		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
 			ground.toggleGrid();
-		else if (!buttonDown)
+		/*else if (buttonWasDown)
+		{
+			getCursor3(x, y, actualPos);
+			hlGrid.boxActivation(clickPos, actualPos);
+		}*/
+		else if (!buttonWasDown) // Runs first time
 		{
 			hlGrid.deactivateAllSquares();
 			getCursor3(x, y, clickPos);
-			hlGrid.activateSquare(clickPos); // DEBUG
-			buttonDown = true;
+			buttonWasDown = true;
 		}
 	}
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
-		// Do not act as background if clicked on button
+		// Do not act as ground if clicked on button
 		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
 		{
-			getCursor3(x, y, releasePos);
-			if (clickPos == releasePos)
-				hlGrid.activateSquare(releasePos);
-			else
-				hlGrid.boxActivation(clickPos, releasePos);
-			buttonDown = false;
+			getCursor3(x, y, actualPos);
+			hlGrid.boxActivation(clickPos, actualPos);
+			buttonWasDown = false;
 		}
 	}
+}
+
+void mousePassiveFunc(int x, int y)
+{
+		if (buttonWasDown)
+		{
+			hlGrid.deactivateAllSquares();
+			getCursor3(x, y, actualPos);
+			hlGrid.boxActivation(clickPos, actualPos);
+		}
 }
 
 int main(int argc, char* argv[])
@@ -297,6 +309,7 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(changeSize);
 	glutDisplayFunc(renderScene);
 	glutMouseFunc(clickFunc);
+	glutMotionFunc(mousePassiveFunc);
 
 	GLenum result = glewInit();
 	if(result != GLEW_OK)
