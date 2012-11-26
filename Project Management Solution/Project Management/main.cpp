@@ -1,5 +1,5 @@
 //STATES:
-#define HOUSE_DEBUG
+//#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
 
@@ -118,6 +118,11 @@ void setupRC()
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
 	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
+	
+	//Baracks building type:
+	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
+	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
+	baracks.init(C_RAD, baracksShine, baracksColor);
 }
 
 void changeSize(int w, int h)
@@ -160,6 +165,9 @@ void renderScene()
 
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
+
+	//Baracks:
+	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
