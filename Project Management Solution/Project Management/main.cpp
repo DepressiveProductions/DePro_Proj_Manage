@@ -93,12 +93,15 @@ void setupRC()
 	cameraFrame.MoveForward(-10.0f);
 
 	#ifdef HOUSE_DEBUG
+	M3DVector3f pos3 = {-11*C_RAD, 11*C_RAD, 0.0f};
+	M3DVector3f pos4 = {C_RAD, C_RAD, 0.0f};
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
 	M3DVector3f pos2 = {10*C_RAD, -10*C_RAD, 0.0f};
 	M3DVector4f debugShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f debugColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	testHouse.init(C_RAD, debugShine, debugColor);
-	testHouse.create(pos, pos2, 15);
+	testHouse.create(pos, pos2, 12);
+	testHouse.create(pos3, pos4, 14);
 	#endif
 
 	//Init debug batches:

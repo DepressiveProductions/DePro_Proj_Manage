@@ -18,7 +18,7 @@ class House
 		void init(GLfloat fRadius);
 		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
 		void create(M3DVector4f vStartingPos, M3DVector4f vEndingPos, int iCubes);
-		void draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);
+		void draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, GLBatch &batch);
 		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);
 		void inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);
 		void nextPos();
