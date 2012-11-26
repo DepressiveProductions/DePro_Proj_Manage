@@ -41,7 +41,9 @@
 float camSpeed = 4.0f;
 M3DVector3f clickPos;
 M3DVector3f actualPos;
-bool buttonWasDown = false; // Left mouse button - used for not resetting clickPos every frame that the button is pressed
+M3DVector3f lastPos;
+bool buildMode = false;
+bool trackCursor = false;
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -93,15 +95,12 @@ void setupRC()
 	cameraFrame.MoveForward(-10.0f);
 
 	#ifdef HOUSE_DEBUG
-	M3DVector3f pos3 = {-11*C_RAD, 11*C_RAD, 0.0f};
-	M3DVector3f pos4 = {C_RAD, C_RAD, 0.0f};
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
-	M3DVector3f pos2 = {11*C_RAD, -11*C_RAD, 0.0f};
+	M3DVector3f pos2 = {10*C_RAD, -10*C_RAD, 0.0f};
 	M3DVector4f debugShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f debugColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	testHouse.init(C_RAD, debugShine, debugColor);
-	testHouse.create(pos2, pos, 12);
-	testHouse.create(pos3, pos4, 14);
+	testHouse.create(pos, pos2, 15);
 	#endif
 
 	//Init debug batches:
@@ -118,8 +117,7 @@ void setupRC()
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
 	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
-	
-	//Baracks building type:
+
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
@@ -165,9 +163,6 @@ void renderScene()
 
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
-
-	//Baracks:
-	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 		
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -176,6 +171,9 @@ void renderScene()
 	testBatch.Draw();
 	modelViewStack.PopMatrix();
 	#endif
+
+	// Baracks
+	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 
 	//House debug drawing:
 	#ifdef HOUSE_DEBUG
@@ -216,18 +214,6 @@ void handleInput(CStopWatch &inputTimer)
 	if (in.keyPressed(sf::Keyboard::D))
 		cameraFrame.MoveRight(-camSpeed*elapsedTime);
 
-	// Mouse-clicks
-	/*if (in.mouseButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2i pos;
-		in.getMousePos2(pos);
-		
-		// Check if cursor is over the build-button
-		if ((pos.x >= buildButton.getXPos()) && (pos.x <= buildButton.getXPos() + buildButton.getWidth()) && (pos.y >= buildButton.getYPos()) && (pos.y <= buildButton.getYPos() + buildButton.getHeight()))
-		{
-			ground.addHLSquare(0.25f, 0.25f);
-		}
-	}*/
 }
 
 void getCursor3(int x, int y, M3DVector3f &pos)
@@ -269,17 +255,24 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		// Click build-button
 		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
-			ground.toggleGrid();
-		/*else if (buttonWasDown)
 		{
-			getCursor3(x, y, actualPos);
-			hlGrid.boxActivation(clickPos, actualPos);
-		}*/
-		else if (!buttonWasDown) // Runs first time
-		{
+			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
+			ground.toggleGrid();
+		}
+		else
+		{
 			getCursor3(x, y, clickPos);
-			buttonWasDown = true;
+			if (buildMode)
+			{
+				hlGrid.deactivateAllSquares();
+			}
+			else if (!buildMode)
+			{
+				trackCursor = true;
+				lastPos[0] = clickPos[0];
+				lastPos[1] = clickPos[1];
+			}
 		}
 	}
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
@@ -287,20 +280,32 @@ void clickFunc(int key, int state, int x, int y)
 		// Do not act as ground if clicked on button
 		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
 		{
-			getCursor3(x, y, actualPos);
-			hlGrid.boxActivation(clickPos, actualPos);
-			buttonWasDown = false;
+			if (buildMode)
+			{
+				getCursor3(x, y, actualPos);
+				hlGrid.boxActivation(clickPos, actualPos);
+				baracks.create(clickPos, actualPos, hlGrid.getSquareAmount());
+			}
+			else if (!buildMode)
+				trackCursor = false;
 		}
 	}
 }
 
 void mousePassiveFunc(int x, int y)
 {
-		if (buttonWasDown)
+		getCursor3(x, y, actualPos);
+		if (buildMode)
 		{
 			hlGrid.deactivateAllSquares();
-			getCursor3(x, y, actualPos);
 			hlGrid.boxActivation(clickPos, actualPos);
+		}
+		else if (!buildMode && trackCursor)
+		{
+			//cameraFrame.MoveRight((lastPos[0]-actualPos[0]));
+			//cameraFrame.MoveUp((lastPos[1]-actualPos[1]));
+			lastPos[0] = actualPos[0];
+			lastPos[1] = actualPos[1];
 		}
 }
 

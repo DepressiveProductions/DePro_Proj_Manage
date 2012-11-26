@@ -111,6 +111,18 @@ void Grid::deactivateAllSquares()
 		hl.erase(hl.begin()); // Erase first element
 }
 
+int Grid::getSquareAmount()
+{
+	return hl.size();
+}
+
+void Grid::getSquarePosition(int index, M3DVector3f &pos)
+{
+	pos[0] = hl[index]->pos[0];
+	pos[1] = hl[index]->pos[1];
+	pos[2] = hl[index]->pos[2];
+}
+
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
 	for (unsigned int i=0; i < hl.size(); i++)
