@@ -4,6 +4,7 @@ Click and drag camera controls
 Building interior texture
 Simple AI for characters that move between buildings and do stuff in places
 Zoom in and out with scroll
+Slightly tilted camera, for enhanced 3D look
 
 Worked on:
 Desert ground texture - Staffan
