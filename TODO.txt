@@ -7,13 +7,13 @@ Building textures
 Desert ground texture
 Building interior texture
 Simple AI for characters that move between buildings and do stuff in places
+Zoom in and out with scroll
 
 Worked on:
 SOUNDS - Jacko
-class: House - Emil
 Shaders and shader manager class - Emil
-Build integration between highlight module and House module - Jonas
-
 
 Done:
 Grid highlighting - Jonas
+Build integration between highlight module and House module - Jonas
+class: House - Emil
