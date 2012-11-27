@@ -1,5 +1,4 @@
 Available:
-First person mouse control flying mode
 Click and drag camera controls
 .OBJ model importer
 Building interior texture
@@ -12,6 +11,7 @@ Building textures - Staffan
 3D models for buildings - Staffan
 SOUNDS - Jacko
 Shaders and shader manager class - Emil
+First person mouse control flying mode - Anton
 
 Done:
 Grid highlighting - Jonas
