@@ -285,8 +285,10 @@ void clickFunc(int key, int state, int x, int y)
 			{
 				getCursor3(x, y, actualPos);
 				hlGrid.boxActivation(clickPos, actualPos);
-
-				baracks.create(hlGrid.getSquarePositions());
+				
+				vector< vector<float> > pos;
+				hlGrid.getSquarePositions(pos);
+				baracks.create(pos);
 			}
 			else if (!buildMode)
 				trackCursor = false;
