@@ -41,7 +41,7 @@ void House::draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M
 	{
 		mvStack.PushMatrix();
 		
-		houseFrame.SetOrigin(positions[i][0], positions[i][1], positions[i][2]);
+		houseFrame.SetOrigin(positions[i][0], positions[i][1], positions[i][2]+radius);
 		mvStack.MultMatrix(houseFrame);
 		emilShaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline);
 		batch.Draw();
