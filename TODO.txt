@@ -2,14 +2,14 @@ Available:
 First person mouse control flying mode
 Click and drag camera controls
 .OBJ model importer
-3D models for buildings
-Building textures
-Desert ground texture
 Building interior texture
 Simple AI for characters that move between buildings and do stuff in places
 Zoom in and out with scroll
 
 Worked on:
+Desert ground texture - Staffan
+Building textures - Staffan
+3D models for buildings - Staffan
 SOUNDS - Jacko
 Shaders and shader manager class - Emil
 
