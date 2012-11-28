@@ -2,6 +2,7 @@
 #include <GLTools.h>
 #include <GLShaderManager.h>
 #include <GLFrustum.h>
+#include <GLFrame.h>
 #include <GLBatch.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
@@ -18,12 +19,13 @@
 class Input
 {
 public:
-	Input();
+	Input(void);
+	~Input(void);
+
 	bool keyPressed(sf::Keyboard::Key key);
 	bool mouseButtonPressed(sf::Mouse::Button button); // Returns true if left-click is down
 	void getMousePos2(sf::Vector2i &pos);
-	void getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &projStack);
-	~Input();
+	void getCursor3(int x, int y, M3DVector3f &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack);
 
 private:
 	float camSpeed;

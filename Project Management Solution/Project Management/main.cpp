@@ -45,6 +45,7 @@ M3DVector3f actualPos;
 M3DVector3f lastPos;
 bool buildMode = false;
 bool trackCursor = false;
+bool mouseActive = false;
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -206,49 +207,52 @@ void handleInput(CStopWatch &inputTimer)
 	// Camera movement
 	float elapsedTime = inputTimer.GetElapsedSeconds() * 1.5f;
 	inputTimer.Reset();
-	
-	if (in.keyPressed(sf::Keyboard::W))
-		cameraFrame.MoveUp(camSpeed*elapsedTime);
-	if (in.keyPressed(sf::Keyboard::S))
-		cameraFrame.MoveUp(-camSpeed*elapsedTime);
-	if (in.keyPressed(sf::Keyboard::A))
-		cameraFrame.MoveRight(camSpeed*elapsedTime);
-	if (in.keyPressed(sf::Keyboard::D))
-		cameraFrame.MoveRight(-camSpeed*elapsedTime);
+	if (mouseActive)
+	{
+		if (in.keyPressed(sf::Keyboard::W))
+			cameraFrame.MoveForward(camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::S))
+			cameraFrame.MoveForward(-camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::A))
+			cameraFrame.MoveRight(camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::D))
+			cameraFrame.MoveRight(-camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::Space))
+			cameraFrame.MoveUp(camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::LControl))
+			cameraFrame.MoveUp(-camSpeed*elapsedTime);
+	}
+
+	else
+	{
+		if (in.keyPressed(sf::Keyboard::W))
+			cameraFrame.MoveUp(camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::S))
+			cameraFrame.MoveUp(-camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::A))
+			cameraFrame.MoveRight(camSpeed*elapsedTime);
+		if (in.keyPressed(sf::Keyboard::D))
+			cameraFrame.MoveRight(-camSpeed*elapsedTime);
+	}
 
 }
 
-void getCursor3(int x, int y, M3DVector3f &pos)
+void releasedKeys(unsigned char key, int x, int y)
 {
-	M3DVector2f cursor = {x, y};
-	M3DMatrix44f mCamera;
-	cameraFrame.GetCameraMatrix(mCamera);
-	M3DMatrix44f mProjection;
-	projectionStack.GetMatrix(mProjection);
-
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
-
-	for (int i=0; i < 16; i++)
+	if (key == VK_MENU)
 	{
-		modelview[i] = mCamera[i];
-		projection[i] = mProjection[i];
+		if (mouseActive)
+		{
+			mouseActive = false;
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		}
+		else if (!mouseActive)
+		{
+			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
+			mouseActive = true;
+			glutSetCursor(GLUT_CURSOR_NONE);
+		}
 	}
-
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	winX = (float)cursor[0];
-	winY = viewport[3] - (float)cursor[1];
-	glReadPixels(cursor[0], int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
-
-	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-	
-	pos[0] = posX;
-	pos[1] = posY;
-	pos[2] = posZ;
 }
 
 void clickFunc(int key, int state, int x, int y)
@@ -264,7 +268,7 @@ void clickFunc(int key, int state, int x, int y)
 		}
 		else
 		{
-			getCursor3(x, y, clickPos);
+			in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
 			if (buildMode)
 			{
 				hlGrid.deactivateAllSquares();
@@ -284,7 +288,7 @@ void clickFunc(int key, int state, int x, int y)
 		{
 			if (buildMode)
 			{
-				getCursor3(x, y, actualPos);
+				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 				hlGrid.boxActivation(clickPos, actualPos);
 				
 				vector< vector<float> > pos;
@@ -299,7 +303,7 @@ void clickFunc(int key, int state, int x, int y)
 
 void mousePassiveFunc(int x, int y)
 {
-		getCursor3(x, y, actualPos);
+		in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 		if (buildMode)
 		{
 			hlGrid.deactivateAllSquares();
@@ -312,6 +316,35 @@ void mousePassiveFunc(int x, int y)
 			lastPos[0] = actualPos[0];
 			lastPos[1] = actualPos[1];
 		}
+}
+
+void mouseCameraFunc(int x, int y)
+{
+	if (mouseActive)
+	{
+		GLfloat angle = 0.005f;
+
+		if (x > W_WIDTH/2)
+		{
+			cameraFrame.RotateWorld(-angle*(x-W_WIDTH/2), 0, 0, 1);
+			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
+		}
+		else if (x < W_WIDTH/2)
+		{
+			cameraFrame.RotateWorld(angle*(W_WIDTH/2-x), 0, 0, 1);
+			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
+		}
+		if (y > W_HEIGHT/2)
+		{
+			cameraFrame.RotateLocalX(-angle*(W_HEIGHT/2-y));
+			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
+		}
+		else if (y < W_HEIGHT/2)
+		{
+			cameraFrame.RotateLocalX(angle*(y-W_HEIGHT/2));
+			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
+		}
+	}
 }
 
 int main(int argc, char* argv[])
@@ -329,6 +362,8 @@ int main(int argc, char* argv[])
 	//Send funcs to gluttis:
 	glutReshapeFunc(changeSize);
 	glutDisplayFunc(renderScene);
+	glutKeyboardUpFunc(releasedKeys);
+	glutPassiveMotionFunc(mouseCameraFunc);
 	glutMouseFunc(clickFunc);
 	glutMotionFunc(mousePassiveFunc);
 

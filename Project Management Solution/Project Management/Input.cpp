@@ -1,6 +1,15 @@
+//Includes:
 #include "Input.h"
 
-Input::Input() {}
+//Constructor:
+Input::Input(void) 
+{
+}
+
+//Destructor:
+Input::~Input(void)
+{
+}
 
 bool Input::keyPressed(sf::Keyboard::Key key)
 {
@@ -17,14 +26,14 @@ void Input::getMousePos2(sf::Vector2i &pos)
 	pos = sf::Mouse::getPosition();
 }
 */
-/*
-void Input::getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &projStack)
+
+void Input::getCursor3(int x, int y, M3DVector3f &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack)
 {
-	sf::Vector2i cursorPos = sf::Mouse::getPosition();
+	M3DVector2f cursor = {x, y};
 	M3DMatrix44f mCamera;
-	camFrame.GetCameraMatrix(mCamera);
+	cameraFrame.GetCameraMatrix(mCamera);
 	M3DMatrix44f mProjection;
-	projStack.GetMatrix(mProjection);
+	projectionStack.GetMatrix(mProjection);
 
 	GLint viewport[4];
 	GLdouble modelview[16];
@@ -40,17 +49,15 @@ void Input::getMousePos3(sf::Vector3f &pos, GLFrame &camFrame, GLMatrixStack &pr
 
 	glGetIntegerv(GL_VIEWPORT, viewport);
 
-	winX = (float)cursorPos.x;
-	winY = viewport[3] - (float)cursorPos.y;
-	glReadPixels(cursorPos.x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+	winX = (float)cursor[0];
+	winY = viewport[3] - (float)cursor[1];
+	glReadPixels(cursor[0], int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
 
 	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
 	
-	pos.x = posX;
-	pos.y = posY;
-	pos.z = posZ;
+	pos[0] = posX;
+	pos[1] = posY;
+	pos[2] = posZ;
 }
-*/
-Input::~Input(void)
-{
-}
+
+
