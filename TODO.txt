@@ -2,7 +2,7 @@ Available:
 Click and drag camera controls
 .OBJ model importer
 Building interior texture
-Simple AI for characters that move between buildings and do stuff in places
+Simple AI for characters that...  - Jonas
 Zoom in and out with scroll
 
 Worked on:

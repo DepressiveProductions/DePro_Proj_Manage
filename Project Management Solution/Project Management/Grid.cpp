@@ -79,6 +79,16 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 		sPos[i] = startPos[i];
 		ePos[i] = endPos[i];
 	}
+
+	// Lines forming a rectangle from clicking position to actual position
+	GLfloat vVerts[] = {sPos[0], sPos[1], center[2],
+						ePos[0], sPos[1], center[2],
+						ePos[0], ePos[1], center[2],
+						sPos[0], ePos[1], center[2]};
+	markingLines.Begin(GL_LINE_LOOP, 4);
+	markingLines.CopyVertexData3f(vVerts);
+	markingLines.End();
+
 	M3DVector3f squarePos;
 	squarePos[2] = 0.0f;
 	int xDiff, yDiff; // Number of squares in x- and y-axis
@@ -125,15 +135,20 @@ void Grid::getSquarePositions(vector< vector<float> > &positions)
 
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
+	glDisable(GL_DEPTH_TEST);
 	for (unsigned int i=0; i < hl.size(); i++)
 	{
-		glDisable(GL_DEPTH_TEST);
 		glLineWidth(lineWidth);
 		mvStack.PushMatrix();
 		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
 		hl[i]->batch.Draw();
 		mvStack.PopMatrix();
 		glLineWidth(1.0f); // Standard width
-		glEnable(GL_DEPTH_TEST);
 	}
+	mvStack.PushMatrix();
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
+	markingLines.Draw();
+	mvStack.PopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
 }

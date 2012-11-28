@@ -35,6 +35,8 @@ private:
 	GLfloat vGridColour[4];
 	GLfloat lineWidth;
 	GLfloat center[3]; // Coords for the center of floor and center of the full grid
+	
+	GLBatch markingLines;
 
 	void calculateExactPos(M3DVector3f &pos); // Changes pos to the corresponding square-position
 };
