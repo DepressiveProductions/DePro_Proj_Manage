@@ -39,7 +39,7 @@
 #define W_HEIGHT 600
 #define W_TITLE "Project: Management - Prototype"
 
-float camSpeed = 4.0f;
+float camSpeed = 5.5f;
 M3DVector3f clickPos;
 M3DVector3f actualPos;
 M3DVector3f lastPos;
@@ -93,7 +93,7 @@ void setupRC()
 	emilShaders.initADSVert();
 	
 	//Move cam back:
-	cameraFrame.MoveForward(-10.0f);
+	cameraFrame.MoveForward(-20.0f);
 
 	#ifdef HOUSE_DEBUG
 	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
@@ -152,6 +152,7 @@ void renderScene()
 	M3DMatrix44f mCamera;
 	cameraFrame.GetCameraMatrix(mCamera);
 	modelViewStack.PushMatrix(mCamera);
+	modelViewStack.Rotate(-15.0f, 1.0f, 0.0f, 0.0f);
 
 	//Light source:
 	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};

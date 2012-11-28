@@ -2,6 +2,9 @@ Available:
 Click and drag camera controls
 .OBJ model importer
 Building interior texture
+Fix button
+Fix builing outside floor
+A way to cancel building a building, after clicking but not releasing LMB - maybe RMB click?
 
 Worked on:
 Desert ground texture - Staffan
