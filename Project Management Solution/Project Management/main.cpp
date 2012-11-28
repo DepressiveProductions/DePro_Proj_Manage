@@ -154,6 +154,8 @@ void renderScene()
 	M3DMatrix44f mCamera;
 	cameraFrame.GetCameraMatrix(mCamera);
 	modelViewStack.PushMatrix(mCamera);
+	if(!mouseActive)
+		modelViewStack.Rotate(-15.0f, 1.0f, 0.0f, 0.0f);
 
 	//Light source:
 	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
