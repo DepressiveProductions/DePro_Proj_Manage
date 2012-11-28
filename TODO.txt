@@ -2,7 +2,6 @@ Available:
 Click and drag camera controls
 .OBJ model importer
 Building interior texture
-Simple AI for characters that...  - Jonas
 Zoom in and out with scroll
 Slightly tilted camera, for enhanced 3D look
 
@@ -13,6 +12,7 @@ Building textures - Staffan
 SOUNDS - Jacko
 Shaders and shader manager class - Emil
 First person mouse control flying mode - Anton
+Simple AI for characters that...  - Jonas
 
 Done:
 Grid highlighting - Jonas
