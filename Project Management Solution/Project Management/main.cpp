@@ -301,6 +301,14 @@ void clickFunc(int key, int state, int x, int y)
 				trackCursor = false;
 		}
 	}
+
+	if (!mouseActive)
+	{
+		if (key == 3) //Scroll up
+			cameraFrame.TranslateWorld(0.0f, 0.0f, -0.5f); //Zoom in
+		if (key == 4) //Scroll down
+			cameraFrame.TranslateWorld(0.0f, 0.0f, 0.5f); //Zoom out
+	}
 }
 
 void mousePassiveFunc(int x, int y)
