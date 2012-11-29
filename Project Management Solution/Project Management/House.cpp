@@ -21,6 +21,7 @@ void House::draw(MyShaderManager &shaders, GLGeometryTransform &tPipeline, M3DVe
 		
 		houseFrame.SetOrigin(positions[i][0], positions[i][1], positions[i][2]+radius); //Change the frame position
 		mvStack.MultMatrix(houseFrame); //Transform the top of the model view stack with the new frame position
+		//shaders.useADSFrag(vColor, vAmbient, vSpecular, vLightPos, tPipeline);
 		shaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline); //Use the ADS shader that interpolates between vertices
 		batch.Draw(); //Draw the batch with the above specified shader
 		

@@ -99,6 +99,8 @@
     <ClInclude Include="MyShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\ADS_fragment.fp" />
+    <None Include="Shaders\ADS_fragment.vp" />
     <None Include="Shaders\ADS_vertex.fp" />
     <None Include="Shaders\ADS_vertex.vp" />
     <None Include="Shaders\diffuse_vertex.fp" />

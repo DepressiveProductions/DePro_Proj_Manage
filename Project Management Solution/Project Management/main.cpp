@@ -68,10 +68,6 @@ Button buildButton;
 GLBatch testBatch;
 #endif
 
-#ifdef HOUSE_DEBUG
-House testHouse;
-#endif
-
 void setupRC();								//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);				//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();							//Basic glutfunc for rendering stuff. Runs every frame
@@ -90,21 +86,13 @@ void setupRC()
 	//Initialize stock shaders from GLTools:
 	shaderManager.InitializeStockShaders();
 
-	//Experimental first self-written shader:
+	//Experimental first self-written shaders:
 	emilShaders.initDiffVert();
 	emilShaders.initADSVert();
+	emilShaders.initADSFrag();
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-20.0f);
-
-	#ifdef HOUSE_DEBUG
-	M3DVector3f pos = {C_RAD, C_RAD, 0.0f};
-	M3DVector3f pos2 = {10*C_RAD, -10*C_RAD, 0.0f};
-	M3DVector4f debugShine = {0.5, 0.5, 0.5, 1.0};
-	M3DVector4f debugColor = {0.3f, 0.3f, 0.3f, 1.0f};
-	testHouse.init(C_RAD, debugShine, debugColor);
-	testHouse.create(pos, pos2, 15);
-	#endif
 
 	//Init debug batches:
 	#ifdef TRIANGLE_DEBUG
@@ -179,11 +167,6 @@ void renderScene()
 
 	// Baracks
 	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
-
-	//House debug drawing:
-	#ifdef HOUSE_DEBUG
-	testHouse.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
-	#endif
 
 	//End cam push:
 	modelViewStack.PopMatrix();
