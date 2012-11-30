@@ -83,6 +83,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="House.cpp" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="House.h" />
