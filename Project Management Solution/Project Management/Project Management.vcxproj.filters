@@ -76,5 +76,11 @@
     <None Include="Shaders\ADS_vertex.fp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Shaders\ADS_fragment.fp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\ADS_fragment.vp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
