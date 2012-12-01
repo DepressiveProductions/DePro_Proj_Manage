@@ -19,6 +19,7 @@
 #include <StopWatch.h>
 #include <iostream>
 #include <vector>
+#include <thread>
 
 #include "House.h"
 #include "Button.h"
@@ -26,6 +27,7 @@
 #include "Grid.h"
 #include "Input.h"
 #include "MyShaderManager.h"
+#include "Character.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -57,12 +59,13 @@ GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
 Input in;
+thread mvThread;
 
 House baracks;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
-
+Character buildMan;
 
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
@@ -112,6 +115,9 @@ void setupRC()
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
+
+	M3DVector3f spawnPos = {0.0f, 0.0f, 0.2f};
+	buildMan.init(0.2, 4.0f, spawnPos);
 }
 
 void changeSize(int w, int h)
@@ -167,6 +173,8 @@ void renderScene()
 
 	// Baracks
 	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
+
+	buildMan.draw(shaderManager, tPipeline, modelViewStack, vLightEyePos);
 
 	//End cam push:
 	modelViewStack.PopMatrix();
@@ -282,6 +290,19 @@ void clickFunc(int key, int state, int x, int y)
 			}
 			else if (!buildMode)
 				trackCursor = false;
+		}
+	}
+	else if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
+	{
+		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
+		{
+			if (!buildMode && !buildMan.isMoving())
+			{
+				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
+				//thread tTemp(&Character::moveTo, buildMan, actualPos);
+				//std::swap(tTemp, mvThread);
+				buildMan.moveTo(actualPos);
+			}
 		}
 	}
 

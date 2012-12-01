@@ -1,4 +1,5 @@
 #include "Character.h"
+#include <iostream>
 
 Character::Character(void)
 {
@@ -11,76 +12,56 @@ Character::~Character(void)
 void Character::init(float charSize, float mvSpeed, M3DVector3f &spawnPos)
 {
 	size = charSize;
-	mvmSpeed = mvSpeed;
 	cFrame.SetOrigin(spawnPos);
-	pathStepSize = 0.01f;
+	stepSize = 0.01f * mvSpeed;
+	moving = false;
+
+	gltMakeCube(cBatch, charSize);
+	vColour[0] = 0.0f;
+	vColour[1] = 0.0f;
+	vColour[2] = 0.0f;
+	vColour[3] = 1.0f;
 }
 
 void Character::moveTo(M3DVector3f mvPos)
 {
-	calculatePathLine(mvPos);
+	moving = true;
+	M3DVector3f position;
+
+	do
+	{
+		cFrame.GetOrigin(position);
+		calculateDirection(mvPos);
+		cFrame.SetUpVector(direction);
+		cFrame.MoveUp(stepSize);
+		std::cout << cFrame.GetOriginX() << ", " << cFrame.GetOriginY() << std::endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	}
+	while (position != mvPos);
+	moving = false;
 }
 
-void Character::calculatePathLine(M3DVector3f mvPos)
+bool Character::isMoving()
 {
-	vector< array<float, 3> > pathNodes; 
-	array<float, 3> sPos, ePos; // Starting/actual and ending position
-	sPos[0] = cFrame.GetOriginX();
-	sPos[1] = cFrame.GetOriginY();
-	sPos[2] = cFrame.GetOriginZ();
-	pathNodes.push_back(sPos);
-	ePos[0] = mvPos[0];
-	ePos[1] = mvPos[1];
-	ePos[2] = mvPos[2];
-	float xDiff, yDiff;
-	
-	// Diraction towards endPos
-	float alpha = abs(atan2f(mvPos[1]-sPos[1], mvPos[0]-sPos[0]));
-	// Next path-pos
-	while ((pathNodes[pathNodes.size()-1][0] != ePos[0]) && (pathNodes[pathNodes.size()-1][1] != ePos[1]))
-	{
-		if (ePos[0] >= sPos[0] && ePos[1] >= sPos[1])
-		{
-			xDiff = pathStepSize*cos(alpha);
-			yDiff = pathStepSize*sin(alpha);
-		}
-		else if (ePos[0] <= sPos[0] && ePos[1] >= sPos[1])
-		{
-			xDiff = -pathStepSize*cos(alpha);
-			yDiff = pathStepSize*sin(alpha);
-		}
-		else if (ePos[0] >= sPos[0] && ePos[1] <= sPos[1])
-		{
-			xDiff = pathStepSize*cos(alpha);
-			yDiff = -pathStepSize*sin(alpha);
-		}
-		else if (ePos[0] <= sPos[0] && ePos[1] <= sPos[1])
-		{
-			xDiff = -pathStepSize*cos(alpha);
-			yDiff = -pathStepSize*sin(alpha);
-		}
-		// Update position
-		sPos[0] += xDiff;
-		sPos[1] += yDiff;
-		pathNodes.push_back(sPos);
-	}
-	generatePath(pathNodes, ePos);
+	return moving;
 }
 
-void Character::generatePath(vector< array<float, 3> > pathNodes, array<float, 3> goalPos) // May need optimisation
+void Character::calculateDirection(M3DVector3f mvPos)
 {
-	// Check if any objects are in the way
-	for (unsigned int i=0; i < pathNodes.size(); i++)
-	{
-		for (unsigned int j=0; j < objects.size(); j++)
-		{
-			if ((pathNodes[i][0] >= objects[j]->pos[0]-objects[i]->rad) && // Inside an object
-				(pathNodes[i][0] <= objects[j]->pos[0]+objects[i]->rad) &&
-				(pathNodes[i][1] >= objects[j]->pos[1]-objects[i]->rad) &&
-				(pathNodes[i][1] <= objects[j]->pos[1]+objects[i]->rad));
-			{
-				//
-			}
-		}
-	}
+	M3DVector3f sPos = {cFrame.GetOriginX(), cFrame.GetOriginY(), cFrame.GetOriginZ()};
+	M3DVector3f ePos;
+	for (int i=0; i<3; i++)
+		ePos[i] = mvPos[i];
+	ePos[2] += size; // Prevent the cube from moving in Z-axis
+
+	m3dSubtractVectors3(direction, ePos, sPos);
+}
+
+void Character::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLightPos)
+{
+	mvStack.PushMatrix();
+	mvStack.MultMatrix(cFrame);
+	shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, tPipeline.GetModelViewMatrix(), tPipeline.GetProjectionMatrix(), vLightPos, vColour);
+	cBatch.Draw();
+	mvStack.PopMatrix();
 }

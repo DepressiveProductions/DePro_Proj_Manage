@@ -8,8 +8,10 @@
 #include <GLBatch.h>
 #include <vector>
 #include <array>
+#include <thread>
 using std::vector;
 using std::array;
+using std::thread;
 
 class Character
 {
@@ -18,17 +20,20 @@ public:
 	~Character(void);
 	void init(float charSize, float mvSpeed, M3DVector3f &spawnPos);
 	void moveTo(M3DVector3f mvPos);
+	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLightPos);
+	bool isMoving();
 
 private:
 	GLFrame cFrame;
 	GLBatch cBatch;
-	float size, mvmSpeed;
-	struct object {M3DVector3f pos; float rad;};
-	vector<object *> objects;
+	M3DVector3f vColour;
+	M3DVector3f direction;
+	//struct object {M3DVector3f pos; float rad;};
+	//vector<object *> objects;
+	float size;
+	bool moving;
 
-	vector< array<float, 3> > path;
-	void calculatePathLine(M3DVector3f mvPos);
-	void generatePath(vector< array<float, 3> > pathNodes, array<float, 3> goalPos);
-	float pathStepSize;
+	void calculateDirection(M3DVector3f mvPos);
+	float stepSize;
 };
 
