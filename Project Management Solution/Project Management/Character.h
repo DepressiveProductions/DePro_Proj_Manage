@@ -19,19 +19,17 @@ public:
 	Character(void);
 	~Character(void);
 	void init(float charSize, float mvSpeed, M3DVector3f &spawnPos);
+	void move();
 	void moveTo(M3DVector3f mvPos);
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLightPos);
-	bool isMoving();
 
 private:
 	GLFrame cFrame;
 	GLBatch cBatch;
 	M3DVector3f vColour;
 	M3DVector3f direction;
-	//struct object {M3DVector3f pos; float rad;};
-	//vector<object *> objects;
+	M3DVector3f goalPos;
 	float size;
-	bool moving;
 
 	void calculateDirection(M3DVector3f mvPos);
 	float stepSize;

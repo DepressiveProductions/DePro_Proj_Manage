@@ -59,7 +59,7 @@ GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
 Input in;
-thread mvThread;
+vector<thread> threads;
 
 House baracks;
 Floor ground;
@@ -189,6 +189,7 @@ void renderScene()
 
 	// Input
 	handleInput(inputTimer);
+	buildMan.move();
 }
 
 void handleInput(CStopWatch &inputTimer)
@@ -227,7 +228,6 @@ void handleInput(CStopWatch &inputTimer)
 		if (in.keyPressed(sf::Keyboard::D))
 			cameraFrame.MoveRight(-camSpeed*elapsedTime);
 	}
-
 }
 
 void releasedKeys(unsigned char key, int x, int y)
@@ -296,11 +296,9 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
 		{
-			if (!buildMode && !buildMan.isMoving())
+			if (!buildMode)
 			{
 				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
-				//thread tTemp(&Character::moveTo, buildMan, actualPos);
-				//std::swap(tTemp, mvThread);
 				buildMan.moveTo(actualPos);
 			}
 		}

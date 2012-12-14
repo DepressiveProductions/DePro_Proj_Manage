@@ -13,8 +13,8 @@ void Character::init(float charSize, float mvSpeed, M3DVector3f &spawnPos)
 {
 	size = charSize;
 	cFrame.SetOrigin(spawnPos);
-	stepSize = 0.1f;// * mvSpeed;
-	moving = false;
+	moveTo(spawnPos);
+	stepSize = 0.02f;// * mvSpeed;
 
 	gltMakeCube(cBatch, size);
 	vColour[0] = 1.0f;
@@ -23,28 +23,20 @@ void Character::init(float charSize, float mvSpeed, M3DVector3f &spawnPos)
 	vColour[3] = 1.0f;
 }
 
-void Character::moveTo(M3DVector3f mvPos)
+void Character::move()
 {
-	moving = true;
-	M3DVector3f position;
-
-	do
-	{
-		calculateDirection(mvPos);
-		cFrame.SetUpVector(direction);
+	M3DVector3f pos;
+	cFrame.GetOrigin(pos);
+	if (!(pos[0] < goalPos[0] + (stepSize/1.5f) && pos[0] > goalPos[0]-(stepSize/1.5f)) && !(pos[1] < goalPos[1] + (stepSize/1.5f) && pos[1] > goalPos[1]-(stepSize/1.5f)))
 		cFrame.MoveUp(stepSize);
-		std::cout << cFrame.GetOriginX() << ", " << cFrame.GetOriginY() << std::endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
-		cFrame.GetOrigin(position);
-	}
-	while ((position[0] >= mvPos[0]-stepSize) && (position[0] <= mvPos[0]+stepSize)
-			&& (position[1] >= mvPos[2]-stepSize) && (position[1] <= mvPos[1]+stepSize));
-	moving = false;
 }
 
-bool Character::isMoving()
+void Character::moveTo(M3DVector3f mvPos)
 {
-	return moving;
+	for (int i=0; i<3; i++)
+		goalPos[i] = mvPos[i];
+	calculateDirection(goalPos);
+	cFrame.SetUpVector(direction);
 }
 
 void Character::calculateDirection(M3DVector3f mvPos)
@@ -53,7 +45,6 @@ void Character::calculateDirection(M3DVector3f mvPos)
 	M3DVector3f ePos;
 	for (int i=0; i<3; i++)
 		ePos[i] = mvPos[i];
-	ePos[2] += size; // Prevent the cube from moving in Z-axis
 
 	m3dSubtractVectors3(direction, ePos, sPos);
 }
