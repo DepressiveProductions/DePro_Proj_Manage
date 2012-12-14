@@ -30,13 +30,13 @@ public:
 
 private:
 	struct highlighted {GLBatch batch; M3DVector3f pos;};
-	vector<highlighted *> hl;
-	GLfloat gridScale;
+	vector<highlighted *> hl; // Highlighted squares
+	GLfloat gridScale; // Size of the squares, radius
 	GLfloat vGridColour[4];
-	GLfloat lineWidth;
-	GLfloat center[3]; // Coords for the center of floor and center of the full grid
+	GLfloat lineWidth; // For grid
+	GLfloat center[3]; // Coords for the center of floor and full grid
 	
-	GLBatch markingLines;
+	GLBatch markingLines; // Batch for marking-box
 
 	void calculateExactPos(M3DVector3f &pos); // Changes pos to the corresponding square-position
 };

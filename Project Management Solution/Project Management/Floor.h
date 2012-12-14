@@ -21,20 +21,20 @@ public:
 	void setFloorColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setGridColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setGridLineWidth(GLfloat w);
-	void toggleGrid();
+	void toggleGrid(); // Render/not render grid
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
 	GLfloat position[3];
-	float width;
-	float height;
-	GLfloat scale;
+	float width; // Number of squares
+	float height;// Number of squares
+	GLfloat scale; // Radius of square
 	GLfloat vFloorColour[4];
 	GLBatch fBatch;
 	
 	GLBatch gBatch;
 	GLfloat vGridColour[4];
 	GLfloat gLineWidth;
-	bool drawGrid;
+	bool drawGrid; // Build mode or not
 };
 

@@ -19,7 +19,7 @@ void Floor::init(GLfloat X, GLfloat Y, GLfloat Z, int Width, int Height, GLfloat
 	vFloorColour[2] = 1.0f;
 	vFloorColour[3] = 1.0f;
 	
-	// Set colour green
+	// Set colour grey for buildmode-grid
 	vGridColour[0] = 0.8f;
 	vGridColour[1] = 0.8f;
 	vGridColour[2] = 0.8f;
@@ -75,7 +75,7 @@ void Floor::setGridLineWidth(GLfloat w)
 	gLineWidth = w;
 }
 
-void Floor::toggleGrid()
+void Floor::toggleGrid() // Render or not (buildmode->draw grid)
 {
 	drawGrid = !drawGrid;
 }
@@ -83,18 +83,18 @@ void Floor::toggleGrid()
 void Floor::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
 	// Draw floor
-	glPolygonOffset(1.0f, 1.0f);
-	glEnable(GL_POLYGON_OFFSET_FILL);
+	glPolygonOffset(1.0f, 1.0f); // If another thing is rendered at the same point, the floor will be underneath
+	glEnable(GL_POLYGON_OFFSET_FILL); // Enable polygon-offset for floor
 	mvStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vFloorColour);
 	fBatch.Draw();
 	mvStack.PopMatrix();
 	glDisable(GL_POLYGON_OFFSET_FILL);
 
-	// Draw grid
+	// Draw grid if it's enabled
 	if (drawGrid)
 	{
-		glLineWidth(gLineWidth);
+		glLineWidth(gLineWidth); // Set the right line width
 		mvStack.PushMatrix();
 		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
 		gBatch.Draw();

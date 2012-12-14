@@ -27,18 +27,17 @@ void Grid::setLineWidth(GLfloat w)
 	lineWidth = w;
 }
 
-void Grid::calculateExactPos(M3DVector3f &pos)
+void Grid::calculateExactPos(M3DVector3f &pos) // Sets pos to nearest grid-square postion
 {
-	// Conter is the amount of gridsquares that differ between (click)pos and centerpos
-	int modX = 1;
-	int counterX = 0;
+	int modX = 1; // Modifier for +/- delta x, will be 1 or -1
+	int counterX = 0; // Is the amount of gridsquares that differ between (click)pos and centerpos
 	GLfloat xDiff = pos[0]-center[0];
 	if (xDiff >= 0) modX = -1; // The modifier always makes the loop go -> 0.0f
 	for (; -modX*xDiff > 0.0f; xDiff += modX*gridScale*2)
 		counterX++;
 	
-	int modY = 1;
-	int counterY = 0;
+	int modY = 1; // Modifier for +/- delta x, will be 1 or -1
+	int counterY = 0; // Is the amount of gridsquares that differ between (click)pos and centerpos
 	GLfloat yDiff = pos[1]-center[1];
 	if (yDiff >= 0) modY = -1; // The modifier always makes the loop go -> 0.0f
 	for (; -modY*yDiff > 0.0f; yDiff += modY*gridScale*2)
@@ -51,12 +50,12 @@ void Grid::calculateExactPos(M3DVector3f &pos)
 
 void Grid::activateSquare(M3DVector3f &pos)
 {
-	M3DVector3f inPos; // To prevent changes of original pos
-	for (int i=0; i < 3; i++)
+	M3DVector3f inPos;
+	for (int i=0; i<3; i++)
 		inPos[i] = pos[i];
 	calculateExactPos(inPos);
 
-	// Loop through all squares and return the right one
+	// Create a batch for the highlighted square
 	hl.push_back(new highlighted);
 	GLfloat vSquare[] = {inPos[0]-gridScale, inPos[1]-gridScale, inPos[2],
 						 inPos[0]-gridScale, inPos[1]+gridScale, inPos[2],
@@ -66,6 +65,7 @@ void Grid::activateSquare(M3DVector3f &pos)
 	hl[hl.size()-1]->batch.CopyVertexData3f(vSquare);
 	hl[hl.size()-1]->batch.End();
 
+	// Add the squares position to the hl-struct
 	for (int i=0; i < 3; i++)
 		hl[hl.size()-1]->pos[i] = inPos[i];
 }
@@ -80,7 +80,7 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 		ePos[i] = endPos[i];
 	}
 
-	// Lines forming a rectangle from clicking position to actual position
+	// Batch with lines forming a rectangle from clicking position to actual position
 	GLfloat vVerts[] = {sPos[0], sPos[1], center[2],
 						ePos[0], sPos[1], center[2],
 						ePos[0], ePos[1], center[2],
@@ -90,13 +90,13 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 	markingLines.End();
 
 	M3DVector3f squarePos;
-	squarePos[2] = 0.0f;
+	//squarePos[2] = 0.0f;
 	int xDiff, yDiff; // Number of squares in x- and y-axis
 	calculateExactPos(sPos);
 	calculateExactPos(ePos);
 
-	int modX = 1;
-	int	modY = 1;
+	int modX = 1; // Modifier for +/- delta, will be 1 or -1
+	int	modY = 1; // Modifier for +/- delta, will be 1 or -1
 	if (sPos[0] >= ePos[0]) modX = -1;
 	if (sPos[1] >= ePos[1]) modY = -1;
 
@@ -117,11 +117,11 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 
 void Grid::deactivateAllSquares()
 {
-	while (hl.size() > 0)
-		hl.erase(hl.begin()); // Erase first element
+	while (hl.size() > 0) // Loop through whole vector and remove first elememt => empty vector
+		hl.erase(hl.begin());
 }
 
-void Grid::getSquarePositions(vector< vector<float> > &positions)
+void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" all highlighted square-positions
 {
 	for (unsigned int i=0; i < hl.size(); i++)
 	{
@@ -135,7 +135,7 @@ void Grid::getSquarePositions(vector< vector<float> > &positions)
 
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
-	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST); // Draw it on top of everything
 	for (unsigned int i=0; i < hl.size(); i++)
 	{
 		glLineWidth(lineWidth);
