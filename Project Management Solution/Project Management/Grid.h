@@ -6,7 +6,9 @@
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
 #include <vector>
+#include <array>
 using std::vector;
+using std::array;
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -30,7 +32,7 @@ public:
 
 private:
 	GLBatch hlBatch;
-	vector< vector<float> > squarePositions;
+	vector< array<GLfloat, 3> > squarePositions;
 	//vector<highlighted *> hl; // Highlighted squares
 	GLfloat gridScale; // Size of the squares, radius
 	GLfloat vGridColour[4];
