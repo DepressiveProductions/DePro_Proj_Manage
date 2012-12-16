@@ -45,9 +45,8 @@ void Grid::calculateExactPos(M3DVector3f &pos) // Sets pos to nearest grid-squar
 
 	pos[0] = -modX*(counterX-1)*gridScale*2 + -modX*gridScale;
 	pos[1] = -modY*(counterY-1)*gridScale*2 + -modY*gridScale;
-	pos[2] = 0.0f;
 }
-
+/*
 void Grid::activateSquare(M3DVector3f &pos)
 {
 	M3DVector3f inPos;
@@ -68,6 +67,73 @@ void Grid::activateSquare(M3DVector3f &pos)
 	// Add the squares position to the hl-struct
 	for (int i=0; i < 3; i++)
 		hl[hl.size()-1]->pos[i] = inPos[i];
+}*/
+
+void Grid::activateSquares()
+{
+	M3DVector3f upperLeftCorner;
+	M3DVector3f lowerRightCorner;
+	
+	for (int i=0; i<2; i++)
+	{
+		upperLeftCorner[i] = squarePositions[0][i]-gridScale;
+		lowerRightCorner[i] = squarePositions[squarePositions.size()-1][i]+gridScale;
+	}
+	upperLeftCorner[2] = squarePositions[0][2];
+	lowerRightCorner[2] = squarePositions[squarePositions.size()-1][2];
+
+	hlBatch.Begin(GL_LINES, 20*(((lowerRightCorner[0]-upperLeftCorner[0])/gridScale)+((lowerRightCorner[1]-upperLeftCorner[1])/gridScale) + 2));
+	// Lines in Y-axis
+	for (GLfloat x = upperLeftCorner[0]; x <= lowerRightCorner[0]; x += 2*gridScale)
+	{
+		hlBatch.Vertex3f(x, upperLeftCorner[1], upperLeftCorner[2]);
+		hlBatch.Vertex3f(x, lowerRightCorner[1], lowerRightCorner[2]);
+	}
+	// Lines in X-axis
+	for (GLfloat y = upperLeftCorner[1]; y <= lowerRightCorner[1]; y += 2*gridScale)
+	{
+		hlBatch.Vertex3f(upperLeftCorner[0], y, upperLeftCorner[2]);
+		hlBatch.Vertex3f(lowerRightCorner[0], y, lowerRightCorner[2]);
+	}
+	hlBatch.End();
+}
+
+void Grid::setUpperLeft(M3DVector3f &sPos, M3DVector3f &ePos)
+{
+	// Set sPos upper left corner and ePos lower right corner
+	GLfloat xUL, yUL, xLR, yLR;
+	if (sPos[0] >= ePos[0] && sPos[1] >= ePos[1])
+	{	
+		xUL = ePos[0];
+		yUL = sPos[1];
+		xLR = ePos[1];
+		yLR = sPos[0];
+	}
+	else if (sPos[0] >= ePos[0] && sPos[1] < ePos[1])
+	{
+		xUL = ePos[0];
+		yUL = ePos[1];
+		xLR = sPos[0];
+		yLR = sPos[1];
+	}
+	else if (sPos[0] < ePos[0] && sPos[1] < ePos[1])
+	{
+		xUL = sPos[0];
+		yUL = ePos[1];
+		xLR = ePos[0];
+		yLR = sPos[1];
+	}
+	else if (sPos[0] < ePos[0] && sPos[1] >= ePos[1])
+	{
+		xUL = sPos[0];
+		yUL = sPos[1];
+		xLR = ePos[0];
+		yLR = ePos[1];
+	}
+	sPos[0] = xUL;
+	sPos[1] = yUL;
+	ePos[0] = xLR;
+	ePos[1] = yLR;
 }
 
 void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
@@ -89,46 +155,48 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 	markingLines.CopyVertexData3f(vVerts);
 	markingLines.End();
 
-	M3DVector3f squarePos;
-	//squarePos[2] = 0.0f;
+	vector<float> squarePos;
+	squarePos.resize(3);
 	int xDiff, yDiff; // Number of squares in x- and y-axis
 	calculateExactPos(sPos);
 	calculateExactPos(ePos);
+	setUpperLeft(sPos, ePos);
 
 	int modX = 1; // Modifier for +/- delta, will be 1 or -1
 	int	modY = 1; // Modifier for +/- delta, will be 1 or -1
-	if (sPos[0] >= ePos[0]) modX = -1;
-	if (sPos[1] >= ePos[1]) modY = -1;
 
-	xDiff = abs((sPos[0] - ePos[0])/gridScale - modX);
-	yDiff = abs((sPos[1] - ePos[1])/gridScale - modY);
+	xDiff = abs((sPos[0] - ePos[0])/gridScale - 1);
+	yDiff = abs((sPos[1] - ePos[1])/gridScale + 1);
 
 	// Activate all squares
 	for (int y=0; y < yDiff; y++)
 	{
-		squarePos[1] = sPos[1]+(modY *y*gridScale);
+		squarePos[1] = sPos[1]+(-1*y*gridScale);
 		for (int x=0; x < xDiff; x++)
 		{
-			squarePos[0] = sPos[0]+(modX*x*gridScale);
-			activateSquare(squarePos);
+			squarePos[0] = sPos[0]+(x*gridScale);
+			squarePositions.push_back(squarePos); // Storage for later use
 		}
 	}
+	activateSquares();
 }
 
 void Grid::deactivateAllSquares()
 {
-	while (hl.size() > 0) // Loop through whole vector and remove first elememt => empty vector
-		hl.erase(hl.begin());
+	squarePositions.clear();
+	hlBatch.Begin(GL_LINES, 1);
+	hlBatch.Vertex3f(0.0f, 0.0f, 0.0f);
+	hlBatch.End();
 }
 
 void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" all highlighted square-positions
 {
-	for (unsigned int i=0; i < hl.size(); i++)
+	for (unsigned int i=0; i < squarePositions.size(); i++)
 	{
 		vector<float> pos;
-		pos.push_back(hl[i]->pos[0]);
-		pos.push_back(hl[i]->pos[1]);
-		pos.push_back(hl[i]->pos[2]);
+		pos.push_back(squarePositions[i][0]);
+		pos.push_back(squarePositions[i][1]);
+		pos.push_back(squarePositions[i][2]);
 		positions.push_back(pos);
 	}
 }
@@ -136,15 +204,13 @@ void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" a
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
 	glDisable(GL_DEPTH_TEST); // Draw it on top of everything
-	for (unsigned int i=0; i < hl.size(); i++)
-	{
-		glLineWidth(lineWidth);
-		mvStack.PushMatrix();
-		shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
-		hl[i]->batch.Draw();
-		mvStack.PopMatrix();
-		glLineWidth(1.0f); // Standard width
-	}
+	glLineWidth(lineWidth);
+	mvStack.PushMatrix();
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
+	hlBatch.Draw();
+	mvStack.PopMatrix();
+	glLineWidth(1.0f); // Standard width
+
 	mvStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
 	markingLines.Draw();

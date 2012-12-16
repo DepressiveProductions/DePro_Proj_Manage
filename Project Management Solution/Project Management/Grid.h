@@ -22,15 +22,16 @@ public:
 	void init(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat Scale);
 	void setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 	void setLineWidth(GLfloat w);
-	void activateSquare(M3DVector3f &pos);
+
 	void boxActivation(M3DVector3f &startPos, M3DVector3f &endPos);
 	void deactivateAllSquares();
 	void getSquarePositions(vector< vector<float> > &positions);
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
 
 private:
-	struct highlighted {GLBatch batch; M3DVector3f pos;};
-	vector<highlighted *> hl; // Highlighted squares
+	GLBatch hlBatch;
+	vector< vector<float> > squarePositions;
+	//vector<highlighted *> hl; // Highlighted squares
 	GLfloat gridScale; // Size of the squares, radius
 	GLfloat vGridColour[4];
 	GLfloat lineWidth; // For grid
@@ -38,5 +39,7 @@ private:
 	
 	GLBatch markingLines; // Batch for marking-box
 
+	void activateSquares();
+	void setUpperLeft(M3DVector3f &sPos, M3DVector3f &ePos);
 	void calculateExactPos(M3DVector3f &pos); // Changes pos to the corresponding square-position
 };
