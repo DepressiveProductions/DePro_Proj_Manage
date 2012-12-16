@@ -33,7 +33,6 @@ public:
 private:
 	GLBatch hlBatch;
 	vector< array<GLfloat, 3> > squarePositions;
-	//vector<highlighted *> hl; // Highlighted squares
 	GLfloat gridScale; // Size of the squares, radius
 	GLfloat vGridColour[4];
 	GLfloat lineWidth; // For grid

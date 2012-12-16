@@ -1,5 +1,4 @@
 #include "Grid.h"
-#include <iostream>
 
 Grid::Grid() {}
 
@@ -47,28 +46,6 @@ void Grid::calculateExactPos(M3DVector3f &pos) // Sets pos to nearest grid-squar
 	pos[0] = -modX*(counterX-1)*gridScale*2 + -modX*gridScale;
 	pos[1] = -modY*(counterY-1)*gridScale*2 + -modY*gridScale;
 }
-/*
-void Grid::activateSquare(M3DVector3f &pos)
-{
-	M3DVector3f inPos;
-	for (int i=0; i<3; i++)
-		inPos[i] = pos[i];
-	calculateExactPos(inPos);
-
-	// Create a batch for the highlighted square
-	hl.push_back(new highlighted);
-	GLfloat vSquare[] = {inPos[0]-gridScale, inPos[1]-gridScale, inPos[2],
-						 inPos[0]-gridScale, inPos[1]+gridScale, inPos[2],
-						 inPos[0]+gridScale, inPos[1]+gridScale, inPos[2],
-						 inPos[0]+gridScale, inPos[1]-gridScale, inPos[2]};
-	hl[hl.size()-1]->batch.Begin(GL_LINE_LOOP, 4);
-	hl[hl.size()-1]->batch.CopyVertexData3f(vSquare);
-	hl[hl.size()-1]->batch.End();
-
-	// Add the squares position to the hl-struct
-	for (int i=0; i < 3; i++)
-		hl[hl.size()-1]->pos[i] = inPos[i];
-}*/
 
 void Grid::activateSquares()
 {
@@ -131,7 +108,7 @@ void Grid::setUpperLeft(M3DVector3f &sPos, M3DVector3f &ePos)
 		xLR = ePos[0];
 		yLR = ePos[1];
 	}
-	//std::cout << "[" << xUL << "," << yUL << "],[" << xLR << "," << yLR << "]" << std::endl;
+
 	sPos[0] = xUL;
 	sPos[1] = yUL;
 	ePos[0] = xLR;
@@ -192,7 +169,7 @@ void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" a
 		vector<float> pos;
 		pos.push_back(squarePositions[i][0]);
 		pos.push_back(squarePositions[i][1]);
-		pos.push_back(squarePositions[i][2]);
+		pos.push_back(0.0f);
 		positions.push_back(pos);
 	}
 }
