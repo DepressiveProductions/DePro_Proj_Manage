@@ -182,7 +182,7 @@ void renderScene()
 	//End pop:
 	modelViewStack.PopMatrix();
 	
-	buildButton.draw(W_WIDTH, W_HEIGHT);
+	buildButton.draw(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -253,7 +253,7 @@ void clickFunc(int key, int state, int x, int y)
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		// Click build-button
-		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2))
+		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (glutGet(GLUT_SCREEN_HEIGHT) - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (glutGet(GLUT_SCREEN_HEIGHT) - y <= buildButton.getYPos()+buildButton.getHeight()/2))
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
@@ -284,7 +284,7 @@ void clickFunc(int key, int state, int x, int y)
 				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 				hlGrid.boxActivation(clickPos, actualPos);
 				
-				vector< vector<float> > pos;
+				vector< vector< float > > pos;
 				hlGrid.getSquarePositions(pos);
 				baracks.create(pos);
 			}
