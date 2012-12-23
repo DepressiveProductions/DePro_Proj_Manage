@@ -8,6 +8,8 @@
 #include <GLGeometryTransform.h>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <array>
+using std::array;
 
 #ifdef __APPLE__
 #include <glut/glut.h>

@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <array>
 
 #include "House.h"
 #include "Button.h"
@@ -59,7 +60,6 @@ GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
 Input in;
-vector<thread> threads;
 
 House baracks;
 Floor ground;
@@ -106,7 +106,7 @@ void setupRC()
 	testBatch.End();
 	#endif
 
-	buildButton.init(20, 50, 128, 32, "Assets/button_build_128x32.tga");
+	buildButton.init(20, 32+20, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
@@ -182,7 +182,7 @@ void renderScene()
 	//End pop:
 	modelViewStack.PopMatrix();
 	
-	buildButton.draw(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
+	buildButton.draw(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -201,6 +201,14 @@ void handleInput(CStopWatch &inputTimer)
 	// Camera movement
 	float elapsedTime = inputTimer.GetElapsedSeconds() * 1.5f;
 	inputTimer.Reset();
+
+	if (in.keyPressed(sf::Keyboard::B))
+	{
+		buildMode = !buildMode;
+		hlGrid.deactivateAllSquares();
+		ground.toggleGrid();
+	}
+
 	if (mouseActive)
 	{
 		if (in.keyPressed(sf::Keyboard::W))
@@ -250,10 +258,14 @@ void releasedKeys(unsigned char key, int x, int y)
 
 void clickFunc(int key, int state, int x, int y)
 {
+	//x = (W_WIDTH+x)-glutGet(GLUT_WINDOW_WIDTH);
+	y = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
-		// Click build-button
-		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (glutGet(GLUT_SCREEN_HEIGHT) - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (glutGet(GLUT_SCREEN_HEIGHT) - y <= buildButton.getYPos()+buildButton.getHeight()/2))
+		std::cout << x << ", " << y << std::endl;
+		std::cout << buildButton.getXPos() << ", " << buildButton.getYPos() << std::endl;
+		// Click build-button		
+		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
@@ -277,7 +289,7 @@ void clickFunc(int key, int state, int x, int y)
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
 		// Do not act as ground if clicked on button
-		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
+		if (!(x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && !(y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
 		{
 			if (buildMode)
 			{
@@ -294,7 +306,7 @@ void clickFunc(int key, int state, int x, int y)
 	}
 	else if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
-		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (W_HEIGHT - y >= buildButton.getYPos()-buildButton.getHeight()/2) && (W_HEIGHT - y <= buildButton.getYPos()+buildButton.getHeight()/2)))
+		if (!(x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && !(y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
 		{
 			if (!buildMode)
 			{

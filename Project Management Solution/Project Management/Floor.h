@@ -5,6 +5,8 @@
 #include <GLBatch.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
+#include <array>
+using std::array;
 
 #ifdef __APPLE__
 #include <glut/glut.h>

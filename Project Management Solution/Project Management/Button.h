@@ -6,8 +6,9 @@
 #include <GLGeometryTransform.h>
 #include <GLFrame.h>
 #include <GLBatch.h>
-
+#include <array>
 #include <string>
+using std::array;
 
 class Button
 {
