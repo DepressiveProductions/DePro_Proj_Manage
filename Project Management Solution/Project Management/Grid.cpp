@@ -60,7 +60,7 @@ void Grid::activateSquares()
 	upperLeftCorner[2] = squarePositions[0][2];
 	lowerRightCorner[2] = squarePositions[squarePositions.size()-1][2];
 
-	hlBatch.Begin(GL_LINES, 10*(((lowerRightCorner[0]-upperLeftCorner[0])/gridScale)+((upperLeftCorner[1]-lowerRightCorner[1])/gridScale) + 8));
+	hlBatch.Begin(GL_LINES, 4+(((lowerRightCorner[0]-upperLeftCorner[0])/gridScale)+((upperLeftCorner[1]-lowerRightCorner[1])/gridScale)));
 	// Lines in Y-axis
 	for (GLfloat x = upperLeftCorner[0]; x <= lowerRightCorner[0]; x += 2*gridScale)
 	{
