@@ -177,16 +177,16 @@ void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" a
 void Grid::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
 {
 	glDisable(GL_DEPTH_TEST); // Draw it on top of everything
-	glLineWidth(lineWidth);
+	glLineWidth(lineWidth); // Set line width
 	mvStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
-	hlBatch.Draw();
+	hlBatch.Draw(); // Draw HL-grid
 	mvStack.PopMatrix();
 	glLineWidth(1.0f); // Standard width
 
 	mvStack.PushMatrix();
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vGridColour);
-	markingLines.Draw();
+	markingLines.Draw(); // Draw selection-box
 	mvStack.PopMatrix();
 
 	glEnable(GL_DEPTH_TEST);

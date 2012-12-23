@@ -117,7 +117,7 @@ void setupRC()
 	baracks.init(C_RAD, baracksShine, baracksColor);
 
 	M3DVector3f spawnPos = {0.0f, 0.0f, 0.2f};
-	buildMan.init(0.2, 4.0f, spawnPos);
+	buildMan.init(0.2, 0.2f, spawnPos);
 }
 
 void changeSize(int w, int h)
@@ -258,14 +258,11 @@ void releasedKeys(unsigned char key, int x, int y)
 
 void clickFunc(int key, int state, int x, int y)
 {
-	//x = (W_WIDTH+x)-glutGet(GLUT_WINDOW_WIDTH);
-	y = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
+	int y2d = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
-		std::cout << x << ", " << y << std::endl;
-		std::cout << buildButton.getXPos() << ", " << buildButton.getYPos() << std::endl;
 		// Click build-button		
-		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
+		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos()))
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
@@ -289,7 +286,7 @@ void clickFunc(int key, int state, int x, int y)
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
 		// Do not act as ground if clicked on button
-		if (!(x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && !(y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
+		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth())) && !((y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos())))
 		{
 			if (buildMode)
 			{
@@ -304,9 +301,9 @@ void clickFunc(int key, int state, int x, int y)
 				trackCursor = false;
 		}
 	}
-	else if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
+	if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
-		if (!(x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && !(y >= buildButton.getYPos()-buildButton.getHeight()) && (y <= buildButton.getYPos()))
+		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth())) && !((y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos())))
 		{
 			if (!buildMode)
 			{

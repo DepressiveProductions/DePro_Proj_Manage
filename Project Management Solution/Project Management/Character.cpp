@@ -27,8 +27,13 @@ void Character::move()
 {
 	M3DVector3f pos;
 	cFrame.GetOrigin(pos);
-	if (!(pos[0] < goalPos[0] + (stepSize/1.5f) && pos[0] > goalPos[0]-(stepSize/1.5f)) && !(pos[1] < goalPos[1] + (stepSize/1.5f) && pos[1] > goalPos[1]-(stepSize/1.5f)))
+	//if (!(pos[0] < goalPos[0] + (stepSize/1.5f) && pos[0] > goalPos[0]-(stepSize/1.5f)) && !(pos[1] < goalPos[1] + (stepSize/1.5f) && pos[1] > goalPos[1]-(stepSize/1.5f)))
+	if (!(abs(pos[0]-goalPos[0]) <= stepSize) && !(abs(pos[1]-goalPos[1]) <= stepSize))
 		cFrame.MoveUp(stepSize);
+	//else if(((pos[0]-goalPos[0]) == 0) && ((pos[1]-goalPos[1]) == 0))
+		
+	else if((abs(pos[0]-goalPos[0]) <= stepSize) && (abs(pos[1]-goalPos[1]) <= stepSize))
+		cFrame.SetOrigin(goalPos);
 }
 
 void Character::moveTo(M3DVector3f mvPos)
@@ -47,6 +52,9 @@ void Character::calculateDirection(M3DVector3f mvPos)
 		ePos[i] = mvPos[i];
 
 	m3dSubtractVectors3(direction, ePos, sPos);
+	float vLength = sqrt(pow(direction[0], 2) + pow(direction[1], 2));
+	direction[0] /= vLength;
+	direction[1] /= vLength;
 }
 
 void Character::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLightPos)
