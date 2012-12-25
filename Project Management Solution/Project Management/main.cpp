@@ -43,7 +43,6 @@
 #define W_TITLE "Project: Management - Prototype"
 
 float camSpeed = 5.5f;
-int pitch = 90;
 M3DVector3f clickPos;
 M3DVector3f actualPos;
 M3DVector3f lastPos;
@@ -355,17 +354,15 @@ void mouseCameraFunc(int x, int y)
 			cameraFrame.RotateWorld(angle*(W_WIDTH/2-x), 0, 0, 1);
 			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
 		}
-		if (y > W_HEIGHT/2 && pitch < 90)
+		if (y > W_HEIGHT/2)
 		{
 			cameraFrame.RotateLocalX(-angle*(W_HEIGHT/2-y));
 			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
-			pitch = pitch + (-angle*(W_HEIGHT/2-y));
 		}
-		else if (y < W_HEIGHT/2 && pitch > -90)
+		else if (y < W_HEIGHT/2)
 		{
 			cameraFrame.RotateLocalX(angle*(y-W_HEIGHT/2));
 			glutWarpPointer(W_WIDTH/2, W_HEIGHT/2);
-			pitch = pitch + (angle*(y-W_HEIGHT/2));
 		}
 	}
 }
