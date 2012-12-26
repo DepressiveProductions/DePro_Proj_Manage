@@ -105,7 +105,7 @@ void setupRC()
 	testBatch.End();
 	#endif
 
-	buildButton.init(20, 32+20, 128, 32, "Assets/button_build_128x32.tga");
+	buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
@@ -284,25 +284,22 @@ void clickFunc(int key, int state, int x, int y)
 	}
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
-		// Do not act as ground if clicked on button
-		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth())) && !((y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos())))
+		if (buildMode)
 		{
-			if (buildMode)
-			{
-				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
-				hlGrid.boxActivation(clickPos, actualPos);
-				
-				vector< vector< float > > pos;
-				hlGrid.getSquarePositions(pos);
-				baracks.create(pos);
-			}
-			else if (!buildMode)
-				trackCursor = false;
+			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
+			hlGrid.boxActivation(clickPos, actualPos);
+			
+			vector< vector< float > > pos;
+			hlGrid.getSquarePositions(pos);
+			baracks.create(pos);
 		}
+		else if (!buildMode)
+			trackCursor = false;
 	}
+
 	if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
-		if (!((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth())) && !((y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos())))
+		if (!(x >= buildButton.getXPos() && x < buildButton.getXPos()+buildButton.getWidth() && y2d <= buildButton.getYPos() && y2d >= buildButton.getYPos()-buildButton.getHeight()))
 		{
 			if (!buildMode)
 			{

@@ -48,6 +48,35 @@ void House::create(vector< vector<float> > &pos)
 		houses[houses.size()-1]->positions.push_back(pos[i]); //... add that position to the new building object
 	}
 	houses[houses.size()-1]->inherit(this->radius, this->vSpecular, this->vColor); //And finally inherit values from the building type
+
+	// Get upper left corner and lower right corner
+	unsigned int UL = 0; // Index of upper left corner
+	unsigned int LR = 0; // Index of lower right corner
+	for (unsigned int i=0; i<pos.size(); i++)
+	{
+		if (pos[i][0] <= pos[UL][0] && pos[i][1] >= pos[UL][1])
+			UL = i;
+		if (pos[i][0] >= pos[LR][0] && pos[i][1] <= pos[LR][1])
+			LR = i;
+	}
+
+	// Add nodes to pathNodes-vector
+	array<float, 3> node = {pos[UL][0]-(2*radius), pos[UL][1]+(2*radius), pos[UL][2]};
+	pathNodes.push_back(node);
+	node[0] = pos[UL][0]-(2*radius);
+	node[1] = pos[LR][1]-(2*radius);
+	pathNodes.push_back(node);
+	node[0] = pos[LR][0]+(2*radius);
+	node[1] = pos[UL][1]+(2*radius);
+	pathNodes.push_back(node);
+	node[0] = pos[LR][0]+(2*radius);
+	node[1] = pos[LR][1]-(2*radius);
+	pathNodes.push_back(node);
+}
+
+vector<array<float, 3>> House::getNodes()
+{
+	return pathNodes;
 }
 
 //Used to make buildings inherit values from their building type:

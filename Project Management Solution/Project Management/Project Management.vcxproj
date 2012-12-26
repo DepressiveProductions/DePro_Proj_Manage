@@ -90,6 +90,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyShaderManager.cpp" />
+    <ClCompile Include="PathFinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="House.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MyShaderManager.h" />
+    <ClInclude Include="PathFinding.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ADS_fragment.fp" />

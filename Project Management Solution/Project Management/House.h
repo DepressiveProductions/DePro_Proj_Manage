@@ -29,6 +29,7 @@ class House
 		
 		void getColor(M3DVector4f &vOut); //Returns the building type color by setting it to &vOut
 		float getRadius(); //Returns the radius of the cubes
+		vector<array<float, 3>> getNodes(); // Returns the nodes for  the PF-class
 		vector< vector<float> > getPositions(); //Returns the positions of the cubes that make up the building
 		vector< House * > getHouses(); //Returns the buildings of the building type
 	
@@ -45,5 +46,7 @@ class House
 		
 		GLfloat radius; //Radius of cubes that make up the buildings
 		unsigned int cubes; //Used in the drawing method, represents number of cubes that make up a building
+
+		vector<array<float, 3>> pathNodes;
 };
 
