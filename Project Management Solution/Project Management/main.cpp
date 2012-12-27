@@ -46,6 +46,7 @@ float camSpeed = 5.5f;
 M3DVector3f clickPos;
 M3DVector3f actualPos;
 M3DVector3f lastPos;
+float mouseLook = 50.0f;
 bool buildMode = false;
 bool trackCursor = false;
 bool mouseActive = false;
@@ -277,8 +278,10 @@ void clickFunc(int key, int state, int x, int y)
 			else if (!buildMode)
 			{
 				trackCursor = true;
-				lastPos[0] = clickPos[0];
-				lastPos[1] = clickPos[1];
+				float xx = float(x)/mouseLook;
+				float yy = float(y)/mouseLook;
+				lastPos[0] = xx;
+				lastPos[1] = yy;
 			}
 		}
 	}
@@ -320,18 +323,20 @@ void clickFunc(int key, int state, int x, int y)
 
 void mousePassiveFunc(int x, int y)
 {
-		in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 		if (buildMode)
 		{
+			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.deactivateAllSquares();
 			hlGrid.boxActivation(clickPos, actualPos);
 		}
 		else if (!buildMode && trackCursor)
 		{
-			//cameraFrame.MoveRight((lastPos[0]-actualPos[0]));
-			//cameraFrame.MoveUp((lastPos[1]-actualPos[1]));
-			lastPos[0] = actualPos[0];
-			lastPos[1] = actualPos[1];
+			float xx = float(x)/mouseLook;
+			float yy = float(y)/mouseLook;
+			cameraFrame.MoveRight(xx-lastPos[0]);
+			cameraFrame.MoveUp(yy-lastPos[1]);
+			lastPos[0] = xx;
+			lastPos[1] = yy;
 		}
 }
 
