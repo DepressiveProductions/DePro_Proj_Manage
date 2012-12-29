@@ -60,23 +60,37 @@ void House::create(vector< vector<float> > &pos)
 			LR = i;
 	}
 
+	setWalls(pos[UL][0], pos[UL][1], pos[LR][0], pos[LR][1]);
+
 	// Add nodes to pathNodes-vector
 	array<float, 3> node = {pos[UL][0]-(2*radius), pos[UL][1]+(2*radius), pos[UL][2]};
-	pathNodes.push_back(node);
+	pathNodes[0] = node;
 	node[0] = pos[UL][0]-(2*radius);
 	node[1] = pos[LR][1]-(2*radius);
-	pathNodes.push_back(node);
+	pathNodes[1] = node;
 	node[0] = pos[LR][0]+(2*radius);
 	node[1] = pos[UL][1]+(2*radius);
-	pathNodes.push_back(node);
+	pathNodes[2] = node;
 	node[0] = pos[LR][0]+(2*radius);
 	node[1] = pos[LR][1]-(2*radius);
-	pathNodes.push_back(node);
+	pathNodes[3] = node;
+	node[0] = ((pos[LR][0] - pos[UL][0])/2) + pos[UL][0]; // Rigth in the middle of upper left x and lower right x
+	node[1] = pos[UL][1] + (2*radius);
+	pathNodes[4] = node;
 }
 
-vector<array<float, 3>> House::getNodes()
+void House::getNodes(vector<array<float, 3>> &nodes)
 {
-	return pathNodes;
+	nodes.push_back(pathNodes[0]);
+	nodes.push_back(pathNodes[1]);
+	nodes.push_back(pathNodes[2]);
+	nodes.push_back(pathNodes[3]);
+	nodes.push_back(pathNodes[4]);
+}
+
+array<float, 3> House::getDoorNode() // Get coord for the node outside the door
+{
+	return pathNodes[4];
 }
 
 //Used to make buildings inherit values from their building type:
@@ -137,6 +151,37 @@ float House::getRadius()
 vector< House * > House::getHouses()
 {
 	return houses;
+}
+
+// Returns left and right walls x-value + upper and lower walls y-value
+array<float, 4> House::getWalls()
+{
+	return walls;
+}
+
+// Upper left and lower right corner
+void House::setWalls(float x1, float y1, float x2, float y2)
+{
+	if (x1 >= x2)
+	{	
+		walls[0] = x2-radius;
+		walls[1] = x1+radius;
+	}
+	else if (x1 < x2)
+	{
+		walls[0] = x1-radius;
+		walls[1] = x2+radius;
+	}
+	if (y1 >= y2)
+	{
+		walls[2] = y2-radius;
+		walls[3] = y1+radius;
+	}
+	else if (y1 < y2)
+	{
+		walls[2] = y1-radius;
+		walls[3] = y2+radius;
+	}
 }
 
 //Set building type color to specified GLfloats:
