@@ -22,7 +22,8 @@ public:
 	void addHouse(House *house);
 	void update();
 	vector<array<float, 3>> getPath(array<float, 3> a, array<float, 3> b);
-	
+	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
+
 private:
 	struct node
 	{
@@ -33,10 +34,12 @@ private:
 	vector<vector<node>> paths;
 	map<array<array<float,3>, 2>, vector<array<float, 3>>> storedPaths;
 
-	float cF(float a, float b, bool _largest);
-	void findAvailable(vector<array<float, 3>> nodes, int index, vector<int> &available);
+	float cF(float a, float b, bool largest);
+	void findAvailable(vector<array<float, 3>> nCoords, int index, vector<int> &available);
 	void calculatePath(array<float, 3> a, array<float, 3> b);
 	void nextNode(node n, vector<node> visited, node goalNode);
 	vector<House *> building;
+
+	GLBatch pathBatch;
 };
 

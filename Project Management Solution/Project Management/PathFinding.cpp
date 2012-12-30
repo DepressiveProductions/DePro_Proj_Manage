@@ -1,4 +1,5 @@
 #include "PathFinding.h"
+#include <iostream>
 
 PathFinding::PathFinding() {}
 PathFinding::~PathFinding() {}
@@ -13,7 +14,8 @@ void PathFinding::update()
 	vector<array<float, 3>> pathNodes;
 	for (unsigned int i=0; i<building.size(); i++)
 	{
-		building[i]->getNodes(pathNodes);
+		for (unsigned int j=0; j<building[i]->getHouses().size(); j++)
+			building[i]->getHouses()[j]->getNodes(pathNodes);
 	}
 
 	for (unsigned int i=0; i<pathNodes.size(); i++)
@@ -22,35 +24,57 @@ void PathFinding::update()
 		findAvailable(pathNodes, i, aIdx);
 		node n;
 		n.pos = pathNodes[i];
-		n.availNodeIDs = aIdx;
+		n.available = aIdx;
 		nodes.push_back(n);
 	}
+
+	for (unsigned int i=0; i < nodes.size(); i++)
+	{
+		for (unsigned int j=0; j<nodes[i].available.size(); j++)
+			std::cout << nodes[i].pos[0] << "," << nodes[i].pos[1] << " reaches " << nodes[nodes[i].available[j]].pos[0] << "," << nodes[nodes[i].available[j]].pos[1] << std::endl;
+	}
+
+	/*vector<array<float,3>> doorNodes;
+	// Calculate path between houses
+	for (unsigned int i=0; i<building.size(); i++)
+	{
+		for (unsigned int j=0; j<building[i]->getHouses().size(); j++)
+			doorNodes.push_back(building[i]->getHouses()[j]->getDoorNode());
+	}
+
+	
+	// Calculate paths between all houses
+	for (unsigned int i=0; i<doorNodes.size(); i++)
+	{
+		for (unsigned int ii=doorNodes.size()-1; ii>i; ii--)
+			calculatePath(doorNodes[i], doorNodes[ii]);
+	}*/
 }
 
-float PathFinding::cF(float a, float b, bool _largest) // Compare floats, returns largest if _largest is true
+float PathFinding::cF(float a, float b, bool largest) // Compare floats, returns largest if _largest is true
 {
-	if (_largest && a >= b)
+	if (largest && a >= b)
 		return a;
-	else if (!_largest && a >= b)
+	else if (!largest && a >= b)
 		return b;
-	else if (_largest && a < b)
+	else if (largest && a < b)
 		return b;
-	else if (!_largest && a < b)
+	else if (!largest && a < b)
 		return a;
 }
 
-void PathFinding::findAvailable(vector<array<float, 3>> nodes, int index, vector<int> &available)
+void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vector<int> &available)
 {
-	for (unsigned int i=0; i<nodes.size(); i++)
+	for (unsigned int i=0; i<nCoords.size(); i++)
 	{
 		if (index != i)
 		{
 			// y=kx+m equation to check if the line between the two points doesn't cross a house-wall
-			float y, k, x, m; // nodes[index] contains x and y
-			if (nodes[i][0] != nodes[index][0]) // Prevent divide by zero
+			float k, m; // nCoords[index] contains x and y
+			if (nCoords[i][0] != nCoords[index][0]) // Prevent divide by zero
 			{
-				k = (nodes[index][1]-nodes[i][1])/(nodes[index][0]-nodes[i][0]);
-				m = nodes[index][1]-(k*nodes[index][0]);
+				k = (nCoords[index][1]-nCoords[i][1])/(nCoords[index][0]-nCoords[i][0]);
+				m = nCoords[index][1]-(k*nCoords[index][0]);
 				
 				// Check if line crosses a wall
 				for (unsigned int j=0; j<building.size(); j++)
@@ -58,8 +82,8 @@ void PathFinding::findAvailable(vector<array<float, 3>> nodes, int index, vector
 					for (unsigned int jj=0; jj<building[j]->getHouses().size(); jj++)
 					{
 						array<float, 4> walls = building[j]->getHouses()[jj]->getWalls();
-						// Check that the 2 points are on each side of the building
-						if (!(cF(nodes[index][0], nodes[i][0], true) < walls[0] || cF(nodes[index][0], nodes[i][0], false) > walls[1] || cF(nodes[index][1], nodes[i][1], true) > walls[3] || cF(nodes[index][1], nodes[i][1], false) < walls[2]))
+						// Check if both points are on the same side of the cube
+						if (!(cF(nCoords[index][0], nCoords[i][0], true) < walls[0] || cF(nCoords[index][0], nCoords[i][0], false) > walls[1] || cF(nCoords[index][1], nCoords[i][1], true) < walls[3] || cF(nCoords[index][1], nCoords[i][1], false) > walls[2]))
 						{
 							// Check if it crosses either wall
 							if (!(((k*walls[0])+m <= walls[3] && (k*walls[0])+m >= walls[2]) || // Crosses left wall
@@ -71,7 +95,10 @@ void PathFinding::findAvailable(vector<array<float, 3>> nodes, int index, vector
 							}
 						}
 						else
+						{
 							available.push_back(i);
+							//std::cout << nCoords[index][0] << " or " << nCoords[i][0] << "<" << walls[0] << std::endl;
+						}
 					}
 				}
 			}
@@ -83,10 +110,10 @@ void PathFinding::findAvailable(vector<array<float, 3>> nodes, int index, vector
 					{
 						array<float, 4> walls = building[j]->getHouses()[jj]->getWalls();
 						// Check that atleast 1 point is inside/on the other side of the building
-						if (!(cF(nodes[index][1], nodes[i][1], false) > walls[3] || cF(nodes[index][1], nodes[i][1], true) < walls[2]))
+						if (!(cF(nCoords[index][1], nCoords[i][1], false) > walls[3] || cF(nCoords[index][1], nCoords[i][1], true) < walls[2]))
 						{
-							// Chack if this path goes through any wall
-							if (!(nodes[i][0] <= walls[1] && nodes[i][0] >= walls[0]))
+							// Check if this path goes through any wall
+							if (!(nCoords[i][0] <= walls[1] && nCoords[i][0] >= walls[0]))
 								available.push_back(i);
 						}
 						else
@@ -122,18 +149,21 @@ void PathFinding::calculatePath(array<float, 3> a, array<float, 3> b)
 	}
 	vector<node> visitedNodes;
 	// Calculates all viable paths
-	nextNode(a, visitedNodes, );
+	nextNode(n[0], visitedNodes, n[1]);
 
 	int shortestIndex = 0;
 	float shortestPath;
+	// Loop through all paths
 	for (unsigned int i=0; i<paths.size(); i++)
 	{
 		float pathLength;
+		// Loop through all nodes, begin at second node
 		for (unsigned int j=1; j<paths[i].size(); j++)
 		{
-			array<float, 3> a = nodes[paths[i][j-1]].pos;
-			array<float, 3> b = nodes[paths[i][j]].pos;
-			pathLength += sqrt(pow(a[0]-b[0], 2) + pow(a[1]-b[1], 2)); // c = sqrt(a^2 + b^2)
+			array<float, 3> pt1 = paths[i][j-1].pos;
+			array<float, 3> pt2 = paths[i][j].pos;
+			pathLength += sqrt(pow(pt1[0]-pt2[0], 2) + pow(pt1[1]-pt2[1], 2)); // c = sqrt(a^2 + b^2)
+			std::cout << "Pathlength: " << pathLength << std::endl; 
 		}
 
 		if (i == 0) // First loop
@@ -152,24 +182,76 @@ void PathFinding::calculatePath(array<float, 3> a, array<float, 3> b)
 		calculatedPath.push_back(paths[shortestIndex][i].pos);
 	array<array<float,3>, 2> startToGoal;
 	storedPaths[startToGoal] = calculatedPath;
+	paths.clear(); // Clean up for next path-calculation
 }
 
 void PathFinding::nextNode(node n, vector<node> visited, node goalNode)
 {
+	visited.push_back(n);
+	// Loop through all available nodes
 	for (unsigned int i=0; i<n.available.size(); i++)
 	{
 		if (n.pos == goalNode.pos) // Reached goal
-		{
-			visited.push_back(n);
 			paths.push_back(visited); // Add this path to viable paths
-		}
+
 		for (unsigned int j=0; j<visited.size(); j++)
 		{
 			if (nodes[n.available[i]].pos != visited[j].pos)
 			{
-				visited.push_back(n);
+				//std::cout << "Creating node at: " << nodes[n.available[i]].pos[0] << "," << nodes[n.available[i]].pos[1] << " with " << visited.size() << " visited nodes and " << n.available.size() << " available." << std::endl;
 				nextNode(nodes[n.available[i]], visited, goalNode);
 			}
+		}
+	}
+}
+
+void PathFinding::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
+{
+	if (storedPaths.size() > 0) // Any stored paths
+	{
+		// Colour of the pathLines
+		float vColour[] = {0.2f, 0.8f, 0.2f, 1.0f};
+		// Loop through all paths
+		typedef map<array<array<float,3>, 2>, vector<array<float, 3>>>::iterator mIter;
+		for (mIter iter=storedPaths.begin(); iter!=storedPaths.end(); iter++)
+		{
+			// Loop through the path
+			for (unsigned int i=1; i<iter->second.size(); i++)
+			{
+				// Generate batch between the two points
+				pathBatch.Begin(GL_LINE, 2);
+				pathBatch.Vertex3f(iter->second[i-1][0], iter->second[i-1][1], iter->second[i-1][2]);
+				pathBatch.Vertex3f(iter->second[i][0], iter->second[i][1], iter->second[i][2]);
+				pathBatch.End();
+				
+				glDisable(GL_DEPTH_TEST);
+				mvStack.PushMatrix();
+				shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vColour);
+				pathBatch.Draw();
+				mvStack.PopMatrix();
+				glEnable(GL_DEPTH_TEST);
+			}
+		}
+	}
+	
+	// Generate batch between the two points
+	for (unsigned int i=0; i<nodes.size(); i++)
+	{
+		for (unsigned int j=0; j<nodes[i].available.size(); j++)
+		{
+			float aLineColour[] = {0.8f, 0.2f, 0.2f, 1.0f};
+			GLBatch aLineBatch;
+			aLineBatch.Begin(GL_LINES, 2);
+			aLineBatch.Vertex3f(nodes[i].pos[0], nodes[i].pos[1], nodes[i].pos[2]);
+			aLineBatch.Vertex3f(nodes[nodes[i].available[j]].pos[0], nodes[nodes[i].available[j]].pos[1], nodes[nodes[i].available[j]].pos[2]);
+			aLineBatch.End();
+			
+			glDisable(GL_DEPTH_TEST);
+			mvStack.PushMatrix();
+			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), aLineColour);
+			aLineBatch.Draw();
+			mvStack.PopMatrix();
+			glEnable(GL_DEPTH_TEST);
 		}
 	}
 }

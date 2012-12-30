@@ -39,7 +39,7 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 }
 
 //Create a building - not a building type, a factual building:
-void House::create(vector< vector<float> > &pos)
+void House::create(vector< vector<float> > pos)
 {
 	houses.push_back(new House()); //Add a new element to the vector houses, to represent the newly constructet building
 	houses[houses.size()-1]->cubes = pos.size(); //Set the number of cubes to the number of positions to draw cubes at
@@ -60,23 +60,23 @@ void House::create(vector< vector<float> > &pos)
 			LR = i;
 	}
 
-	setWalls(pos[UL][0], pos[UL][1], pos[LR][0], pos[LR][1]);
+	houses[houses.size()-1]->setWalls(pos[UL][0], pos[UL][1], pos[LR][0], pos[LR][1]);
 
 	// Add nodes to pathNodes-vector
 	array<float, 3> node = {pos[UL][0]-(2*radius), pos[UL][1]+(2*radius), pos[UL][2]};
-	pathNodes[0] = node;
+	houses[houses.size()-1]->pathNodes[0] = node;
 	node[0] = pos[UL][0]-(2*radius);
 	node[1] = pos[LR][1]-(2*radius);
-	pathNodes[1] = node;
+	houses[houses.size()-1]->pathNodes[1] = node;
 	node[0] = pos[LR][0]+(2*radius);
 	node[1] = pos[UL][1]+(2*radius);
-	pathNodes[2] = node;
+	houses[houses.size()-1]->pathNodes[2] = node;
 	node[0] = pos[LR][0]+(2*radius);
 	node[1] = pos[LR][1]-(2*radius);
-	pathNodes[3] = node;
+	houses[houses.size()-1]->pathNodes[3] = node;
 	node[0] = ((pos[LR][0] - pos[UL][0])/2) + pos[UL][0]; // Rigth in the middle of upper left x and lower right x
 	node[1] = pos[UL][1] + (2*radius);
-	pathNodes[4] = node;
+	houses[houses.size()-1]->pathNodes[4] = node;
 }
 
 void House::getNodes(vector<array<float, 3>> &nodes)
@@ -162,25 +162,26 @@ array<float, 4> House::getWalls()
 // Upper left and lower right corner
 void House::setWalls(float x1, float y1, float x2, float y2)
 {
+	// Adding 0.2 is padding, prevents characters walking with half their body inside the building
 	if (x1 >= x2)
 	{	
-		walls[0] = x2-radius;
-		walls[1] = x1+radius;
+		walls[0] = x2-(radius+0.2f);
+		walls[1] = x1+(radius+0.2f);
 	}
 	else if (x1 < x2)
 	{
-		walls[0] = x1-radius;
-		walls[1] = x2+radius;
+		walls[0] = x1-(radius+0.2f);
+		walls[1] = x2+(radius+0.2f);
 	}
 	if (y1 >= y2)
 	{
-		walls[2] = y2-radius;
-		walls[3] = y1+radius;
+		walls[2] = y2-(radius+0.2f);
+		walls[3] = y1+(radius+0.2f);
 	}
 	else if (y1 < y2)
 	{
-		walls[2] = y1-radius;
-		walls[3] = y2+radius;
+		walls[2] = (radius+0.2f);
+		walls[3] = (radius+0.2f);
 	}
 }
 
