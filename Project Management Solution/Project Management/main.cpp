@@ -23,6 +23,7 @@
 #include <array>
 
 #include "House.h"
+#include "PathFinding.h"
 #include "Button.h"
 #include "Floor.h"
 #include "Grid.h"
@@ -62,6 +63,7 @@ GLFrame cameraFrame;
 Input in;
 
 House baracks;
+PathFinding pf;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
@@ -115,6 +117,7 @@ void setupRC()
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
+	pf.addHouse(&baracks);
 
 	M3DVector3f spawnPos = {0.0f, 0.0f, 0.2f};
 	buildMan.init(0.2, 0.2f, spawnPos);
@@ -162,7 +165,10 @@ void renderScene()
 
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
-		
+	
+	// Draw paths
+	pf.draw(shaderManager, tPipeline, modelViewStack);
+
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
 	modelViewStack.PushMatrix();
@@ -262,7 +268,7 @@ void clickFunc(int key, int state, int x, int y)
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		// Click build-button		
-		if ((x >= buildButton.getXPos()) && (x <= buildButton.getXPos() + buildButton.getWidth()) && (y2d >= buildButton.getYPos()-buildButton.getHeight()) && (y2d <= buildButton.getYPos()))
+		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
@@ -287,14 +293,19 @@ void clickFunc(int key, int state, int x, int y)
 	}
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
-		if (buildMode)
+		if (!(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
 			
-			vector< vector< float > > pos;
+			vector<vector<float>> pos;
 			hlGrid.getSquarePositions(pos);
 			baracks.create(pos);
+			pf.update();
+		}
+		else if ((x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
+		{
+			hlGrid.deactivateAllSquares();
 		}
 		else if (!buildMode)
 			trackCursor = false;

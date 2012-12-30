@@ -160,6 +160,7 @@ void Grid::deactivateAllSquares()
 {
 	squarePositions.clear();
 	hlBatch.Reset();
+	markingLines.Reset();
 }
 
 void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" all highlighted square-positions
