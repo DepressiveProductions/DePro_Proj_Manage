@@ -16,6 +16,7 @@ public:
 	Button(void);
 	~Button(void);
 
+	//void init(int x, int y, int width, int height, int initialWindowWidth, int initialWindowHeight, std::string texFileName); //Goes in SetupRC
 	void init(int x, int y, int width, int height, std::string texFileName); //Goes in SetupRC
 	void draw(GLfloat wWidth, GLfloat wHeight); //Goes in renderScene
 	void clearTexture(void); // Goes in main before terminating program

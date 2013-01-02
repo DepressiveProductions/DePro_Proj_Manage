@@ -11,8 +11,13 @@ Button::~Button(void)
 }
 
 
+//void Button::init(int x, int y, int width, int height, int initialWindowWidth, int initialWindowHeight, std::string texFileName)
 void Button::init(int x, int y, int width, int height, std::string texFileName)
 {
+/*	xVal = ((x/initialWindowWidth)*2)-1;
+	yVal = ((y/initialWindowHeight)*2)-1;
+	widthVal = ((width/initialWindowWidth)*2)-1;
+	heightVal = ((height/initialWindowHeight)*2)-1; */
 	xVal = x;
 	yVal = y;
 	widthVal = width;
@@ -32,7 +37,7 @@ void Button::init(int x, int y, int width, int height, std::string texFileName)
 	buttonBatch.MultiTexCoord2f(0, width, 0.0f);
 	buttonBatch.Vertex3f(x + width, y - height, 0.0f);
 
-	// Upper righ hand corner
+	// Upper right hand corner
 	buttonBatch.MultiTexCoord2f(0, width, height);
 	buttonBatch.Vertex3f(x + width, y, 0.0f);
 

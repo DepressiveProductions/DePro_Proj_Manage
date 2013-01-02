@@ -108,6 +108,7 @@ void setupRC()
 	testBatch.End();
 	#endif
 
+	//buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, W_WIDTH, W_HEIGHT, "Assets/button_build_128x32.tga");
 	buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
@@ -268,6 +269,7 @@ void clickFunc(int key, int state, int x, int y)
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		// Click build-button		
+		//if ((((x/glutGet(GLUT_WINDOW_HEIGHT)) * 2) - 1) >= buildButton.getXPos() && (((x/glutGet(GLUT_WINDOW_HEIGHT)) * 2) - 1) <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;
