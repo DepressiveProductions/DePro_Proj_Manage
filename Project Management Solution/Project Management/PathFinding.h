@@ -23,7 +23,7 @@ public:
 	void update();
 	vector<array<float, 3>> getPath(array<float, 3> a, array<float, 3> b);
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack);
-
+	bool crsLns;
 private:
 	struct node
 	{
@@ -41,5 +41,6 @@ private:
 	vector<House *> building;
 
 	GLBatch pathBatch;
+	vector<array<float, 3>> crsBatchNs;
 };
 

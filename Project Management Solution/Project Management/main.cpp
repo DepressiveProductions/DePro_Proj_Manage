@@ -261,6 +261,8 @@ void releasedKeys(unsigned char key, int x, int y)
 			glutSetCursor(GLUT_CURSOR_NONE);
 		}
 	}
+	if (key == VK_RETURN)
+		pf.crsLns = !pf.crsLns;
 }
 
 void clickFunc(int key, int state, int x, int y)

@@ -165,23 +165,23 @@ void House::setWalls(float x1, float y1, float x2, float y2)
 	// Adding 0.2 is padding, prevents characters walking with half their body inside the building
 	if (x1 >= x2)
 	{	
-		walls[0] = x2-(radius+0.2f);
-		walls[1] = x1+(radius+0.2f);
+		walls[0] = x2-(radius);//+0.2f);
+		walls[1] = x1+(radius);//+0.2f);
 	}
 	else if (x1 < x2)
 	{
-		walls[0] = x1-(radius+0.2f);
-		walls[1] = x2+(radius+0.2f);
+		walls[0] = x1-(radius);//+0.2f);
+		walls[1] = x2+(radius);//+0.2f);
 	}
 	if (y1 >= y2)
 	{
-		walls[2] = y2-(radius+0.2f);
-		walls[3] = y1+(radius+0.2f);
+		walls[2] = y2-(radius);//+0.2f);
+		walls[3] = y1+(radius);//+0.2f);
 	}
 	else if (y1 < y2)
 	{
-		walls[2] = (radius+0.2f);
-		walls[3] = (radius+0.2f);
+		walls[2] = (radius);//+0.2f);
+		walls[3] = (radius);//+0.2f);
 	}
 }
 
