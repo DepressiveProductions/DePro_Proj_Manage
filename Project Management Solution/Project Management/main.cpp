@@ -86,6 +86,7 @@ void setupRC()
 	//Enable depth testing so things won't look effed up:
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
+	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
 
 	//Initialize stock shaders from GLTools:
@@ -390,7 +391,7 @@ int main(int argc, char* argv[])
 
 	//Initiate glut and create a window:
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(W_WIDTH, W_HEIGHT);
 	glutInitWindowPosition( (glutGet(GLUT_SCREEN_WIDTH)-W_WIDTH)/2, // Places the window in the middle of the screen
 							(glutGet(GLUT_SCREEN_HEIGHT)-W_HEIGHT)/2);
