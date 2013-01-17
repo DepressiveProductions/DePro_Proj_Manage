@@ -90,6 +90,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyShaderManager.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="PathFinding.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +101,7 @@
     <ClInclude Include="House.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MyShaderManager.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="PathFinding.h" />
   </ItemGroup>
   <ItemGroup>

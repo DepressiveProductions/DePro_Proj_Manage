@@ -2,6 +2,7 @@
 //#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
+//#define PATH_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -23,7 +24,7 @@
 #include <array>
 
 #include "House.h"
-#include "PathFinding.h"
+#include "Path.h"
 #include "Button.h"
 #include "Floor.h"
 #include "Grid.h"
@@ -63,7 +64,7 @@ GLFrame cameraFrame;
 Input in;
 
 House baracks;
-PathFinding pf;
+Path pf;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
@@ -95,7 +96,7 @@ void setupRC()
 	//Experimental first self-written shaders:
 	emilShaders.initDiffVert();
 	emilShaders.initADSVert();
-	emilShaders.initADSFrag();
+	//emilShaders.initADSFrag();
 	
 	//Move cam back:
 	cameraFrame.MoveForward(-20.0f);
@@ -119,7 +120,7 @@ void setupRC()
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
-	pf.addHouse(&baracks);
+	pf.addBuildingType(&baracks);
 
 	M3DVector3f spawnPos = {0.0f, 0.0f, 0.2f};
 	buildMan.init(0.2, 0.2f, spawnPos);
@@ -169,7 +170,9 @@ void renderScene()
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
 	
 	// Draw paths
+#ifdef PATH_DEBUG
 	pf.draw(shaderManager, tPipeline, modelViewStack);
+#endif
 
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -262,8 +265,6 @@ void releasedKeys(unsigned char key, int x, int y)
 			glutSetCursor(GLUT_CURSOR_NONE);
 		}
 	}
-	if (key == VK_RETURN)
-		pf.crsLns = !pf.crsLns;
 }
 
 void clickFunc(int key, int state, int x, int y)
@@ -272,7 +273,6 @@ void clickFunc(int key, int state, int x, int y)
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		// Click build-button		
-		//if ((((x/glutGet(GLUT_WINDOW_HEIGHT)) * 2) - 1) >= buildButton.getXPos() && (((x/glutGet(GLUT_WINDOW_HEIGHT)) * 2) - 1) <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;

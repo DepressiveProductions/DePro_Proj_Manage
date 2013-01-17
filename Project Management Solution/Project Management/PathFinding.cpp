@@ -3,7 +3,7 @@
 
 PathFinding::PathFinding() {}
 PathFinding::~PathFinding() {}
-
+/*
 void PathFinding::addHouse(House *house)
 {
 	building.push_back(house);
@@ -13,6 +13,7 @@ void PathFinding::addHouse(House *house)
 void PathFinding::update()
 {
 	nodes.clear();
+	crsBatchNs.clear();
 	paths.clear();
 	storedPaths.clear();
 	vector<array<float, 3>> pathNodes;
@@ -24,11 +25,12 @@ void PathFinding::update()
 
 	for (unsigned int i=0; i<pathNodes.size(); i++)
 	{
-		vector<int> aIdx; // Available node's indexes
-		findAvailable(pathNodes, i, aIdx);
+		//vector<int> aIdx; // Available node's indexes
+		//findAvailable(pathNodes, i, aIdx);
 		node n;
 		n.pos = pathNodes[i];
-		n.available = aIdx;
+		findAvailable(pathNodes, i, n.available);
+		//n.available = aIdx;
 		nodes.push_back(n);
 	}
 
@@ -40,6 +42,8 @@ void PathFinding::update()
 			for (unsigned int k=0; k<nodes[j].available.size(); k++)
 			{
 				if (crsBatchNs[i-1] == nodes[j].pos && crsBatchNs[i] == nodes[nodes[j].available[k]].pos)
+					nodes[j].available.erase(nodes[j].available.begin()+k);
+				else if (crsBatchNs[i] == nodes[j].pos && crsBatchNs[i-1] == nodes[nodes[j].available[k]].pos)
 					nodes[j].available.erase(nodes[j].available.begin()+k);
 			}
 		}
@@ -60,7 +64,7 @@ void PathFinding::update()
 	{
 		for (unsigned int ii=doorNodes.size()-1; ii>i; ii--)
 			calculatePath(doorNodes[i], doorNodes[ii]);
-	}*/
+	}
 }
 
 float PathFinding::cF(float a, float b, bool largest) // Compare floats, returns largest if _largest is true
@@ -77,12 +81,12 @@ float PathFinding::cF(float a, float b, bool largest) // Compare floats, returns
 
 void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vector<int> &available)
 {
-	int perNode = 0;
 	for (unsigned int i=0; i<nCoords.size(); i++)
 	{
 		// Prevent divide by zero
-		if (nCoords[i][0] != nCoords[index][0] && index != i)
+		if (nCoords[i][0] != nCoords[index][0])
 		{
+			bool avb = false;
 			// y=kx+m equation to check if the line between the two points crosses a house-wall
 			float k, m; // nCoords[index] contains x and y
 			k = (nCoords[index][1]-nCoords[i][1])/(nCoords[index][0]-nCoords[i][0]);
@@ -97,10 +101,9 @@ void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vect
 					// Check if both points are on the same side of the cube
 					if (cF(nCoords[index][0], nCoords[i][0], true) < walls[0] || cF(nCoords[index][0], nCoords[i][0], false) > walls[1] || cF(nCoords[index][1], nCoords[i][1], true) < walls[3] || cF(nCoords[index][1], nCoords[i][1], false) > walls[2])
 					{
-						perNode++;
-						available.push_back(i);
+						avb = true;
 					}
-					else if (!(cF(nCoords[index][0], nCoords[i][0], true) < walls[0] || cF(nCoords[index][0], nCoords[i][0], false) > walls[1] || cF(nCoords[index][1], nCoords[i][1], true) < walls[3] || cF(nCoords[index][1], nCoords[i][1], false) > walls[2]))
+					else
 					{
 						// Check if it crosses either wall
 						if (!(((k*walls[0])+m <= walls[3] && (k*walls[0])+m >= walls[2]) || // Crosses left wall
@@ -108,12 +111,10 @@ void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vect
 							((walls[2]-m)/k <= walls[0] && (walls[2]-m)/k <= walls[1]) || // Crosses lower wall
 							((walls[3]-m)/k <= walls[0] && (walls[3]-m)/k <= walls[1]))) // Crosses upper wall
 						{
-							available.push_back(i);
-							perNode++;
+							avb = true;
 						}
 						else
 						{
-							perNode++;
 							array<float, 3> pos = nCoords[index];
 							crsBatchNs.push_back(pos);
 							pos = nCoords[i];
@@ -122,9 +123,12 @@ void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vect
 					}
 				}
 			}
+			if (avb)
+				available.push_back(i);
 		}
-		else if (nCoords[i][0] == nCoords[index][0] && index != i) // Both x's have the same value
+		else if (index != i)
 		{
+			bool avb = false;
 			for (unsigned int j=0; j<building.size(); j++)
 			{
 				for (unsigned int jj=0; jj<building[j]->getHouses().size(); jj++)
@@ -136,12 +140,10 @@ void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vect
 						// Check if this path goes through any wall
 						if (!(nCoords[i][0] <= walls[1] && nCoords[i][0] >= walls[0]))
 						{
-							available.push_back(i);
-							perNode++;
+							avb = true;
 						}
 						else
 						{
-							perNode++;
 							array<float, 3> pos = nCoords[index];
 							crsBatchNs.push_back(pos);
 							pos = nCoords[i];
@@ -150,14 +152,14 @@ void PathFinding::findAvailable(vector<array<float, 3>> nCoords, int index, vect
 					}
 					else
 					{
-						perNode++;
-						available.push_back(i);
+						avb=true;
 					}
 				}
-			} 
+			}
+			if (avb)
+				available.push_back(i);
 		}
 	}
-	std::cout << "Pts per node: " << perNode << " Tot: " << nCoords.size()-1 << std::endl;
 }
 
 vector<array<float, 3>> PathFinding::getPath(array<float, 3> a, array<float, 3> b)
@@ -267,27 +269,29 @@ void PathFinding::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPip
 			}
 		}
 	}
-	
+	glDisable(GL_DEPTH_TEST);
+	float aLineColour[] = {0.2f, 0.8f, 0.2f, 1.0f}; // Green
+	std::auto_ptr<GLBatch> aLineBatch (new GLBatch);
+	aLineBatch->Begin(GL_LINES, pow(nodes.size(), 3));
 	// Generate batch between the two points
 	for (unsigned int i=0; i<nodes.size(); i++)
 	{
 		for (unsigned int j=0; j<nodes[i].available.size(); j++)
 		{
-			float aLineColour[] = {0.2f, 0.8f, 0.2f, 1.0f};
-			GLBatch aLineBatch;
-			aLineBatch.Begin(GL_LINES, 2);
-			aLineBatch.Vertex3f(nodes[i].pos[0], nodes[i].pos[1], nodes[i].pos[2]);
-			aLineBatch.Vertex3f(nodes[nodes[i].available[j]].pos[0], nodes[nodes[i].available[j]].pos[1], nodes[nodes[i].available[j]].pos[2]);
-			aLineBatch.End();
+			aLineBatch->Vertex3f(nodes[i].pos[0], nodes[i].pos[1], nodes[i].pos[2]);
+			aLineBatch->Vertex3f(nodes[nodes[i].available[j]].pos[0], nodes[nodes[i].available[j]].pos[1], nodes[nodes[i].available[j]].pos[2]);
 			
-			glDisable(GL_DEPTH_TEST);
-			mvStack.PushMatrix();
-			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), aLineColour);
-			aLineBatch.Draw();
-			mvStack.PopMatrix();
-			glEnable(GL_DEPTH_TEST);
 		}
 	}
+	aLineBatch->End();
+	//glDisable(GL_DEPTH_TEST);
+	mvStack.PushMatrix();
+	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), aLineColour);
+	aLineBatch->Draw();
+	mvStack.PopMatrix();
+	//glEnable(GL_DEPTH_TEST);
+	aLineBatch->Reset();
+
 	// Just for debugging below
 	bool drawWalls = true;
 	if (drawWalls)
@@ -297,7 +301,7 @@ void PathFinding::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPip
 			for (unsigned int j=0; j<building[i]->getHouses().size(); j++)
 			{
 				array<float, 4> walls = building[i]->getHouses()[j]->getWalls();
-				float wallLineColour[] = {0.8f, 0.2f, 0.2f, 1.0f};
+				float wallLineColour[] = {0.8f, 0.2f, 0.2f, 1.0f}; // Red
 				GLBatch wallBatch;
 				wallBatch.Begin(GL_LINE_LOOP, 4);
 				wallBatch.Vertex3f(walls[0], walls[3], 0.0f);
@@ -306,13 +310,41 @@ void PathFinding::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPip
 				wallBatch.Vertex3f(walls[0], walls[2], 0.0f);
 				wallBatch.End();
 				
-				glDisable(GL_DEPTH_TEST);
+				//glDisable(GL_DEPTH_TEST);
 				mvStack.PushMatrix();
 				shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), wallLineColour);
 				wallBatch.Draw();
 				mvStack.PopMatrix();
-				glEnable(GL_DEPTH_TEST);
+				//glEnable(GL_DEPTH_TEST);
+				wallBatch.Reset();
 			}
 		}
 	}
+
+	if (crsLns)
+	{
+		for (unsigned int i=1; i<crsBatchNs.size(); i+=2)
+		{
+			float cLineColour[] = {0.8f, 0.8f, 0.2f, 1.0f}; // Yellow
+			GLBatch cLineBatch;
+			cLineBatch.Begin(GL_LINES, 2);
+			cLineBatch.Vertex3f(crsBatchNs[i-1][0], crsBatchNs[i-1][1], crsBatchNs[i-1][2]);
+			cLineBatch.Vertex3f(crsBatchNs[i][0], crsBatchNs[i][1], crsBatchNs[i][2]);
+			cLineBatch.End();
+			
+			//glDisable(GL_DEPTH_TEST);
+			mvStack.PushMatrix();
+			shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), cLineColour);
+			cLineBatch.Draw();
+			mvStack.PopMatrix();
+			//glEnable(GL_DEPTH_TEST);
+			cLineBatch.Reset();
+		}
+	}
+	glEnable(GL_DEPTH_TEST);
 }
+*/
+//void PathFinder::sizes()
+//{
+//	for (int i)
+//}
