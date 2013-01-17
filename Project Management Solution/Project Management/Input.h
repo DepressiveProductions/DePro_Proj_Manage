@@ -27,7 +27,7 @@ public:
 	bool keyPressed(sf::Keyboard::Key key);
 	bool mouseButtonPressed(sf::Mouse::Button button); // Returns true if left-click is down
 	void getMousePos2(sf::Vector2i &pos);
-	void getCursor3(int x, int y, M3DVector3f &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack);
+	void getCursor3(int x, int y, array<float, 3> &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack);
 
 private:
 	float camSpeed;

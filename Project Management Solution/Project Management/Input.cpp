@@ -27,7 +27,7 @@ void Input::getMousePos2(sf::Vector2i &pos)
 }
 */
 
-void Input::getCursor3(int x, int y, M3DVector3f &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack)
+void Input::getCursor3(int x, int y, array<float, 3> &pos, GLFrame &cameraFrame, GLMatrixStack &projectionStack)
 {
 	M3DVector2f cursor = {x, y};
 	M3DMatrix44f mCamera;

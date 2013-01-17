@@ -9,10 +9,10 @@ Character::~Character(void)
 {
 }
 
-void Character::init(float charSize, float mvSpeed, M3DVector3f &spawnPos)
+void Character::init(float charSize, float mvSpeed, array<float, 3> spawnPos)
 {
 	size = charSize;
-	cFrame.SetOrigin(spawnPos);
+	cFrame.SetOrigin(spawnPos[0], spawnPos[1], spawnPos[2]);
 	moveTo(spawnPos);
 	stepSize = 0.02f;// * mvSpeed;
 
@@ -33,25 +33,26 @@ void Character::move()
 	//else if(((pos[0]-goalPos[0]) == 0) && ((pos[1]-goalPos[1]) == 0))
 		
 	else if((abs(pos[0]-goalPos[0]) <= stepSize) && (abs(pos[1]-goalPos[1]) <= stepSize))
-		cFrame.SetOrigin(goalPos);
+		cFrame.SetOrigin(goalPos[0], goalPos[1], goalPos[2]);
 }
 
-void Character::moveTo(M3DVector3f mvPos)
+void Character::moveTo(array<float, 3> mvPos)
 {
 	for (int i=0; i<3; i++)
 		goalPos[i] = mvPos[i];
 	calculateDirection(goalPos);
-	cFrame.SetUpVector(direction);
+	cFrame.SetUpVector(direction[0], direction[1], direction[2]);
 }
 
-void Character::calculateDirection(M3DVector3f mvPos)
+void Character::calculateDirection(array<float, 3> mvPos)
 {
-	M3DVector3f sPos = {cFrame.GetOriginX(), cFrame.GetOriginY(), cFrame.GetOriginZ()};
-	M3DVector3f ePos;
+	array<float, 3> sPos = {cFrame.GetOriginX(), cFrame.GetOriginY(), cFrame.GetOriginZ()};
+	array<float, 3> ePos;
 	for (int i=0; i<3; i++)
 		ePos[i] = mvPos[i];
 
-	m3dSubtractVectors3(direction, ePos, sPos);
+	for (int i=0; i<3; i++)
+		direction[i] = ePos[i] - sPos[i];
 	float vLength = sqrt(pow(direction[0], 2) + pow(direction[1], 2));
 	direction[0] /= vLength;
 	direction[1] /= vLength;

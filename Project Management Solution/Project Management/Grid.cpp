@@ -2,7 +2,7 @@
 
 Grid::Grid() {}
 
-void Grid::init(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat Scale) // Initialize grid-square. XY is center of square.
+void Grid::init(float centerX, float centerY, float centerZ, float Scale) // Initialize grid-square. XY is center of square.
 {
 	// Center of floor (0.0f, 0.0f, 0.0f)
 	center[0] = centerX;
@@ -14,7 +14,7 @@ void Grid::init(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat Scale
 	setColour(0.4f, 0.4f, 0.4f, 0.8f);
 }
 
-void Grid::setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+void Grid::setColour(float r, float g, float b, float a)
 {
 	vGridColour[0] = r;
 	vGridColour[1] = g;
@@ -22,23 +22,23 @@ void Grid::setColour(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	vGridColour[3] = a;
 }
 
-void Grid::setLineWidth(GLfloat w)
+void Grid::setLineWidth(float w)
 {
 	lineWidth = w;
 }
 
-void Grid::calculateExactPos(M3DVector3f &pos) // Sets pos to nearest grid-square postion
+void Grid::calculateExactPos(array<float, 3> &pos) // Sets pos to nearest grid-square postion
 {
 	int modX = 1; // Modifier for +/- delta x, will be 1 or -1
 	int counterX = 0; // Is the amount of gridsquares that differ between (click)pos and centerpos
-	GLfloat xDiff = pos[0]-center[0];
+	float xDiff = pos[0]-center[0];
 	if (xDiff >= 0) modX = -1; // The modifier always makes the loop go -> 0.0f
 	for (; -modX*xDiff > 0.0f; xDiff += modX*gridScale*2)
 		counterX++;
 	
 	int modY = 1; // Modifier for +/- delta x, will be 1 or -1
 	int counterY = 0; // Is the amount of gridsquares that differ between (click)pos and centerpos
-	GLfloat yDiff = pos[1]-center[1];
+	float yDiff = pos[1]-center[1];
 	if (yDiff >= 0) modY = -1; // The modifier always makes the loop go -> 0.0f
 	for (; -modY*yDiff > 0.0f; yDiff += modY*gridScale*2)
 		counterY++;
@@ -49,8 +49,8 @@ void Grid::calculateExactPos(M3DVector3f &pos) // Sets pos to nearest grid-squar
 
 void Grid::activateSquares()
 {
-	M3DVector3f upperLeftCorner;
-	M3DVector3f lowerRightCorner;
+	array<float, 3> upperLeftCorner;
+	array<float, 3> lowerRightCorner;
 	
 	upperLeftCorner[0] = squarePositions[0][0]-gridScale;
 	upperLeftCorner[1] = squarePositions[0][1]+gridScale;
@@ -76,10 +76,10 @@ void Grid::activateSquares()
 	hlBatch.End();
 }
 
-void Grid::setUpperLeft(M3DVector3f &sPos, M3DVector3f &ePos)
+void Grid::setUpperLeft(array<float, 3> &sPos, array<float, 3> &ePos)
 {
 	// Set sPos upper left corner and ePos lower right corner
-	GLfloat xUL, yUL, xLR, yLR;
+	float xUL, yUL, xLR, yLR;
 	if (sPos[0] >= ePos[0] && sPos[1] >= ePos[1])
 	{	
 		xUL = ePos[0];
@@ -115,10 +115,10 @@ void Grid::setUpperLeft(M3DVector3f &sPos, M3DVector3f &ePos)
 	ePos[1] = yLR;
 }
 
-void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
+void Grid::boxActivation(array<float, 3> &startPos, array<float, 3> &endPos)
 {
-	M3DVector3f sPos;
-	M3DVector3f ePos;
+	array<float, 3> sPos;
+	array<float, 3> ePos;
 	for (int i=0; i < 3; i++)
 	{
 		sPos[i] = startPos[i];
@@ -126,7 +126,7 @@ void Grid::boxActivation(M3DVector3f &startPos, M3DVector3f &endPos)
 	}
 
 	// Batch with lines forming a rectangle from clicking position to actual position
-	GLfloat vVerts[] = {sPos[0], sPos[1], center[2],
+	float vVerts[] = {sPos[0], sPos[1], center[2],
 						ePos[0], sPos[1], center[2],
 						ePos[0], ePos[1], center[2],
 						sPos[0], ePos[1], center[2]};
@@ -163,14 +163,14 @@ void Grid::deactivateAllSquares()
 	markingLines.Reset();
 }
 
-void Grid::getSquarePositions(vector< vector<float> > &positions) // "Returns" all highlighted square-positions
+void Grid::getSquarePositions(vector<array<float,3>> &positions) // "Returns" all highlighted square-positions
 {
 	for (unsigned int i=0; i < squarePositions.size(); i++)
 	{
-		vector<float> pos;
-		pos.push_back(squarePositions[i][0]);
-		pos.push_back(squarePositions[i][1]);
-		pos.push_back(0.0f);
+		array<float,3> pos;
+		pos[0] = squarePositions[i][0];
+		pos[1] = squarePositions[i][1];
+		pos[2] = 0.0f;
 		positions.push_back(pos);
 	}
 }

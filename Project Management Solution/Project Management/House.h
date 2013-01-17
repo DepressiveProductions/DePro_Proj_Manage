@@ -59,7 +59,7 @@ class House
 		
 		void init(GLfloat fRadius);															//Initiate a building type with default shinyness and color
 		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);					//Initiate a building with specified shinyness and color
-		void create(vector< vector<float> > pos);											//Create a building - not a building type, a factual building
+		void create(vector< array<float, 3> > pos);											//Create a building - not a building type, a factual building
 		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline,
 					M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);	//Loop through every building of the building type, and draw them
 

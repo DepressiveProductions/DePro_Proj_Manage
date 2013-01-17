@@ -2,7 +2,7 @@
 //#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
-//#define PATH_DEBUG
+#define PATH_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -45,9 +45,9 @@
 #define W_TITLE "Project: Management - Prototype"
 
 float camSpeed = 5.5f;
-M3DVector3f clickPos;
-M3DVector3f actualPos;
-M3DVector3f lastPos;
+array<float, 3> clickPos;
+array<float, 3> actualPos;
+array<float, 3> lastPos;
 float mouseLook = 50.0f;
 bool buildMode = false;
 bool trackCursor = false;
@@ -122,7 +122,7 @@ void setupRC()
 	baracks.init(C_RAD, baracksShine, baracksColor);
 	pf.addBuildingType(&baracks);
 
-	M3DVector3f spawnPos = {0.0f, 0.0f, 0.2f};
+	array<float, 3> spawnPos = {0.0f, 0.0f, 0.2f};
 	buildMan.init(0.2, 0.2f, spawnPos);
 }
 
@@ -303,7 +303,7 @@ void clickFunc(int key, int state, int x, int y)
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
 			
-			vector<vector<float>> pos;
+			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			baracks.create(pos);
 			pf.update();

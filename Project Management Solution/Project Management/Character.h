@@ -18,20 +18,20 @@ class Character
 public:
 	Character(void);
 	~Character(void);
-	void init(float charSize, float mvSpeed, M3DVector3f &spawnPos);
+	void init(float charSize, float mvSpeed, array<float, 3> spawnPos);
 	void move();
-	void moveTo(M3DVector3f mvPos);
+	void moveTo(array<float, 3> mvPos);
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLightPos);
 
 private:
 	GLFrame cFrame;
 	GLBatch cBatch;
-	M3DVector3f vColour;
-	M3DVector3f direction;
-	M3DVector3f goalPos;
+	M3DVector4f vColour;
+	array<float, 3> direction;
+	array<float, 3> goalPos;
 	float size;
 
-	void calculateDirection(M3DVector3f mvPos);
+	void calculateDirection(array<float, 3> mvPos);
 	float stepSize;
 };
 

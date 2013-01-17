@@ -146,22 +146,11 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 }
 
 //Create a building - not a building type, a factual building:
-void House::create(vector< vector<float> > pos)
+void House::create(vector< array<float, 3> > pos)
 {
-	//Convert vector->array
-	vector< array<float,3> > tempVec;
-	array<float,3> tempArr;
-	for (unsigned int i = 0 ; i < pos.size() ; i++)
-	{
-		tempArr[0] = pos[i][0];
-		tempArr[1] = pos[i][1];
-		tempArr[2] = pos[i][2];
-		tempVec.push_back(tempArr);
-	}
-	
 	//Create and initiate the new building object:
 	buildings.push_back(new Building());
-	buildings[buildings.size()-1]->init(tempVec, radius);
+	buildings[buildings.size()-1]->init(pos, radius);
 }
 
 array<array<float, 3>, 5> Building::getNodes()
