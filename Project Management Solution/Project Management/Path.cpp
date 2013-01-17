@@ -21,18 +21,18 @@ void Path::copyNodes()
 	nodes.clear(); // Erase the earlier nodes
 	for (unsigned int i=0; i<buildingTypes.size(); i++)
 	{
-		for (unsigned int j=0; j<buildingTypes[i]->getHouses().size(); j++)
+		for (unsigned int j=0; j<buildingTypes[i]->getBuildings().size(); j++)
 		{
 			node n; // Temporary node for the position
-			n.pos = buildingTypes[i]->getHouses()[j]->getNodes()[0]; // Add the first house-node
+			n.pos = buildingTypes[i]->getBuildings()[j]->getNodes()[0]; // Add the first house-node
 			nodes.push_back(n);
-			n.pos = buildingTypes[i]->getHouses()[j]->getNodes()[1]; // Add the second house-node
+			n.pos = buildingTypes[i]->getBuildings()[j]->getNodes()[1]; // Add the second house-node
 			nodes.push_back(n);
-			n.pos = buildingTypes[i]->getHouses()[j]->getNodes()[2]; // Add the third house-node
+			n.pos = buildingTypes[i]->getBuildings()[j]->getNodes()[2]; // Add the third house-node
 			nodes.push_back(n);
-			n.pos = buildingTypes[i]->getHouses()[j]->getNodes()[3]; // Add the fourth house-node
+			n.pos = buildingTypes[i]->getBuildings()[j]->getNodes()[3]; // Add the fourth house-node
 			nodes.push_back(n);
-			n.pos = buildingTypes[i]->getHouses()[j]->getNodes()[4]; // Add the door-node
+			n.pos = buildingTypes[i]->getBuildings()[j]->getNodes()[4]; // Add the door-node
 			nodes.push_back(n);
 		}
 	}
@@ -47,21 +47,21 @@ void Path::setAvailable()
 			bool valid = true;
 			for (unsigned int bt=0; bt<buildingTypes.size(); bt++)
 			{
-				for (unsigned int b=0; b<buildingTypes[bt]->getHouses().size(); b++)
+				for (unsigned int b=0; b<buildingTypes[bt]->getBuildings().size(); b++)
 				{
-					if (pValid(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getHouses()[b]->getWalls()))
+					if (pValid(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getBuildings()[b]->getWalls()))
 					{
 						valid = true;
 						continue;
 					}
 
-					if (pInvalid(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getHouses()[b]->getWalls()))
+					if (pInvalid(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getBuildings()[b]->getWalls()))
 					{
 						valid = false;
 						break;
 					}
 
-					if (!lineCheck(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getHouses()[b]->getWalls()))
+					if (!lineCheck(nodes[n].pos, nodes[nn].pos, buildingTypes[bt]->getBuildings()[b]->getWalls()))
 					{
 						valid = false;
 						break;
@@ -173,9 +173,9 @@ void Path::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline, 
 	{
 		for (unsigned int i=0; i<buildingTypes.size(); i++)
 		{
-			for (unsigned int j=0; j<buildingTypes[i]->getHouses().size(); j++)
+			for (unsigned int j=0; j<buildingTypes[i]->getBuildings().size(); j++)
 			{
-				array<float, 4> walls = buildingTypes[i]->getHouses()[j]->getWalls();
+				array<float, 4> walls = buildingTypes[i]->getBuildings()[j]->getWalls();
 				float wallLineColour[] = {0.8f, 0.2f, 0.2f, 1.0f}; // Red
 				GLBatch wallBatch;
 				wallBatch.Begin(GL_LINE_LOOP, 4);

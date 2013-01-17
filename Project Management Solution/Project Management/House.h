@@ -10,47 +10,79 @@
 using std::array;
 using std::vector;
 
+class Block
+{
+	public:
+		Block(void);
+		~Block(void);
+
+		void init(array<float,3> pos, float radius);
+		void draw(MyShaderManager &shaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, M3DVector4f vColor, M3DVector4f vSpecular, GLBatch &batch);
+
+		void setPosition(array<float,3> pos, float radius);
+
+		array<float,3> getPosition(); //Returns block position
+	
+private:
+		GLFrame blockFrame; //Frame representing position and orientation
+		array<float,3> position;
+};
+
+class Building
+{
+	public:
+		Building(void);
+		~Building(void);
+		
+		void init(vector< array<float,3> > positions, float radius);
+		void drawBlocks(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, M3DVector4f vColor, M3DVector4f vSpecular, GLBatch &batch);
+
+		void setWalls(float x1, float y1, float x2, float y2, float radius); // Upper left- and lower right corner
+
+		vector< array<float,3> > getPositions();
+		array<array<float, 3>, 5> getNodes();	//Returns the nodes for  the Path-class
+		array<float, 3> getDoorNode();			//Returns the door node
+		array<float, 4> getWalls();				//Returns house-borders
+
+	private:
+		vector< Block * > blocks;
+		array<array<float, 3>, 5> pathNodes;
+		array<float, 4> walls;					// left x, right x, lower y, upper y
+};
+
+
 class House
 {
 	public:
 		House(void);
 		~House(void);
 		
-		void init(GLfloat fRadius); //Initiate a building type with default shinyness and color
-		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color); //Initiate a building with specified shinyness and color
-		void create(vector< vector<float> > pos); //Create a building - not a building type, a factual building
-		void draw(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, GLBatch &batch); //Draw building
-		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient); //Loop through every building of the building type, and draw them
-		void inherit(GLfloat fRadius, M3DVector4f shine, M3DVector4f color); //Used to make buildings inherit values from their building type
+		void init(GLfloat fRadius);															//Initiate a building type with default shinyness and color
+		void init(GLfloat fRadius, M3DVector4f shine, M3DVector4f color);					//Initiate a building with specified shinyness and color
+		void create(vector< vector<float> > pos);											//Create a building - not a building type, a factual building
+		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline,
+					M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);	//Loop through every building of the building type, and draw them
 
-		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a); //Set building type color to specified GLfloats
-		void setColor(M3DVector4f &vOldColor, GLfloat r, GLfloat g, GLfloat b, GLfloat a); //Set a specified color to specified GLfloats
-		void setColor(M3DVector4f &vOldColor, M3DVector4f vNewColor); //Set specified color to specified M3DVector4f
+		//Setters:
+		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);							//Set building type color to specified GLfloats
+		void setColor(M3DVector4f &vOldColor, GLfloat r, GLfloat g, GLfloat b, GLfloat a);	//Set a specified color to specified GLfloats
+		void setColor(M3DVector4f &vOldColor, M3DVector4f vNewColor);						//Set specified color to specified M3DVector4f
 		
-		void getColor(M3DVector4f &vOut); //Returns the building type color by setting it to &vOut
-		float getRadius(); //Returns the radius of the cubes
-		array<array<float, 3>, 5> House::getNodes(); // Returns the nodes for  the Path-class
-		array<float, 3> getDoorNode();
-		vector< vector<float> > getPositions(); //Returns the positions of the cubes that make up the building
-		vector< House * > getHouses(); //Returns the buildings of the building type
-		array<float, 4> getWalls(); // Returns house-borders
+		//Getters:
+		void getColor(M3DVector4f &vOut);		//Returns the building type color by setting it to &vOut
+		float getRadius();						//Returns the radius of the cubes
+		vector< Building * > getBuildings();	//Returns the buildings of the building type
+		vector< vector< float > > getPositions();
+		
 
 	private:
-		M3DVector4f vColor; //Color of the building
+		M3DVector4f vColor;					//Color of the building
+		M3DVector4f vSpecular;				//Shinyness of the building
+		GLBatch houseBatch;					//Batch to draw
 
-		M3DVector4f vSpecular; //Shinyness of the building
-
-		GLBatch houseBatch; //Batch to draw
-		GLFrame houseFrame; //Frame used in the drawing loop
-
-		vector< House * > houses; //List of buildings of the building type
-		vector< vector< float > > positions; //List of positions of the cubes that make up the building
+		vector< Building * > buildings;		//List of buildings of the building type
 		
-		GLfloat radius; //Radius of cubes that make up the buildings
-		unsigned int cubes; //Used in the drawing method, represents number of cubes that make up a building
-
-		array<array<float, 3>, 5> pathNodes;
-		array<float, 4> walls; // left x, right x, lower y, upper y
-		void setWalls(float x1, float y1, float x2, float y2); // Upper left- and lower right corner
+		GLfloat radius;						//Radius of cubes that make up the buildings
+		unsigned int cubes;					//Used in the drawing method, represents number of cubes that make up a building
 };
 
