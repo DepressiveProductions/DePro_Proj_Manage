@@ -14,11 +14,11 @@ void Block::init(array<float,3> pos, float radius)
 
 void Block::draw(MyShaderManager &shaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, M3DVector4f vColor, M3DVector4f vSpecular, GLBatch &batch)
 {
-	mvStack.PushMatrix(); //Push to get a matrix that we are free to mess with
-	mvStack.MultMatrix(blockFrame); //Transform the top of the model view stack with the new frame position
-	shaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline); //Use the ADS shader that interpolates between vertices
-	batch.Draw(); //Draw the batch with the above specified shader
-	mvStack.PopMatrix(); //Pop back to the previous matrix, reverting the changes
+	mvStack.PushMatrix();													//Push to get a matrix that we are free to mess with
+	mvStack.MultMatrix(blockFrame);											//Transform the top of the model view stack with the new frame position
+	shaders.useADSVert(vColor, vAmbient, vSpecular, vLightPos, tPipeline);	//Use the ADS shader that interpolates between vertices
+	batch.Draw();															//Draw the batch with the above specified shader
+	mvStack.PopMatrix();													//Pop back to the previous matrix, reverting the changes
 }
 
 void Block::setPosition(array<float,3> pos, float radius)
@@ -124,6 +124,11 @@ vector< array<float,3> > Building::getPositions()
 	return vTempRet;
 }
 
+array<float, 4> Building::getWalls()
+{
+	return walls;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////// End of class
 
 //Constructor:
@@ -196,6 +201,11 @@ void House::getColor(M3DVector4f &vOut)
 	vOut[1] = vColor[1];
 	vOut[2] = vColor[2];
 	vOut[3] = vColor[3];
+}
+
+vector< Building * > House::getBuildings()
+{
+	return buildings;
 }
 
 //Returns the positions of the cubes that make up the building
