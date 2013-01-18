@@ -28,7 +28,6 @@
 #include "Grid.h"
 #include "Input.h"
 #include "MyShaderManager.h"
-#include "Character.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -48,6 +47,7 @@ array<float, 3> actualPos;
 array<float, 3> lastPos;
 float mouseLook = 50.0f;
 bool buildMode = false;
+bool destroyMode = true; //DISCLAIMER - CHANGE THIS WHEN BUTTON EXISTS
 bool trackCursor = false;
 bool mouseActive = false;
 bool marking = false;
@@ -62,11 +62,12 @@ GLFrustum viewFrustum;
 GLFrame cameraFrame;
 Input in;
 
-House baracks;
+using std::vector;
+
+vector< House * > buildingTypes;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
-Character buildMan;
 
 #ifdef TRIANGLE_DEBUG
 GLBatch testBatch;
@@ -117,10 +118,10 @@ void setupRC()
 
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
-	baracks.init(C_RAD, baracksShine, baracksColor);
+	buildingTypes.push_back(new House());
+	buildingTypes[0]->init(C_RAD, baracksShine, baracksColor);
 
 	array<float, 3> spawnPos = {0.0f, 0.0f, 0.2f};
-	buildMan.init(0.2, 0.2f, spawnPos);
 }
 
 void changeSize(int w, int h)
@@ -175,9 +176,8 @@ void renderScene()
 	#endif
 
 	// Baracks
-	baracks.drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
+	buildingTypes[0]->drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
 
-	buildMan.draw(shaderManager, tPipeline, modelViewStack, vLightEyePos);
 
 	//End cam push:
 	modelViewStack.PopMatrix();
@@ -192,7 +192,6 @@ void renderScene()
 
 	// Input
 	handleInput(inputTimer);
-	buildMan.move();
 }
 
 void handleInput(CStopWatch &inputTimer)
@@ -295,6 +294,35 @@ void clickFunc(int key, int state, int x, int y)
 				lastPos[0] = xx;
 				lastPos[1] = yy;
 			}
+
+			//Click away a building:
+			if (destroyMode && !buildMode)
+			{
+				bool buildingFound = false;
+				in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
+				for (unsigned int bt = 0 ; bt < buildingTypes.size() ; bt++)
+				{
+					for (unsigned int b = 0 ; b < buildingTypes[bt]->buildings.size() ; b++)
+					{
+						for (unsigned int p = 0 ; p < buildingTypes[bt]->buildings[b]->getPositions().size() ; p++)
+						{
+							//If click on building:
+							if (clickPos[0] >= buildingTypes[bt]->buildings[b]->getWalls()[0] 
+								&& clickPos[0] <= buildingTypes[bt]->buildings[b]->getWalls()[1] 
+								&& clickPos[1] >= buildingTypes[bt]->buildings[b]->getWalls()[2] 
+								&& clickPos[1] <= buildingTypes[bt]->buildings[b]->getWalls()[3])
+							{
+								buildingTypes[bt]->removeBuilding(b);
+								buildingFound = true;
+								break;
+							}
+						}
+						if (buildingFound) break;
+					}
+					if (buildingFound) break;
+				}
+					
+			}
 		}
 	}
 	
@@ -313,7 +341,7 @@ void clickFunc(int key, int state, int x, int y)
 			
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
-			baracks.create(pos);
+			buildingTypes[0]->create(pos);
 			hlGrid.deactivateAllSquares();
 			marking = false;
 		}
@@ -336,7 +364,6 @@ void clickFunc(int key, int state, int x, int y)
 			if (!buildMode)
 			{
 				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
-				buildMan.moveTo(actualPos);
 			}
 			//For canceling the boxing of the ground and the construction:
 			else if (buildMode)

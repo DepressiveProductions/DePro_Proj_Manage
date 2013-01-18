@@ -62,6 +62,7 @@ class House
 		void create(vector< array<float, 3> > pos);											//Create a building - not a building type, a factual building
 		void drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline,
 					M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient);	//Loop through every building of the building type, and draw them
+		void removeBuilding(unsigned int index);											//Remove a building, index is the index of the buildings-vector
 
 		//Setters:
 		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);							//Set building type color to specified GLfloats
@@ -69,20 +70,20 @@ class House
 		void setColor(M3DVector4f &vOldColor, M3DVector4f vNewColor);						//Set specified color to specified M3DVector4f
 		
 		//Getters:
-		void getColor(M3DVector4f &vOut);		//Returns the building type color by setting it to &vOut
-		float getRadius();						//Returns the radius of the cubes
-		vector< Building * > getBuildings();	//Returns the buildings of the building type
-		vector< vector< float > > getPositions();
-		
+		void getColor(M3DVector4f &vOut);			//Returns the building type color by setting it to &vOut
+		float getRadius();							//Returns the radius of the cubes
+		vector< Building * > getBuildings();		//Returns the buildings of the building type
+		vector< array<float,3> > getPositions();
+
+		//Public attributes:
+		vector< Building * > buildings;				//List of buildings of the building type
 
 	private:
-		M3DVector4f vColor;					//Color of the building
-		M3DVector4f vSpecular;				//Shinyness of the building
-		GLBatch houseBatch;					//Batch to draw
-
-		vector< Building * > buildings;		//List of buildings of the building type
+		M3DVector4f vColor;							//Color of the building
+		M3DVector4f vSpecular;						//Shinyness of the building
+		GLBatch houseBatch;							//Batch to draw
 		
-		GLfloat radius;						//Radius of cubes that make up the buildings
-		unsigned int cubes;					//Used in the drawing method, represents number of cubes that make up a building
+		GLfloat radius;								//Radius of cubes that make up the buildings
+		unsigned int cubes;							//Used in the drawing method, represents number of cubes that make up a building
 };
 
