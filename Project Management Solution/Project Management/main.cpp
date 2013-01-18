@@ -2,7 +2,6 @@
 //#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
-#define PATH_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -24,7 +23,6 @@
 #include <array>
 
 #include "House.h"
-#include "Path.h"
 #include "Button.h"
 #include "Floor.h"
 #include "Grid.h"
@@ -40,8 +38,8 @@
 #endif
 
 #define C_RAD 0.5f
-#define W_WIDTH 800
-#define W_HEIGHT 600
+#define W_WIDTH 1280
+#define W_HEIGHT 720
 #define W_TITLE "Project: Management - Prototype"
 
 float camSpeed = 5.5f;
@@ -64,7 +62,6 @@ GLFrame cameraFrame;
 Input in;
 
 House baracks;
-Path pf;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
@@ -120,7 +117,6 @@ void setupRC()
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
-	pf.addBuildingType(&baracks);
 
 	array<float, 3> spawnPos = {0.0f, 0.0f, 0.2f};
 	buildMan.init(0.2, 0.2f, spawnPos);
@@ -168,11 +164,6 @@ void renderScene()
 
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
-	
-	// Draw paths
-#ifdef PATH_DEBUG
-	pf.draw(shaderManager, tPipeline, modelViewStack);
-#endif
 
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -270,15 +261,18 @@ void releasedKeys(unsigned char key, int x, int y)
 void clickFunc(int key, int state, int x, int y)
 {
 	int y2d = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
+	
+	//If LMB is clicked:
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
-		// Click build-button		
+		//If mouse on build button:	
 		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
 			ground.toggleGrid();
 		}
+
 		else
 		{
 			in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
@@ -296,8 +290,11 @@ void clickFunc(int key, int state, int x, int y)
 			}
 		}
 	}
+	
+	//If LMB is released:
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
+		//If mouse not on button:
 		if (!(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
@@ -306,8 +303,8 @@ void clickFunc(int key, int state, int x, int y)
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			baracks.create(pos);
-			pf.update();
 		}
+		//Else if 
 		else if ((x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			hlGrid.deactivateAllSquares();
@@ -316,8 +313,10 @@ void clickFunc(int key, int state, int x, int y)
 			trackCursor = false;
 	}
 
+	//If RMB is clicked:
 	if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
+		//If mouse not on button:
 		if (!(x >= buildButton.getXPos() && x < buildButton.getXPos()+buildButton.getWidth() && y2d <= buildButton.getYPos() && y2d >= buildButton.getYPos()-buildButton.getHeight()))
 		{
 			if (!buildMode)
@@ -325,9 +324,15 @@ void clickFunc(int key, int state, int x, int y)
 				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 				buildMan.moveTo(actualPos);
 			}
+			//For canceling the boxing of the ground and the construction:
+			else if (buildMode)
+			{
+				hlGrid.deactivateAllSquares();
+			}
 		}
 	}
 
+	//Zoom controls:
 	if (!mouseActive)
 	{
 		if (key == 3) //Scroll up
