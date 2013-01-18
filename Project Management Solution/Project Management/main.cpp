@@ -2,7 +2,6 @@
 //#define HOUSE_DEBUG
 //#define TRIANGLE_DEBUG
 //#define DEBUG
-#define PATH_DEBUG
 
 //Includes:
 #include <GLTools.h>
@@ -24,7 +23,6 @@
 #include <array>
 
 #include "House.h"
-#include "Path.h"
 #include "Button.h"
 #include "Floor.h"
 #include "Grid.h"
@@ -40,8 +38,8 @@
 #endif
 
 #define C_RAD 0.5f
-#define W_WIDTH 800
-#define W_HEIGHT 600
+#define W_WIDTH 1280
+#define W_HEIGHT 720
 #define W_TITLE "Project: Management - Prototype"
 
 float camSpeed = 5.5f;
@@ -65,7 +63,6 @@ GLFrame cameraFrame;
 Input in;
 
 House baracks;
-Path pf;
 Floor ground;
 Grid hlGrid; // Highlight grid
 Button buildButton;
@@ -121,7 +118,6 @@ void setupRC()
 	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	baracks.init(C_RAD, baracksShine, baracksColor);
-	pf.addBuildingType(&baracks);
 
 	array<float, 3> spawnPos = {0.0f, 0.0f, 0.2f};
 	buildMan.init(0.2, 0.2f, spawnPos);
@@ -169,11 +165,6 @@ void renderScene()
 
 	// Highlight grid
 	hlGrid.draw(shaderManager, tPipeline, modelViewStack);
-	
-	// Draw paths
-#ifdef PATH_DEBUG
-	pf.draw(shaderManager, tPipeline, modelViewStack);
-#endif
 
 	#ifdef TRIANGLE_DEBUG
 	//Draw debug batches:
@@ -283,6 +274,7 @@ void clickFunc(int key, int state, int x, int y)
 			ground.toggleGrid();
 		}
 
+
 		//Not on build button:
 		else
 		{
@@ -308,6 +300,7 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		//If mouse not on button, and game in construction/marking mode:
 		if (marking && buildMode && !(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()))
+
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
