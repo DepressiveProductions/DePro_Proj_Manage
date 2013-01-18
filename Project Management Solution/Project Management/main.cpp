@@ -270,15 +270,18 @@ void releasedKeys(unsigned char key, int x, int y)
 void clickFunc(int key, int state, int x, int y)
 {
 	int y2d = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
+	
+	//If LMB is clicked:
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
-		// Click build-button		
+		//If mouse on build button:	
 		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
 			ground.toggleGrid();
 		}
+
 		else
 		{
 			in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
@@ -296,8 +299,11 @@ void clickFunc(int key, int state, int x, int y)
 			}
 		}
 	}
+	
+	//If LMB is released:
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
+		//If mouse not on button:
 		if (!(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
@@ -306,8 +312,8 @@ void clickFunc(int key, int state, int x, int y)
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			baracks.create(pos);
-			pf.update();
 		}
+		//Else if 
 		else if ((x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			hlGrid.deactivateAllSquares();
@@ -316,8 +322,10 @@ void clickFunc(int key, int state, int x, int y)
 			trackCursor = false;
 	}
 
+	//If RMB is clicked:
 	if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
+		//If mouse not on button:
 		if (!(x >= buildButton.getXPos() && x < buildButton.getXPos()+buildButton.getWidth() && y2d <= buildButton.getYPos() && y2d >= buildButton.getYPos()-buildButton.getHeight()))
 		{
 			if (!buildMode)
@@ -325,9 +333,15 @@ void clickFunc(int key, int state, int x, int y)
 				in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 				buildMan.moveTo(actualPos);
 			}
+			//For canceling the boxing of the ground and the construction:
+			else if (buildMode)
+			{
+				hlGrid.deactivateAllSquares();
+			}
 		}
 	}
 
+	//Zoom controls:
 	if (!mouseActive)
 	{
 		if (key == 3) //Scroll up
@@ -336,6 +350,7 @@ void clickFunc(int key, int state, int x, int y)
 			cameraFrame.TranslateWorld(0.0f, 0.0f, 0.5f); //Zoom out
 	}
 }
+
 
 void mousePassiveFunc(int x, int y)
 {
