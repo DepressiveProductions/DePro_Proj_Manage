@@ -50,6 +50,7 @@ float mouseLook = 50.0f;
 bool buildMode = false;
 bool trackCursor = false;
 bool mouseActive = false;
+bool marking = false;
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -273,11 +274,13 @@ void clickFunc(int key, int state, int x, int y)
 			ground.toggleGrid();
 		}
 
+		//Not on build button:
 		else
 		{
-			in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
+			in.getCursor3(x, y, clickPos, cameraFrame, projectionStack); //Sets last clicked pos (clickPos) to current pos
 			if (buildMode)
 			{
+				marking = true;
 				hlGrid.deactivateAllSquares();
 			}
 			else if (!buildMode)
@@ -294,8 +297,8 @@ void clickFunc(int key, int state, int x, int y)
 	//If LMB is released:
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
-		//If mouse not on button:
-		if (!(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
+		//If mouse not on button, and game in construction/marking mode:
+		if (marking && buildMode && !(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()))
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
@@ -303,8 +306,11 @@ void clickFunc(int key, int state, int x, int y)
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			baracks.create(pos);
+			hlGrid.deactivateAllSquares();
+			marking = false;
 		}
-		//Else if 
+		
+		//Else if on button:
 		else if ((x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
 		{
 			hlGrid.deactivateAllSquares();
@@ -328,6 +334,7 @@ void clickFunc(int key, int state, int x, int y)
 			else if (buildMode)
 			{
 				hlGrid.deactivateAllSquares();
+				marking = false;
 			}
 		}
 	}
@@ -342,9 +349,10 @@ void clickFunc(int key, int state, int x, int y)
 	}
 }
 
+
 void mousePassiveFunc(int x, int y)
 {
-		if (buildMode)
+		if (buildMode && marking)
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.deactivateAllSquares();
