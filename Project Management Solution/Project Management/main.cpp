@@ -47,7 +47,7 @@ array<float, 3> actualPos;
 array<float, 3> lastPos;
 float mouseLook = 50.0f;
 bool buildMode = false;
-bool destroyMode = true; //DISCLAIMER - CHANGE THIS WHEN BUTTON EXISTS
+bool destroyMode = true; //DISCLAIMER - CHANGE THIS WHEN (IF) BUTTON EXISTS
 bool trackCursor = false;
 bool mouseActive = false;
 bool marking = false;
@@ -63,6 +63,7 @@ GLFrame cameraFrame;
 Input in;
 
 using std::vector;
+using std::array;
 
 vector< House * > buildingTypes;
 Floor ground;
@@ -116,12 +117,65 @@ void setupRC()
 
 	hlGrid.init(0.0f, 0.0f, 0.0f, C_RAD);
 
-	M3DVector4f baracksShine = {0.5, 0.5, 0.5, 1.0};
+	M3DVector4f baracksShine = {0.5f, 0.5f, 0.5f, 1.0};
 	M3DVector4f baracksColor = {0.3f, 0.3f, 0.3f, 1.0f};
 	buildingTypes.push_back(new House());
 	buildingTypes[0]->init(C_RAD, baracksShine, baracksColor);
 
 	array<float, 3> spawnPos = {0.0f, 0.0f, 0.2f};
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//Spawn some initial buildings:
+	vector<array<float, 3>> vInitialBPos;
+
+	//First house
+	array<float,3> initialBPos1 = {-6.5f, 6.5f, 0.0f};
+	array<float,3> initialBPos2 = {-4.5f, 4.5f, 0.0f};
+	hlGrid.boxActivation(initialBPos1, initialBPos2);		
+	hlGrid.getSquarePositions(vInitialBPos);
+	buildingTypes[0]->create(vInitialBPos);
+	hlGrid.deactivateAllSquares();
+
+	//Second house
+	initialBPos1[0] = -6.5f;
+	initialBPos1[1] = -4.5f;
+	initialBPos2[0] = -2.5f;
+	initialBPos2[1] = -5.5f;
+	hlGrid.boxActivation(initialBPos1, initialBPos2);		
+	hlGrid.getSquarePositions(vInitialBPos);
+	buildingTypes[0]->create(vInitialBPos);
+	hlGrid.deactivateAllSquares();
+
+	//Third house
+	initialBPos1[0] = 1.5f;
+	initialBPos1[1] = 4.5f;
+	initialBPos2[0] = 3.5f;
+	initialBPos2[1] = 2.5f;
+	hlGrid.boxActivation(initialBPos1, initialBPos2);		
+	hlGrid.getSquarePositions(vInitialBPos);
+	buildingTypes[0]->create(vInitialBPos);
+	hlGrid.deactivateAllSquares();
+
+	//Forth house
+	initialBPos1[0] = 6.5f;
+	initialBPos1[1] = 3.5f;
+	initialBPos2[0] = 8.5f;
+	initialBPos2[1] = 5.5f;
+	hlGrid.boxActivation(initialBPos1, initialBPos2);		
+	hlGrid.getSquarePositions(vInitialBPos);
+	buildingTypes[0]->create(vInitialBPos);
+	hlGrid.deactivateAllSquares();
+
+	//Fifth house
+	initialBPos1[0] = -3.5f;
+	initialBPos1[1] = 0.5f;
+	initialBPos2[0] = -1.5f;
+	initialBPos2[1] = -0.5f;
+	hlGrid.boxActivation(initialBPos1, initialBPos2);		
+	hlGrid.getSquarePositions(vInitialBPos);
+	buildingTypes[0]->create(vInitialBPos);
+	hlGrid.deactivateAllSquares();
+	///////////////////////////////////////////////////////////////////////////////////////
 }
 
 void changeSize(int w, int h)
@@ -331,6 +385,8 @@ void clickFunc(int key, int state, int x, int y)
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
 			
+			std::cout << clickPos[0] << "," << clickPos[1] << " -- " << actualPos[0] << "," << actualPos[1] << std::endl;
+
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			buildingTypes[0]->create(pos);
