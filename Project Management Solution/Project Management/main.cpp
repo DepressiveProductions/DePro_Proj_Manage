@@ -274,7 +274,10 @@ void clickFunc(int key, int state, int x, int y)
 			ground.toggleGrid();
 		}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Construction cancelling
 		//Not on build button:
 		else
 		{
@@ -300,7 +303,10 @@ void clickFunc(int key, int state, int x, int y)
 	{
 		//If mouse not on button, and game in construction/marking mode:
 		if (marking && buildMode && !(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()))
+<<<<<<< HEAD
 
+=======
+>>>>>>> Construction cancelling
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
