@@ -135,6 +135,7 @@ void setupRC()
 	hlGrid.getSquarePositions(vInitialBPos);
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
+	vInitialBPos.clear();
 
 	//Second house
 	initialBPos1[0] = -6.5f;
@@ -145,6 +146,8 @@ void setupRC()
 	hlGrid.getSquarePositions(vInitialBPos);
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
+	vInitialBPos.clear();
+
 
 	//Third house
 	initialBPos1[0] = 1.5f;
@@ -155,6 +158,7 @@ void setupRC()
 	hlGrid.getSquarePositions(vInitialBPos);
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
+	vInitialBPos.clear();
 
 	//Forth house
 	initialBPos1[0] = 6.5f;
@@ -165,6 +169,7 @@ void setupRC()
 	hlGrid.getSquarePositions(vInitialBPos);
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
+	vInitialBPos.clear();
 
 	//Fifth house
 	initialBPos1[0] = -3.5f;
@@ -175,6 +180,7 @@ void setupRC()
 	hlGrid.getSquarePositions(vInitialBPos);
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
+	vInitialBPos.clear();
 	///////////////////////////////////////////////////////////////////////////////////////
 }
 
@@ -229,9 +235,10 @@ void renderScene()
 	modelViewStack.PopMatrix();
 	#endif
 
-	// Baracks
-	buildingTypes[0]->drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
-
+	//Buildings:
+	for (unsigned int i = 0 ; i < buildingTypes.size() ; i++)
+		buildingTypes[i]->drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
+	std::cout << buildingTypes[0]->buildings.size() << std::endl;
 
 	//End cam push:
 	modelViewStack.PopMatrix();
@@ -350,12 +357,10 @@ void clickFunc(int key, int state, int x, int y)
 			{
 				bool buildingFound = false;
 				in.getCursor3(x, y, clickPos, cameraFrame, projectionStack);
-				for (unsigned int bt = 0 ; bt < buildingTypes.size() ; bt++)
+				for (unsigned int bt = 0 ; bt < buildingTypes.size() ; bt++) //Loop through types
 				{
-					for (unsigned int b = 0 ; b < buildingTypes[bt]->buildings.size() ; b++)
+					for (unsigned int b = 0 ; b < buildingTypes[bt]->buildings.size() ; b++) //Loop through builings in type
 					{
-						for (unsigned int p = 0 ; p < buildingTypes[bt]->buildings[b]->getPositions().size() ; p++)
-						{
 							//If click on building:
 							if (clickPos[0] >= buildingTypes[bt]->buildings[b]->getWalls()[0] 
 								&& clickPos[0] <= buildingTypes[bt]->buildings[b]->getWalls()[1] 
@@ -366,8 +371,6 @@ void clickFunc(int key, int state, int x, int y)
 								buildingFound = true;
 								break;
 							}
-						}
-						if (buildingFound) break;
 					}
 					if (buildingFound) break;
 				}
@@ -385,8 +388,6 @@ void clickFunc(int key, int state, int x, int y)
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
 			
-			std::cout << clickPos[0] << "," << clickPos[1] << " -- " << actualPos[0] << "," << actualPos[1] << std::endl;
-
 			vector<array<float, 3>> pos;
 			hlGrid.getSquarePositions(pos);
 			buildingTypes[0]->create(pos);
@@ -431,7 +432,6 @@ void clickFunc(int key, int state, int x, int y)
 			cameraFrame.TranslateWorld(0.0f, 0.0f, 0.5f); //Zoom out
 	}
 }
-
 
 void mousePassiveFunc(int x, int y)
 {

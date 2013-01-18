@@ -148,7 +148,7 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 void House::removeBuilding(unsigned int index)
 {
 	delete buildings[index];
-	buildings.erase(buildings.begin()+(int)index);
+	buildings.erase(buildings.begin()+index);
 }
 
 //Create a building - not a building type, a factual building:
