@@ -145,6 +145,12 @@ void House::drawAll(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline
 	}
 }
 
+void House::removeBuilding(unsigned int index)
+{
+	//delete buildings[index];
+	buildings.erase(buildings.begin()+(int)index);
+}
+
 //Create a building - not a building type, a factual building:
 void House::create(vector< array<float, 3> > pos)
 {
@@ -197,11 +203,15 @@ vector< Building * > House::getBuildings()
 	return buildings;
 }
 
-//Returns the positions of the cubes that make up the building
-//vector< vector< float > > House::getPositions()
-//{
-//	return positions;
-//}
+//Returns the positions of the cubes that make up the buildings of the building type
+vector< array<float,3> > House::getPositions()
+{
+	vector< array<float,3> >vTempRet;
+	for (unsigned int b = 0 ; b < buildings.size() ; b++)
+		for (unsigned int p ; p < buildings[b]->getPositions().size(); p++)
+			vTempRet.push_back(buildings[b]->getPositions()[p]);
+	return vTempRet;
+}
 
 //Returns the radius of the cubes:
 float House::getRadius()
