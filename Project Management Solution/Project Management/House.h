@@ -40,13 +40,10 @@ class Building
 		void setWalls(float x1, float y1, float x2, float y2, float radius); // Upper left- and lower right corner
 
 		vector< array<float,3> > getPositions();
-		array<array<float, 3>, 5> getNodes();	//Returns the nodes for  the Path-class
-		array<float, 3> getDoorNode();			//Returns the door node
 		array<float, 4> getWalls();				//Returns house-borders
 
 	private:
 		vector< Block * > blocks;
-		array<array<float, 3>, 5> pathNodes;
 		array<float, 4> walls;					// left x, right x, lower y, upper y
 };
 

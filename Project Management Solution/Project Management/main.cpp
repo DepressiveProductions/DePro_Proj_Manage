@@ -238,7 +238,6 @@ void renderScene()
 	//Buildings:
 	for (unsigned int i = 0 ; i < buildingTypes.size() ; i++)
 		buildingTypes[i]->drawAll(emilShaders, tPipeline, vLightEyePos, modelViewStack, vAmbient);
-	std::cout << buildingTypes[0]->buildings.size() << std::endl;
 
 	//End cam push:
 	modelViewStack.PopMatrix();

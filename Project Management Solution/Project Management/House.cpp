@@ -62,26 +62,6 @@ void Building::init(vector< array<float,3> > positions, float radius)
 
 	//Define walls
 	setWalls(positions[UL][0], positions[UL][1], positions[LR][0], positions[LR][1], radius);
-
-	//Nodes:
-	array<float, 3> node = {positions[UL][0]-(2*radius), positions[UL][1]+(2*radius), positions[UL][2]};
-	pathNodes[0] = node;
-
-	node[0] = positions[UL][0]-(2*radius);
-	node[1] = positions[LR][1]-(2*radius);
-	pathNodes[1] = node;
-	
-	node[0] = positions[LR][0]+(2*radius);
-	node[1] = positions[UL][1]+(2*radius);
-	pathNodes[2] = node;
-	
-	node[0] = positions[LR][0]+(2*radius);
-	node[1] = positions[LR][1]-(2*radius);
-	pathNodes[3] = node;
-	
-	node[0] = ((positions[LR][0] - positions[UL][0])/2) + positions[UL][0]; // Rigth in the middle of upper left x and lower right x
-	node[1] = positions[UL][1] + (2*radius);
-	pathNodes[4] = node;
 }
 
 void Building::drawBlocks(MyShaderManager &emilShaders, GLGeometryTransform &tPipeline, M3DVector4f vLightPos, GLMatrixStack &mvStack, M3DVector4f vAmbient, M3DVector4f vColor, M3DVector4f vSpecular, GLBatch &batch)
@@ -157,16 +137,6 @@ void House::create(vector< array<float, 3> > pos)
 	//Create and initiate the new building object:
 	buildings.push_back(new Building());
 	buildings[buildings.size()-1]->init(pos, radius);
-}
-
-array<array<float, 3>, 5> Building::getNodes()
-{
-	return pathNodes;
-}
-
-array<float, 3> Building::getDoorNode() // Get coord for the node outside the door
-{
-	return pathNodes[4];
 }
 
 //Initiate a building with specified shinyness and color:
