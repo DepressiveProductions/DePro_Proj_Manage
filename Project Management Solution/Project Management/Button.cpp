@@ -11,17 +11,18 @@ Button::~Button(void)
 }
 
 
-//void Button::init(int x, int y, int width, int height, int initialWindowWidth, int initialWindowHeight, std::string texFileName)
-void Button::init(int x, int y, int width, int height, std::string texFileName)
+void Button::init(float x, float y, float width, float height, float initialWindowWidth, float initialWindowHeight, std::string texFileName)
+//void Button::init(int x, int y, int width, int height, std::string texFileName)
 {
-/*	xVal = ((x/initialWindowWidth)*2)-1;
+	//Set values, convert from pixels to float between -1 and 1
+	xVal = ((x/initialWindowWidth)*2)-1;
 	yVal = ((y/initialWindowHeight)*2)-1;
 	widthVal = ((width/initialWindowWidth)*2)-1;
-	heightVal = ((height/initialWindowHeight)*2)-1; */
-	xVal = x;
+	heightVal = ((height/initialWindowHeight)*2)-1;		std::cout << xVal << std::endl << yVal << std::endl << widthVal << std::endl << heightVal << std::endl;
+/*	xVal = x;
 	yVal = y;
 	widthVal = width;
-	heightVal = height;
+	heightVal = height; */
 
 	buttonBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
@@ -89,25 +90,25 @@ void Button::clearTexture(void)
 }
 
 
-int Button::getXPos()
+float Button::getXPos()
 {
 	return xVal;
 }
 
 
-int Button::getYPos()
+float Button::getYPos()
 {
 	return yVal;
 }
 
 
-int Button::getWidth()
+float Button::getWidth()
 {
 	return widthVal;
 }
 
 
-int Button::getHeight()
+float Button::getHeight()
 {
 	return heightVal;
 }

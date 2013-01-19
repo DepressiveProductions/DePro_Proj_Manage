@@ -8,6 +8,8 @@
 #include <GLBatch.h>
 #include <array>
 #include <string>
+
+#include <iostream>
 using std::array;
 
 class Button
@@ -16,15 +18,15 @@ public:
 	Button(void);
 	~Button(void);
 
-	//void init(int x, int y, int width, int height, int initialWindowWidth, int initialWindowHeight, std::string texFileName); //Goes in SetupRC
-	void init(int x, int y, int width, int height, std::string texFileName); //Goes in SetupRC
+	void init(float x, float y, float width, float height, float initialWindowWidth, float initialWindowHeight, std::string texFileName); //Goes in SetupRC
+	//void init(int x, int y, int width, int height, std::string texFileName); //Goes in SetupRC
 	void draw(GLfloat wWidth, GLfloat wHeight); //Goes in renderScene
 	void clearTexture(void); // Goes in main before terminating program
 	
-	int getXPos();
-	int getYPos();
-	int getWidth();
-	int getHeight();
+	float getXPos();
+	float getYPos();
+	float getWidth();
+	float getHeight();
 	
 	bool loadTGATextureRect(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 
@@ -36,9 +38,9 @@ private:
 	GLint		locRectMVP;
 	GLint		locRectTexture;
 
-	int xVal;
-	int yVal;
-	int widthVal;
-	int heightVal;
+	float xVal;
+	float yVal;
+	float widthVal;
+	float heightVal;
 };
 

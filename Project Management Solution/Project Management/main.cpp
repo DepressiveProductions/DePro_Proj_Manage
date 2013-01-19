@@ -111,8 +111,8 @@ void setupRC()
 	testBatch.End();
 	#endif
 
-	//buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, W_WIDTH, W_HEIGHT, "Assets/button_build_128x32.tga");
-	buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, "Assets/button_build_128x32.tga");
+	buildButton.init(20, 20+32, 128, 32, W_WIDTH, W_HEIGHT, "Assets/button_build_128x32.tga");
+	//buildButton.init((glutGet(GLUT_WINDOW_WIDTH)/40), (glutGet(GLUT_WINDOW_HEIGHT)/30)+32, 128, 32, "Assets/button_build_128x32.tga");
 
 	ground.init(0.0f, 0.0f, 0.0f, 20, 20, C_RAD);
 
@@ -194,7 +194,7 @@ void renderScene()
 	//End pop:
 	modelViewStack.PopMatrix();
 	
-	buildButton.draw(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	buildButton.draw(W_WIDTH, W_HEIGHT);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -270,13 +270,20 @@ void releasedKeys(unsigned char key, int x, int y)
 
 void clickFunc(int key, int state, int x, int y)
 {
-	int y2d = glutGet(GLUT_WINDOW_HEIGHT)-((W_HEIGHT+y)-glutGet(GLUT_WINDOW_HEIGHT));
+	float x4 = float(x);
+	float y4 = float(y);
+
+	float y2 = float(glutGet(GLUT_WINDOW_HEIGHT))-((W_HEIGHT+y4)-float(glutGet(GLUT_WINDOW_HEIGHT)));
+	float x3 = (((x4/float(glutGet(GLUT_WINDOW_WIDTH))) * 2) - 1);				//Converts pixel values to
+	float y3 = (((y2/float(glutGet(GLUT_WINDOW_HEIGHT))) * 2) - 1);				//float between -1 and 1
+
+	std::cout << x3 << std::endl << y3 << std::endl << buildButton.getXPos() << std::endl << buildButton.getYPos() << std::endl << buildButton.getWidth() << std::endl << buildButton.getHeight() << std::endl;
 	
 	//If LMB is clicked:
 	if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN))
 	{
 		//If mouse on build button:	
-		if (x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos())
+		if (x3 >= buildButton.getXPos() && x3 <= buildButton.getXPos() + buildButton.getWidth() && y3 >= buildButton.getYPos()-buildButton.getHeight() && y3 <= buildButton.getYPos())
 		{
 			buildMode = !buildMode;
 			hlGrid.deactivateAllSquares();
@@ -307,7 +314,7 @@ void clickFunc(int key, int state, int x, int y)
 	else if ((key == GLUT_LEFT_BUTTON) && (state == GLUT_UP))
 	{
 		//If mouse not on button, and game in construction/marking mode:
-		if (marking && buildMode && !(x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()))
+		if (marking && buildMode && !(x3 >= buildButton.getXPos() && x3 <= buildButton.getXPos() + buildButton.getWidth() && y3 >= buildButton.getYPos()-buildButton.getHeight() && y3 <= buildButton.getYPos()))
 		{
 			in.getCursor3(x, y, actualPos, cameraFrame, projectionStack);
 			hlGrid.boxActivation(clickPos, actualPos);
@@ -320,7 +327,7 @@ void clickFunc(int key, int state, int x, int y)
 		}
 		
 		//Else if on button:
-		else if ((x >= buildButton.getXPos() && x <= buildButton.getXPos() + buildButton.getWidth() && y2d >= buildButton.getYPos()-buildButton.getHeight() && y2d <= buildButton.getYPos()) && buildMode)
+		else if ((x3 >= buildButton.getXPos() && x3 <= buildButton.getXPos() + buildButton.getWidth() && y3 >= buildButton.getYPos()-buildButton.getHeight() && y3 <= buildButton.getYPos()) && buildMode)
 		{
 			hlGrid.deactivateAllSquares();
 		}
@@ -332,7 +339,7 @@ void clickFunc(int key, int state, int x, int y)
 	if ((key == GLUT_RIGHT_BUTTON) && (state == GLUT_DOWN))
 	{
 		//If mouse not on button:
-		if (!(x >= buildButton.getXPos() && x < buildButton.getXPos()+buildButton.getWidth() && y2d <= buildButton.getYPos() && y2d >= buildButton.getYPos()-buildButton.getHeight()))
+		if (!(x3 >= buildButton.getXPos() && x3 < buildButton.getXPos()+buildButton.getWidth() && y3 <= buildButton.getYPos() && y3 >= buildButton.getYPos()-buildButton.getHeight()))
 		{
 			if (!buildMode)
 			{
