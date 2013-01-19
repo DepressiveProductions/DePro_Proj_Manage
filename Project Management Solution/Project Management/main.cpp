@@ -48,7 +48,6 @@ array<float, 3> lastPos;
 float mouseLook = 50.0f;
 bool buildMode = false;
 bool destroyMode = true; //DISCLAIMER - CHANGE THIS WHEN (IF) BUTTON EXISTS
-bool trackCursor = false;
 bool mouseActive = false;
 bool marking = false;
 
@@ -342,14 +341,6 @@ void clickFunc(int key, int state, int x, int y)
 				marking = true;
 				hlGrid.deactivateAllSquares();
 			}
-			else if (!buildMode)
-			{
-				trackCursor = true;
-				float xx = float(x)/mouseLook;
-				float yy = float(y)/mouseLook;
-				lastPos[0] = xx;
-				lastPos[1] = yy;
-			}
 
 			//Click away a building:
 			if (destroyMode && !buildMode)
@@ -400,8 +391,6 @@ void clickFunc(int key, int state, int x, int y)
 		{
 			hlGrid.deactivateAllSquares();
 		}
-		else if (!buildMode)
-			trackCursor = false;
 	}
 
 	//If RMB is clicked:
@@ -441,15 +430,7 @@ void mousePassiveFunc(int x, int y)
 			hlGrid.deactivateAllSquares();
 			hlGrid.boxActivation(clickPos, actualPos);
 		}
-		else if (!buildMode && trackCursor)
-		{
-			float xx = float(x)/mouseLook;
-			float yy = float(y)/mouseLook;
-			cameraFrame.MoveRight(xx-lastPos[0]);
-			cameraFrame.MoveUp(yy-lastPos[1]);
-			lastPos[0] = xx;
-			lastPos[1] = yy;
-		}
+
 }
 
 void mouseCameraFunc(int x, int y)
