@@ -83,26 +83,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyShaderManager.cpp" />
-    <ClCompile Include="Path.cpp" />
-    <ClCompile Include="PathFinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Character.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MyShaderManager.h" />
-    <ClInclude Include="Path.h" />
-    <ClInclude Include="PathFinding.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ADS_fragment.fp" />
