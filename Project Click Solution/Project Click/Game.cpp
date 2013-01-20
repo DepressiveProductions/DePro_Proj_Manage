@@ -13,7 +13,10 @@ void Game::init()
 	blocksLeft = false;
 }
 
-void Game::editScore(int delta) {score += delta;}
+void Game::editScore(int delta)
+{
+	score += delta;
+}
 
 void Game::editBlocks(int delta) 
 {
