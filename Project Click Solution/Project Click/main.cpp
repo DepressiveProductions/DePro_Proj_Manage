@@ -27,6 +27,7 @@
 #include <array>
 #include "Game.h"
 #include "Shaders.h"
+#include "Background.h"
 
 //GLTools objects:
 
@@ -43,6 +44,7 @@ GLFrustum viewFrustum;
 
 Game gameLayer;
 Shaders customShaders;
+Background bg;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -66,6 +68,7 @@ void clickFunc(int key, int state, int x, int y);		//Handles mouse clicking
 
 //Function definitions:
 
+//One-time setup function:
 void setup()
 {
 	//Background:
@@ -91,9 +94,14 @@ void setup()
 	cameraFrame.MoveUp(-3.5f);
 	cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
+	//Initiate background:
+	bg.init(40.0f, 10.0f);
+
 	//More initiations below here ...
+
 }
 
+//Runs everytime the window 'changes size', for example when the window is created:
 void changeSize(int w, int h)
 {
 	//Tell OpenGL about the new window size:
@@ -108,22 +116,28 @@ void changeSize(int w, int h)
 	tPipeline.SetMatrixStacks(modelViewStack, projectionStack);
 }
 
+//Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene()
 {
+	//Lighting variables:
+	static M3DVector4f vLightPos = {0.0f, 0.0f, 1.0f, 1.0f};
+	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+
 	//Clear buffers:
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	//Beginning push:
 	modelViewStack.PushMatrix();
 
+	//Draw background:
+	bg.draw(gltShaderManager, tPipeline);
+
 	//Camera matrix:
 	M3DMatrix44f mCamera;
 	cameraFrame.GetCameraMatrix(mCamera);
 	modelViewStack.PushMatrix(mCamera);
 
-	//Light source:
-	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
-	static M3DVector4f vLightPos = {0.0f, 0.0f, 4.0f, 1.0f};
+	//Calc light pos in eye coords:
 	static M3DVector4f vLightEyePos;
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
@@ -149,11 +163,13 @@ void renderScene()
 	gameLayer.showInfo();
 }
 
+//Handles keyboard input:
 void handleInput() 
 {
 
 }
 
+//Handles mouse clicking:
 void clickFunc(int key, int state, int x, int y) 
 {
 
