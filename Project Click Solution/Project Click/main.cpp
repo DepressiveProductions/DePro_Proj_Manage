@@ -25,6 +25,8 @@
 #include <vector>
 #include <thread>
 #include <array>
+#include "Game.h"
+#include "Shaders.h"
 
 //GLTools objects:
 
@@ -38,6 +40,9 @@ GLFrustum viewFrustum;
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Objects:
+
+Game gameLayer;
+Shaders customShaders;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -75,10 +80,11 @@ void setup()
 	gltShaderManager.InitializeStockShaders();
 
 	//Initialize custom shaders:
-	//Comming soon
+	customShaders.initADSVert();
+	customShaders.initDiffVert();
 
 	//Initiate game layer:
-	//Comming soon
+	gameLayer.init();
 
 	//Set initial camera position:
 	cameraFrame.MoveForward(-20.0f);
@@ -140,7 +146,7 @@ void renderScene()
 	//
 
 	//Game layer:
-	//
+	gameLayer.showInfo();
 }
 
 void handleInput() 

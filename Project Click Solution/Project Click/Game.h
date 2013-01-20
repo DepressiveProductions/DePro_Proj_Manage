@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-class Game //Class fore handling gameplay related stuff, like score for example
+class Game //Class for handling gameplay related stuff, like score for example
 {
 	public:
 		Game(void);
@@ -17,11 +17,10 @@ class Game //Class fore handling gameplay related stuff, like score for example
 
 		int getScore();					//Returns the score
 		int getBlocks();				//Returns the number of blocks
-		bool notEmpty();
+		bool empty();
 
 	private:
-		int score;
-		int blocks;
-		bool blocksLeft; //False means that there are no blocks present
+		int score;						//The current player score
+		int blocks;						//The current number of blocks
 };
 
