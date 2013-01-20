@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -93,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Input.h" />

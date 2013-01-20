@@ -27,6 +27,7 @@
 #include "Grid.h"
 #include "Input.h"
 #include "MyShaderManager.h"
+#include "Game.h"
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -42,7 +43,9 @@
 
 array<float, 3> actualPos;
 array<float, 3> lastPos;
+array<float,3> clickPos;
 bool destroyMode = true;
+bool empty = false;
 
 //Some important objects:
 MyShaderManager emilShaders;
@@ -52,6 +55,7 @@ GLMatrixStack projectionStack;
 GLMatrixStack modelViewStack;
 GLFrustum viewFrustum;
 GLFrame cameraFrame;
+Game gameLayer;
 Input in;
 
 using std::vector;
@@ -60,7 +64,6 @@ using std::array;
 vector< House * > buildingTypes;
 Floor ground;
 Grid hlGrid; // Highlight grid
-array<float,3> clickPos;
 
 void setupRC();											//One-time setup function (RC = Rendering Context)
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
@@ -90,6 +93,9 @@ void setupRC()
 	cameraFrame.MoveUp(-3.5f);
 	cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
+	//Initate game layer:
+	gameLayer.init();
+
 	//Initiate ground:
 	ground.init(0.0f, 0.0f, 0.0f, 40, 10, C_RAD);
 
@@ -111,6 +117,7 @@ void setupRC()
 	buildingTypes[0]->create(vInitialBPos);
 	hlGrid.deactivateAllSquares();
 	vInitialBPos.clear();
+	gameLayer.editBlocks(1);
 }
 
 void changeSize(int w, int h)
@@ -164,6 +171,8 @@ void renderScene()
 
 	// Input
 	handleInput();
+
+	gameLayer.showInfo();
 }
 
 void handleInput()
@@ -171,6 +180,10 @@ void handleInput()
 	// Exit
 	if (in.keyPressed(sf::Keyboard::Escape))
 		exit(0);
+	
+	//Restart:
+	if (in.keyPressed(sf::Keyboard::Space) && !gameLayer.notEmpty())
+		std::cout << "Noob" << std::endl;
 }
 
 //Mouseclicking:
@@ -195,6 +208,8 @@ void clickFunc(int key, int state, int x, int y)
 							&& clickPos[1] <= buildingTypes[bt]->buildings[b]->getWalls()[3])
 						{
 							buildingTypes[bt]->removeBuilding(b);
+							gameLayer.editBlocks(-1);
+							gameLayer.editScore(1);
 							buildingFound = true;
 							break;
 						}
