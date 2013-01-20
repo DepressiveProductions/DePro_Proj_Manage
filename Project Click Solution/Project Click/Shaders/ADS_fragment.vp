@@ -1,0 +1,24 @@
+#version 330
+
+//Uniforms:
+uniform mat4 mvpMatrix;
+uniform mat4 mvMatrix;
+uniform mat3 normalMatrix;
+
+//Attributes:
+in vec4 vVertex;
+in vec3 vNormal;
+
+//Output:
+smooth out vec3 vNormalNew;
+smooth out vec3 vPosition3;
+
+void main(void)
+{
+	vec4 vPosition4 = mvMatrix * vVertex;
+	vec3 vPosition3 = vPosition4.xyz / vPosition4.w;
+
+	vNormalNew = vNormal;
+
+	gl_Position = mvpMatrix * vVertex;
+}
