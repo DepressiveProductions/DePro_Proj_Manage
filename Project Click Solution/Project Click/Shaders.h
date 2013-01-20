@@ -5,11 +5,11 @@
 #include <GLShaderManager.h>
 #include <GLGeometryTransform.h>
 
-class MyShaderManager
+class Shaders
 {
 	public:
-		MyShaderManager(void);
-		~MyShaderManager(void);
+		Shaders(void);
+		~Shaders(void);
 	
 		//Diffuse lighting, per vertex:
 		void initDiffVert();

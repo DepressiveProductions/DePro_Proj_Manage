@@ -1,17 +1,17 @@
-#include "MyShaderManager.h"
+#include "Shaders.h"
 
 
-MyShaderManager::MyShaderManager(void)
+Shaders::Shaders(void)
 {
 }
 
 
-MyShaderManager::~MyShaderManager(void)
+Shaders::~Shaders(void)
 {
 }
 
 //Diffuse lighting, per vertex
-void MyShaderManager::initDiffVert()
+void Shaders::initDiffVert()
 {
 	//Load and compile the shader programs:
 	diffVert = gltLoadShaderPairWithAttributes("Shaders/diffuse_vertex.vp", "Shaders/diffuse_vertex.fp", 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
@@ -24,7 +24,7 @@ void MyShaderManager::initDiffVert()
 	vDiffNM = glGetUniformLocation(diffVert, "normalMatrix");
 }
 
-void MyShaderManager::useDiffVert(M3DVector4f vDiffuseColor, M3DVector3f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useDiffVert(M3DVector4f vDiffuseColor, M3DVector3f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(diffVert);
 	glUniform4fv(vDiffColor, 1, vDiffuseColor);
@@ -36,7 +36,7 @@ void MyShaderManager::useDiffVert(M3DVector4f vDiffuseColor, M3DVector3f vLightE
 
 
 //ADS lighting, per vertex
-void MyShaderManager::initADSVert()
+void Shaders::initADSVert()
 {
 	//Load and compile the shader programs:
 	ADSVert = gltLoadShaderPairWithAttributes("Shaders/ADS_vertex.vp", "Shaders/ADS_vertex.fp", 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
@@ -51,7 +51,7 @@ void MyShaderManager::initADSVert()
 	vADSNM = glGetUniformLocation(ADSVert, "normalMatrix");
 }
 
-void MyShaderManager::useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(ADSVert);
 	glUniform4fv(vADSambColor, 1, vAmbientColor);
@@ -63,7 +63,7 @@ void MyShaderManager::useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbient
 }
 
 //ADS lighting, per fragment
-void MyShaderManager::initADSFrag()
+void Shaders::initADSFrag()
 {
 	//Load and compile the shader programs:
 	ADSFrag = gltLoadShaderPairWithAttributes("Shaders/ADS_fragment.vp", "Shaders/ADS_fragment.fp", 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
@@ -78,7 +78,7 @@ void MyShaderManager::initADSFrag()
 	fADSNM = glGetUniformLocation(ADSFrag, "normalMatrix");
 }
 
-void MyShaderManager::useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(ADSFrag);
 	glUniform4fv(fADSambColor, 1, vAmbientColor);
