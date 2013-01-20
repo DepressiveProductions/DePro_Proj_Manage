@@ -7,6 +7,7 @@
 #include "MyShaderManager.h"
 #include <vector>
 #include <array>
+
 using std::array;
 using std::vector;
 
