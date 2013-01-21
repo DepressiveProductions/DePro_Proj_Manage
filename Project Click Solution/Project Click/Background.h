@@ -14,13 +14,14 @@
 
 #include <array>
 #include <vector>
+#include "Actor.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 using std::array;
 using std::vector;
 
-class Background
+class Background : private Actor
 {
 	public:
 		Background(void);
