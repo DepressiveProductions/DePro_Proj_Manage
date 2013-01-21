@@ -11,29 +11,24 @@ Background::~Background(void) {}
 
 void Background::init(float width, float height)
 {
-	z = -5.0f;
-
 	//Set color to white:
 	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	//Calc positions:
-	array<float,3> botLeft = {-width/2, -height/2, z};
-	array<float,3> botRight = {width/2, -height/2, z};
-	array<float,3> topRight = {width/2, height/2, z};
-	array<float,3> topLeft = {-width/2, height/2, z};
-
-	//Set positions and initiate the batch:
-	setPositions(botLeft, botRight, topRight, topLeft);
+	//Initiate the batch:
 	initBatch();
 }
 
 void Background::initBatch()
 {
+	z = -5.0f;
+
+	GLfloat vVerts[] = {-width/2, -height/2, z, //Botleft
+						width/2, -height/2, z,	//Botright
+						width/2, height/2, z,	//Topright
+						-width/2, height/2, z};	//Topleft
+
 	aBatch.Begin(GL_TRIANGLE_FAN, 4);
-	aBatch.Vertex3f(positions[0][0], positions[0][1], positions[0][2]);
-	aBatch.Vertex3f(positions[1][0], positions[1][1], positions[1][2]);
-	aBatch.Vertex3f(positions[2][0], positions[2][1], positions[2][2]);
-	aBatch.Vertex3f(positions[3][0], positions[3][1], positions[3][2]);
+	aBatch.CopyVertexData3f(vVerts);
 	aBatch.End();
 }
 
@@ -69,19 +64,6 @@ void Background::setColor(array<GLfloat,4> vNewColor)
 	vColor[1] = vNewColor[1];
 	vColor[2] = vNewColor[2];
 	vColor[3] = vNewColor[3];
-}
-
-void Background::setPositions(vector< array<float,3> > pos)
-{
-	positions = pos;
-}
-
-void Background::setPositions(array<float,3> pos1, array<float,3> pos2, array<float,3> pos3, array<float,3> pos4)
-{
-	positions.push_back(pos1);
-	positions.push_back(pos2);
-	positions.push_back(pos3);
-	positions.push_back(pos4);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

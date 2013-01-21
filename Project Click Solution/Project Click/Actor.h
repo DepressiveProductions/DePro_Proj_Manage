@@ -14,11 +14,6 @@ class Actor
 		Actor(void);
 		~Actor(void);
 
-		vector< array<float,3> > getPositions();
-
-		vector<array<float,3>> positions;
 		M3DVector4f vColor;
 		GLBatch aBatch;
-
 };
-
