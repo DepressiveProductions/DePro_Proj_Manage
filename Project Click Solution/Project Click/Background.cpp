@@ -29,18 +29,18 @@ void Background::init(float width, float height)
 
 void Background::initBatch()
 {
-	bgBatch.Begin(GL_TRIANGLE_FAN, 4);
-	bgBatch.Vertex3f(positions[0][0], positions[0][1], positions[0][2]);
-	bgBatch.Vertex3f(positions[1][0], positions[1][1], positions[1][2]);
-	bgBatch.Vertex3f(positions[2][0], positions[2][1], positions[2][2]);
-	bgBatch.Vertex3f(positions[3][0], positions[3][1], positions[3][2]);
-	bgBatch.End();
+	aBatch.Begin(GL_TRIANGLE_FAN, 4);
+	aBatch.Vertex3f(positions[0][0], positions[0][1], positions[0][2]);
+	aBatch.Vertex3f(positions[1][0], positions[1][1], positions[1][2]);
+	aBatch.Vertex3f(positions[2][0], positions[2][1], positions[2][2]);
+	aBatch.Vertex3f(positions[3][0], positions[3][1], positions[3][2]);
+	aBatch.End();
 }
 
 void Background::draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline)
 {
 	shaderManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vColor);
-	bgBatch.Draw();
+	aBatch.Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +88,5 @@ void Background::setPositions(array<float,3> pos1, array<float,3> pos2, array<fl
 
 //Getters:
 
-vector< array<float,3> > Background::getPositions() {return positions;}
 
 //////////////////////////////////////////////////////////////////////////////////////////

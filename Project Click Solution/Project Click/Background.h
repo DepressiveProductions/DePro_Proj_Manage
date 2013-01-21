@@ -41,13 +41,8 @@ class Background : private Actor
 
 		//Getters:
 
-		vector< array<float,3> > getPositions();
-
 	private:
 		float width, height, z;
-		vector<array<float,3>> positions;
-		M3DVector4f vColor;
-		GLBatch bgBatch;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////// End of class

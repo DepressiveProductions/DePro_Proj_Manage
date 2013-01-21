@@ -28,6 +28,9 @@
 #include "Game.h"
 #include "Shaders.h"
 #include "Background.h"
+#include "Globals.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 //GLTools objects:
 
@@ -119,6 +122,9 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene()
 {
+	if (Globals::state == Globals::STATE_MENU) ;
+	else if (Globals::state ==Globals::STATE_PLAY) ;
+
 	//Lighting variables:
 	static M3DVector4f vLightPos = {0.0f, 0.0f, 1.0f, 1.0f};
 	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
