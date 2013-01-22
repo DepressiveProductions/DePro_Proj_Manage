@@ -23,26 +23,23 @@ using std::vector;
 
 class Background : private Actor
 {
-	public:
-		Background(void);
-		~Background(void);
+public:
+	Background(void);
+	~Background(void);
 
-		void init(float width, float height);
-		void initBatch();
-		void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline);
+	void init(float width, float height);
+	void initBatch();
+	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline);
 		
-		//Setters:
+	//Setters:
+	void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+	void settings(array<float,3> pos, float width, float height);
 
-		void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-		void setColor(M3DVector4f vNewColor);
-		void setColor(array<GLfloat,4> vNewColor);
-		void setPositions(vector< array<float,3> > pos);
-		void setPositions(array<float,3> pos1, array<float,3> pos2, array<float,3> pos3, array<float,3> pos4);
+	//Getters:
 
-		//Getters:
 
-	private:
-		float width, height, z;
+private:
+	float width, height, z;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////// End of class

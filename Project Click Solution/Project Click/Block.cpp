@@ -4,3 +4,59 @@
 Block::Block(void) {}
 
 Block::~Block(void) {}
+
+void Block::init(float x, float y, float z, float width, float height)
+{
+	aFrame.SetOrigin(x, y, z);
+	// x, y, z is the center of the cuboid
+	w = width/2;
+	h = height/2;
+	d = 10.0f;
+
+	vColor[0] = 0.8f;
+	vColor[1] = 0.8f;
+	vColor[2] = 0.8f;
+	vColor[3] = 1.0f;
+
+	generateBatch();
+}
+
+void Block::setColor(float r, float g, float b, float a)
+{
+	vColor[0] = r;
+	vColor[1] = g;
+	vColor[2] = b;
+	vColor[3] = a;
+}
+
+void Block::generateBatch()
+{
+	aBatch.Begin(GL_TRIANGLE_STRIP, 17);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(w, h, d);
+	aBatch.Vertex3f(-w, -h, d);
+	aBatch.Vertex3f(w, -h, d);
+	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Vertex3f(w, h, -d);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(w, h, d);
+	aBatch.Vertex3f(w, h, -d);
+	aBatch.Vertex3f(w, -h, d);
+	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.End();
+}
+
+void Block::draw(GLShaderManager &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
+{
+	mvStack.PushMatrix();
+	mvStack.MultMatrix(aFrame);
+	sManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vColor);
+	aBatch.Draw();
+	mvStack.PopMatrix();
+}

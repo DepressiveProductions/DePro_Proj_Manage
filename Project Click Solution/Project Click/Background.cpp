@@ -50,22 +50,6 @@ void Background::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	vColor[3] = a;
 }
 
-void Background::setColor(M3DVector4f vNewColor)
-{
-	vColor[0] = vNewColor[0];
-	vColor[1] = vNewColor[1];
-	vColor[2] = vNewColor[2];
-	vColor[3] = vNewColor[3];
-}
-
-void Background::setColor(array<GLfloat,4> vNewColor)
-{
-	vColor[0] = vNewColor[0];
-	vColor[1] = vNewColor[1];
-	vColor[2] = vNewColor[2];
-	vColor[3] = vNewColor[3];
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Getters:
