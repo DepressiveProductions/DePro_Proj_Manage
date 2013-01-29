@@ -98,7 +98,7 @@ void setup()
 	cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
 	//Initiate background:
-	bg.init(40.0f, 10.0f);
+	bg.init(40.0f, 6.0f);
 
 	//More initiations below here ...
 
@@ -111,7 +111,7 @@ void changeSize(int w, int h)
 	glViewport(0, 0, w, h);
 
 	//Don't divide by zero:
-	if (h == 0) h = 1;
+	if (h == 0) { h = 1; }
 
 	//Tell GLTools about the new window size:
 	viewFrustum.SetPerspective(35.0f, float(w)/float(h), 1.0f, 100.0f);

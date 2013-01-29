@@ -14,13 +14,16 @@ void Background::init(float width, float height)
 	//Set color to white:
 	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+	this->width = width;
+	this->height = height;
+
 	//Initiate the batch:
 	initBatch();
 }
 
 void Background::initBatch()
 {
-	z = -5.0f;
+	z = -15.0f;
 
 	GLfloat vVerts[] = {-width/2, -height/2, z, //Botleft
 						width/2, -height/2, z,	//Botright
