@@ -16,8 +16,17 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuInp.cpp" />
+    <ClCompile Include="MenuRend.cpp" />
+    <ClCompile Include="Play.cpp" />
+    <ClCompile Include="PlayInp.cpp" />
+    <ClCompile Include="PlayRend.cpp" />
+    <ClCompile Include="Rendering.cpp" />
     <ClCompile Include="Shaders.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -25,7 +34,16 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuInp.h" />
+    <ClInclude Include="MenuRend.h" />
+    <ClInclude Include="Play.h" />
+    <ClInclude Include="PlayInp.h" />
+    <ClInclude Include="PlayRend.h" />
+    <ClInclude Include="Rendering.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C45A7733-A005-441B-84D7-754119F4AAE3}</ProjectGuid>
