@@ -111,7 +111,7 @@ void changeSize(int w, int h)
 	glViewport(0, 0, w, h);
 
 	//Don't divide by zero:
-	if (h = 0) h = 1;
+	if (h == 0) h = 1;
 
 	//Tell GLTools about the new window size:
 	viewFrustum.SetPerspective(35.0f, float(w)/float(h), 1.0f, 100.0f);
