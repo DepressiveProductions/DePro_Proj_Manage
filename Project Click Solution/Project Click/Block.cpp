@@ -7,15 +7,15 @@ Block::~Block(void) {}
 
 void Block::init(float x, float y, float z, float width, float height)
 {
-	aFrame.SetOrigin(x, y, z);
-	// x, y, z is the center of the cuboid
+	aFrame.SetOrigin(x, y, z); // x, y, z is the center of the cuboid
+	
 	w = width/2;
 	h = height/2;
-	d = 10.0f;
+	d = 5.0f/2;
 
-	vColor[0] = 0.8f;
-	vColor[1] = 0.8f;
-	vColor[2] = 0.8f;
+	vColor[0] = 0.5f;
+	vColor[1] = 0.5f;
+	vColor[2] = 0.5f;
 	vColor[3] = 1.0f;
 
 	generateBatch();
@@ -52,11 +52,11 @@ void Block::generateBatch()
 	aBatch.End();
 }
 
-void Block::draw(GLShaderManager &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack)
+void Block::draw(GLShaderManager &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight)
 {
 	mvStack.PushMatrix();
 	mvStack.MultMatrix(aFrame);
-	sManager.UseStockShader(GLT_SHADER_FLAT, tPipeline.GetModelViewProjectionMatrix(), vColor);
+	sManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, tPipeline.GetModelViewMatrix(), tPipeline.GetProjectionMatrix(), vLight, vColor);
 	aBatch.Draw();
 	mvStack.PopMatrix();
 }

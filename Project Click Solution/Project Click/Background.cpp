@@ -23,7 +23,7 @@ void Background::init(float width, float height)
 
 void Background::initBatch()
 {
-	z = -15.0f;
+	z = -10.0f;
 
 	GLfloat vVerts[] = {-width/2, -height/2, z, //Botleft
 						width/2, -height/2, z,	//Botright

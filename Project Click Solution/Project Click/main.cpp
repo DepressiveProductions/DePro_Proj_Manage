@@ -29,6 +29,7 @@
 #include "Shaders.h"
 #include "Background.h"
 #include "Globals.h"
+#include "Block.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +49,7 @@ GLFrustum viewFrustum;
 Game gameLayer;
 Shaders customShaders;
 Background bg;
+Block block;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -93,15 +95,15 @@ void setup()
 	gameLayer.init();
 
 	//Set initial camera position:
-	cameraFrame.MoveForward(-20.0f);
-	cameraFrame.MoveUp(-3.5f);
-	cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
+	cameraFrame.MoveForward(-10.0f);
+	//cameraFrame.MoveUp(-3.5f);
+	//cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
 	//Initiate background:
 	bg.init(40.0f, 6.0f);
 
 	//More initiations below here ...
-
+	block.init(0.0f, 0.0f, -5.0f, 2.0f, 5.0f);
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -114,7 +116,7 @@ void changeSize(int w, int h)
 	if (h == 0) { h = 1; }
 
 	//Tell GLTools about the new window size:
-	viewFrustum.SetPerspective(35.0f, float(w)/float(h), 1.0f, 100.0f);
+	viewFrustum.SetPerspective(35.0f, float(w)/float(h), 0.01f, 100.0f);
 	projectionStack.LoadMatrix(viewFrustum.GetProjectionMatrix());
 	tPipeline.SetMatrixStacks(modelViewStack, projectionStack);
 }
@@ -126,7 +128,7 @@ void renderScene()
 	else if (Globals::state ==Globals::STATE_PLAY) ;
 
 	//Lighting variables:
-	static M3DVector4f vLightPos = {0.0f, 0.0f, 1.0f, 1.0f};
+	static M3DVector4f vLightPos = {3.0f, 5.0f, 2.0f, 1.0f};
 	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 
 	//Clear buffers:
@@ -148,7 +150,7 @@ void renderScene()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 
 	//Render stuff here:
-	//
+	block.draw(gltShaderManager, tPipeline, modelViewStack, vLightEyePos);
 
 	//Camera matrix pop:
 	modelViewStack.PopMatrix();
@@ -163,10 +165,10 @@ void renderScene()
 	//Processor heavy:
 	
 	//Input:
-	//
+	handleInput();
 
 	//Game layer:
-	gameLayer.showInfo();
+	//gameLayer.showInfo();
 }
 
 //Handles keyboard input:
