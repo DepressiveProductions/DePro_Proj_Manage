@@ -64,10 +64,10 @@ const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
-const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
 const float				blockDepth	= 1.0f;
+const array<float,3>	blockPos	= {0.0f, 0.0f, blockDepth/2};
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
