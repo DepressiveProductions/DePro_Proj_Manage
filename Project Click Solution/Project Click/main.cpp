@@ -59,6 +59,12 @@ Block block;
 #define W_HEIGHT 720
 #define W_TITLE "Project Click - Alpha"
 
+const float				bgWidth		= 40.0f;
+const float				bgHeight	= 5.0f;
+const array<float,3>	blockPos	= {0.0f, 0.0f, -5.0f};
+const float				blockWidth	= 2.0f;
+const float				blockHeight = 5.0f;
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Function primitives:
@@ -76,6 +82,9 @@ void clickFunc(int key, int state, int x, int y);		//Handles mouse clicking
 //One-time setup function:
 void setup()
 {
+	//Set to play state:
+	Globals::state = Globals::STATE_PLAY;
+
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -100,10 +109,10 @@ void setup()
 	//cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
 	//Initiate background:
-	bg.init(40.0f, 6.0f);
+	bg.init(bgWidth, bgHeight);
 
 	//More initiations below here ...
-	block.init(0.0f, 0.0f, -5.0f, 2.0f, 5.0f);
+	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight);
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -124,51 +133,54 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene()
 {
-	if (Globals::state == Globals::STATE_MENU) ;
-	else if (Globals::state ==Globals::STATE_PLAY) ;
+		if (Globals::state == Globals::STATE_MENU) ;
+		
+		else if (Globals::state ==Globals::STATE_PLAY) 
+		{
 
-	//Lighting variables:
-	static M3DVector4f vLightPos = {3.0f, 5.0f, 2.0f, 1.0f};
-	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+		//Lighting variables:
+		static M3DVector4f vLightPos = {3.0f, 5.0f, 2.0f, 1.0f};
+		static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 
-	//Clear buffers:
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+		//Clear buffers:
+		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	//Beginning push:
-	modelViewStack.PushMatrix();
-
-	//Draw background:
-	bg.draw(gltShaderManager, tPipeline);
-
-	//Camera matrix:
-	M3DMatrix44f mCamera;
-	cameraFrame.GetCameraMatrix(mCamera);
-	modelViewStack.PushMatrix(mCamera);
-
-	//Calc light pos in eye coords:
-	static M3DVector4f vLightEyePos;
-	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
-
-	//Render stuff here:
-	block.draw(gltShaderManager, tPipeline, modelViewStack, vLightEyePos);
-
-	//Camera matrix pop:
-	modelViewStack.PopMatrix();
-
-	//Ending pop:
-	modelViewStack.PopMatrix();
-
-	//Swap buffers and tell glut to keep looping:
-	glutSwapBuffers();
-	glutPostRedisplay();
-
-	//Processor heavy:
-	
-	//Input:
-	handleInput();
-
-	//Game layer:
-	//gameLayer.showInfo();
+		//Beginning push:
+		modelViewStack.PushMatrix();
+		
+		//Draw background:
+		bg.draw(gltShaderManager, tPipeline);
+		
+		//Camera matrix:
+		M3DMatrix44f mCamera;
+		cameraFrame.GetCameraMatrix(mCamera);
+		modelViewStack.PushMatrix(mCamera);
+		
+		//Calc light pos in eye coords:
+		static M3DVector4f vLightEyePos;
+		m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
+		
+		//Render stuff here:
+		block.draw(gltShaderManager, tPipeline, modelViewStack, vLightEyePos);
+		
+		//Camera matrix pop:
+		modelViewStack.PopMatrix();
+		
+		//Ending pop:
+		modelViewStack.PopMatrix();
+		
+		//Swap buffers and tell glut to keep looping:
+		glutSwapBuffers();
+		glutPostRedisplay();
+		
+		//Processor heavy:
+		
+		//Input:
+		handleInput();
+		
+		//Game layer:
+		//gameLayer.showInfo();
+	}
 }
 
 //Handles keyboard input:
