@@ -66,8 +66,7 @@ const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
 const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
-const float				blockDepth	= 1.0f;
-const array<float,3>	blockPos	= {0.0f, 0.0f, blockDepth/2};
+const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -116,7 +115,7 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//More initiations below here ...
-	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight, blockDepth);
+	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight);
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -145,7 +144,7 @@ void renderScene()
 
 		//Lighting variables:
 		static M3DVector4f vLightPos = {1.5f, 0.0f, 0.0f, 1.0f};
-		static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+		static M3DVector4f vAmbient = {0.3f, 0.3f, 0.3f, 1.0f};
 		static M3DMatrix44f mCamera;
 
 		//Clear buffers:
@@ -162,11 +161,13 @@ void renderScene()
 		static M3DVector4f vLightEyePos;
 		m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 		
-		//Render stuff here:
-		block.draw(gltShaderManager, tPipeline, modelViewStack, vLightEyePos);
-
 		//Draw background:
+		modelViewStack.PushMatrix();
 		bg.draw(gltShaderManager, tPipeline);
+		modelViewStack.PopMatrix();
+
+		//Render stuff here:
+		block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
 		
 		//Camera matrix pop:
 		modelViewStack.PopMatrix();

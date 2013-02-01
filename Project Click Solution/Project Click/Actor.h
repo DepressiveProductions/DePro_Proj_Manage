@@ -14,6 +14,7 @@ public:
 	~Actor(void);
 
 	M3DVector4f vColor;
+	M3DVector4f vShininess;
 	GLBatch aBatch;
 	GLFrame aFrame;
 };
