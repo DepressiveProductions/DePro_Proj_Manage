@@ -31,7 +31,7 @@ void Block::setColor(float r, float g, float b, float a)
 
 void Block::generateBatch()
 {
-	aBatch.Begin(GL_TRIANGLE_STRIP, 17);
+	aBatch.Begin(GL_TRIANGLE_STRIP, 17); //Why not use CopyVertexData3f like before?
 	aBatch.Vertex3f(-w, h, d);
 	aBatch.Vertex3f(w, h, d);
 	aBatch.Vertex3f(-w, -h, d);

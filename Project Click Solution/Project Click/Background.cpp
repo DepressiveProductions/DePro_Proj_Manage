@@ -9,13 +9,14 @@ Background::~Background(void) {}
 
 //Methods:
 
-void Background::init(float width, float height)
+void Background::init(float width, float height, float z)
 {
 	//Set color to white:
 	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	this->width = width;
 	this->height = height;
+	this->z = z;
 
 	//Initiate the batch:
 	initBatch();

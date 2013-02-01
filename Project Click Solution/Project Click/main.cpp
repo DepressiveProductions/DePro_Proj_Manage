@@ -61,9 +61,10 @@ Block block;
 
 const float				bgWidth		= 40.0f;
 const float				bgHeight	= 5.0f;
-const array<float,3>	blockPos	= {0.0f, 0.0f, -5.0f};
-const float				blockWidth	= 2.0f;
-const float				blockHeight = 5.0f;
+const float				bgZpos		= -10.0f;
+const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
+const float				blockWidth	= 1.0f;
+const float				blockHeight = 1.0f;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +110,7 @@ void setup()
 	//cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
 
 	//Initiate background:
-	bg.init(bgWidth, bgHeight);
+	bg.init(bgWidth, bgHeight, bgZpos);
 
 	//More initiations below here ...
 	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight);

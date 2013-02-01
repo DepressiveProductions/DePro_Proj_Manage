@@ -27,7 +27,7 @@ public:
 	Background(void);
 	~Background(void);
 
-	void init(float width, float height);
+	void init(float width, float height, float z);
 	void initBatch();
 	void draw(GLShaderManager &shaderManager, GLGeometryTransform &tPipeline);
 		
