@@ -7,11 +7,12 @@ Block::~Block(void) {}
 
 void Block::init(float x, float y, float z, float width, float height)
 {
-	aFrame.SetOrigin(x, y, z+1.0f); // x, y, z is the center of the back of the cuboid
-	
+
 	w = width/2;
 	h = height/2;
 	d = 1.0f;
+
+	aFrame.SetOrigin(x, y, z+d); // x, y, z is the center of the back of the cuboid
 
 	vColor[0] = 0.8f;
 	vColor[1] = 0.8f;
@@ -37,23 +38,23 @@ void Block::setColor(float r, float g, float b, float a)
 void Block::generateBatch()
 {
 	aBatch.Begin(GL_TRIANGLE_STRIP, 17); //Why not use CopyVertexData3f like before?
-	aBatch.Vertex3f(-w, h, 1.0f);
-	aBatch.Vertex3f(w, h, 1.0f);
-	aBatch.Vertex3f(-w, -h, 1.0f);
-	aBatch.Vertex3f(w, -h, 1.0f);
-	aBatch.Vertex3f(-w, -h, 0.0f);
-	aBatch.Vertex3f(w, -h, 0.0f);
-	aBatch.Vertex3f(-w, h, 0.0f);
-	aBatch.Vertex3f(w, h, 0.0f);
-	aBatch.Vertex3f(-w, h, 1.0f);
-	aBatch.Vertex3f(w, h, 1.0f);
-	aBatch.Vertex3f(w, h, 0.0f);
-	aBatch.Vertex3f(w, -h, 1.0f);
-	aBatch.Vertex3f(w, -h, 0.0f);
-	aBatch.Vertex3f(-w, -h, 0.0f);
-	aBatch.Vertex3f(-w, h, 1.0f);
-	aBatch.Vertex3f(-w, h, 0.0f);
-	aBatch.Vertex3f(-w, h, 1.0f);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(w, h, d);
+	aBatch.Vertex3f(-w, -h, d);
+	aBatch.Vertex3f(w, -h, d);
+	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Vertex3f(w, h, -d);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(w, h, d);
+	aBatch.Vertex3f(w, h, -d);
+	aBatch.Vertex3f(w, -h, d);
+	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Vertex3f(-w, h, d);
 	aBatch.End();
 }
 

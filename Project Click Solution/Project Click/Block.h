@@ -21,13 +21,3 @@ private:
 
 	void generateBatch();
 };
-
-class Blocks
-{
-public:
-	Blocks(void);
-	~Blocks(void);
-
-	void init(array<float,4> color);
-	void randomBlocks(int nBlocks);
-};

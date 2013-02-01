@@ -116,7 +116,7 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//More initiations below here ...
-	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight);
+
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -168,7 +168,7 @@ void renderScene()
 		modelViewStack.PopMatrix();
 
 		//Render stuff here:
-		block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
+		//blocks.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
 		
 		//Camera matrix pop:
 		modelViewStack.PopMatrix();
