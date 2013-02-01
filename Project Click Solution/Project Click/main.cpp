@@ -51,7 +51,6 @@ Game gameLayer;
 Shaders customShaders;
 Background bg;
 Block block;
-Input *allInput;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +208,9 @@ int main(int argc, char* argv[]) //Starting point of the application
 	//Send funcs to glut:
 	glutReshapeFunc(changeSize);
 	glutDisplayFunc(renderScene);
-	glutMouseFunc(&Input::mouseClick);
+	glutMouseFunc(Input::mouseClick);
+	//glutSpecialFunc(Input::specialKeyBoard);
+	glutKeyboardFunc(Input::keyBoard);
 
 	//Initiate GLEW, quit if it doesn't work:
 	GLenum result = glewInit();
