@@ -30,6 +30,7 @@
 #include "Background.h"
 #include "Globals.h"
 #include "Block.h"
+#include "Input.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,6 +51,7 @@ Game gameLayer;
 Shaders customShaders;
 Background bg;
 Block block;
+Input *allInput;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,8 +64,10 @@ Block block;
 const float				bgWidth		= 40.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
+
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
+
 const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
 const float				blockDepth	= 1.0f;
@@ -76,8 +80,6 @@ const array<float,3>	blockPos	= {0.0f, 0.0f, blockDepth/2};
 void setup();											//One-time setup function
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
-void handleInput();										//Handles keyboard input
-void clickFunc(int key, int state, int x, int y);		//Handles mouse clicking
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -181,23 +183,10 @@ void renderScene()
 		//Processor heavy:
 		
 		//Input:
-		handleInput();
 		
 		//Game layer:
 		//gameLayer.showInfo();
 	}
-}
-
-//Handles keyboard input:
-void handleInput() 
-{
-
-}
-
-//Handles mouse clicking:
-void clickFunc(int key, int state, int x, int y) 
-{
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +209,7 @@ int main(int argc, char* argv[]) //Starting point of the application
 	//Send funcs to glut:
 	glutReshapeFunc(changeSize);
 	glutDisplayFunc(renderScene);
-	glutMouseFunc(clickFunc);
+	glutMouseFunc(&Input::mouseClick);
 
 	//Initiate GLEW, quit if it doesn't work:
 	GLenum result = glewInit();

@@ -1,11 +1,14 @@
 #include "Input.h"
 
+Input::Input(void) {}
+Input::~Input(void) {}
 
-Input::Input(void)
+void Input::keyBoard()
 {
+
 }
 
-
-Input::~Input(void)
+void Input::mouseClick(int key, int state, int x, int y)
 {
+
 }
