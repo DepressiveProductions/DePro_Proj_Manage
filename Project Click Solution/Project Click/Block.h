@@ -10,9 +10,10 @@ class Block : private Actor
 public:
 	Block(void);
 	~Block(void);
-	void init(float x, float y, float z, float width, float height);
+	void init(float x, float y, float z, float width, float height, float depth);
 	void setColor(float r, float g, float b, float a);
 	void draw(GLShaderManager &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight);
+	void randomBlocks();
 
 private:
 	// x, y, z stored in actor-frame
@@ -21,3 +22,12 @@ private:
 	void generateBatch();
 };
 
+class Blocks
+{
+public:
+	Blocks(void);
+	~Blocks(void);
+
+	void init(array<float,4> color);
+	void randomBlocks(int nBlocks);
+};

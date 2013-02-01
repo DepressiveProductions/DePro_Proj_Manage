@@ -62,9 +62,12 @@ Block block;
 const float				bgWidth		= 40.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
+const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
+const float				camYShift	= -1.5f;				//To compensate for tilt
 const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
+const float				blockDepth	= 1.0f;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -105,15 +108,15 @@ void setup()
 	gameLayer.init();
 
 	//Set initial camera position:
-	cameraFrame.MoveForward(-10.0f);
-	//cameraFrame.MoveUp(-3.5f);
-	//cameraFrame.RotateWorld(0.15f, 1.0f, 0.0f, 0.0f);
+	cameraFrame.MoveForward(bgZpos);
+	cameraFrame.MoveUp(camYShift);
+	cameraFrame.RotateWorld(camTilt, 1.0f, 0.0f, 0.0f);
 
 	//Initiate background:
-	bg.init(bgWidth, bgHeight, bgZpos);
+	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//More initiations below here ...
-	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight);
+	block.init(blockPos[0], blockPos[1], blockPos[2], blockWidth, blockHeight, blockDepth);
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -134,14 +137,16 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene()
 {
-		if (Globals::state == Globals::STATE_MENU) ;
-		
-		else if (Globals::state ==Globals::STATE_PLAY) 
-		{
+	if (Globals::state == Globals::STATE_MENU)
+	{
+
+	} else if (Globals::state ==Globals::STATE_PLAY) 
+	{
 
 		//Lighting variables:
-		static M3DVector4f vLightPos = {3.0f, 5.0f, 2.0f, 1.0f};
+		static M3DVector4f vLightPos = {1.5f, 0.0f, 0.0f, 1.0f};
 		static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+		static M3DMatrix44f mCamera;
 
 		//Clear buffers:
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -149,11 +154,7 @@ void renderScene()
 		//Beginning push:
 		modelViewStack.PushMatrix();
 		
-		//Draw background:
-		bg.draw(gltShaderManager, tPipeline);
-		
 		//Camera matrix:
-		M3DMatrix44f mCamera;
 		cameraFrame.GetCameraMatrix(mCamera);
 		modelViewStack.PushMatrix(mCamera);
 		
@@ -163,6 +164,9 @@ void renderScene()
 		
 		//Render stuff here:
 		block.draw(gltShaderManager, tPipeline, modelViewStack, vLightEyePos);
+
+		//Draw background:
+		bg.draw(gltShaderManager, tPipeline);
 		
 		//Camera matrix pop:
 		modelViewStack.PopMatrix();

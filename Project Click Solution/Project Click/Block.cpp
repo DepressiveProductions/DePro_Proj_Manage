@@ -5,13 +5,13 @@ Block::Block(void) {}
 
 Block::~Block(void) {}
 
-void Block::init(float x, float y, float z, float width, float height)
+void Block::init(float x, float y, float z, float width, float height, float depth)
 {
 	aFrame.SetOrigin(x, y, z); // x, y, z is the center of the cuboid
 	
 	w = width/2;
 	h = height/2;
-	d = 5.0f/2;
+	d = depth/2;
 
 	vColor[0] = 0.5f;
 	vColor[1] = 0.5f;
