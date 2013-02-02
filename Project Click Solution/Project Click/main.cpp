@@ -133,7 +133,7 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//Initiate UI elements:
-	playInfo.init(40.0f, 30.0f, 0.0f, 30.0f, 50.0f, "Assets/Menu_screen.tga");
+	playInfo.init(35.0f, 25.0f, 0.0f, 35.0f, 55.0f, "Assets/Menu_screen.tga");
 
 	//More initiations below here ...
 
