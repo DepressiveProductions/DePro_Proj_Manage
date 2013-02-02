@@ -42,11 +42,9 @@ void Input::keyBoard(unsigned char key, int x, int y)
 		glutDestroyWindow(glutGetWindow());
 		exit(0);
 		break;
-	case ' ':
+	default:
 		hasPressed = true;
 		pressedKey = key;
-		break;
-	default:
 		break;
 	}
 }
