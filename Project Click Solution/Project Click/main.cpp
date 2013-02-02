@@ -211,7 +211,6 @@ void playRender()
 	//TESTBLOCK:
 	block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
 
-			
 	//Draw background:
 	bg.draw(gltShaderManager, tPipeline);
 	
