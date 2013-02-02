@@ -90,3 +90,8 @@ bool UserInterface::loadTGATexture(const char *szFileName, GLenum minFilter, GLe
 
 	return true;
 }
+
+void UserInterface::clearTexture()
+{
+	glDeleteTextures(1, &uiTexture);
+}

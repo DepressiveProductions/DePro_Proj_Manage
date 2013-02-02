@@ -86,6 +86,7 @@ M3DMatrix44f			mOrtho;
 //Function primitives:
 
 void setup();											//One-time setup function
+void shutdownRC();										//One-time shutdown function
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
 void checkInput();										//Checks if any relevant input has been registred
@@ -139,6 +140,12 @@ void setup()
 
 	//More initiations below here ...
 
+}
+
+void shutdownRC()
+{
+	glutDestroyWindow(glutGetWindow());
+	playInfo.clearTexture();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -196,6 +203,12 @@ void checkInput()
 		if (Input::pressedKey == 'o')
 		{
 			Globals::state = Globals::STATE_MENU;
+		}
+
+		if (Input::pressedKey == 27) //Escape
+		{
+			shutdownRC();
+			exit(0);
 		}
 	}
 	if (Input::hasPressedSpecial)
@@ -287,7 +300,7 @@ int main(int argc, char* argv[]) //Starting point of the application
 	//Run setup and start looping:
 	setup();
 	glutMainLoop();
-	system("PAUSE");
+	shutdownRC();
 	return 0;
 }
 
