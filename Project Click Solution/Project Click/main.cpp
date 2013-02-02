@@ -100,9 +100,6 @@ void menuRender();
 //One-time setup function:
 void setup()
 {
-	//Set to play state:
-	//Globals::state = Globals::STATE_PLAY;
-
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -136,7 +133,7 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//Initiate UI elements:
-	playInfo.init(40.0f, 40.0f, 0.0f, 20.0f, 20.0f, "Assets/button_build_128x32.tga");
+	playInfo.init(40.0f, 30.0f, 0.0f, 30.0f, 50.0f, "Assets/Menu_screen.tga");
 
 	//More initiations below here ...
 
