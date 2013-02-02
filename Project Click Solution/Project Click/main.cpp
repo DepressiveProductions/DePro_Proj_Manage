@@ -31,26 +31,31 @@
 #include "Globals.h"
 #include "Block.h"
 #include "Input.h"
+#include "UserInterface.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //GLTools objects:
 
-GLGeometryTransform tPipeline;
-GLShaderManager gltShaderManager;
-GLMatrixStack projectionStack;
-GLMatrixStack modelViewStack;
-GLFrame cameraFrame;
-GLFrustum viewFrustum;
+GLGeometryTransform		tPipeline;
+GLGeometryTransform		uiPipeline;
+GLShaderManager			gltShaderManager;
+GLMatrixStack			projectionStack;
+GLMatrixStack			modelViewStack;
+GLMatrixStack			uiProjStack;
+GLMatrixStack			uiMVStack;
+GLFrame					cameraFrame;
+GLFrustum				viewFrustum;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Objects:
 
-Game gameLayer;
-Shaders customShaders;
-Background bg;
-Block block;
+Game					gameLayer;
+Shaders					customShaders;
+Background				bg;
+Block					block;
+UserInterface			playInfo;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +76,9 @@ const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
 const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
-static M3DMatrix44f		mCamera;							//Handy to have it in global namespace
+M3DMatrix44f			mCamera;							//Handy to have it in global namespace
+M3DMatrix44f			mOrtho;
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +100,7 @@ void menuRender();
 void setup()
 {
 	//Set to play state:
-	Globals::state = Globals::STATE_PLAY;
+	//Globals::state = Globals::STATE_PLAY;
 
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -106,9 +113,15 @@ void setup()
 	//Initialize GLTools' stock shaders:
 	gltShaderManager.InitializeStockShaders();
 
+	//Orthographic transform pipeline for UI:
+	viewFrustum.SetOrthographic(0.0f, 100.0f, 0.0f, 100.0f, -1.0f, 1.0f);
+	uiProjStack.LoadMatrix(viewFrustum.GetProjectionMatrix());
+	uiPipeline.SetMatrixStacks(uiMVStack, uiProjStack);
+
 	//Initialize custom shaders:
 	customShaders.initADSVert();
 	customShaders.initDiffVert();
+	customShaders.initUI();
 
 	//Initiate game layer:
 	gameLayer.init();
@@ -120,6 +133,9 @@ void setup()
 
 	//Initiate background:
 	bg.init(bgWidth, bgHeight, 0.0f);
+
+	//Initiate UI elements:
+	playInfo.init(40.0f, 40.0f, 0.0f, 20.0f, 20.0f, "Assets/button_build_128x32.tga");
 
 	//More initiations below here ...
 
@@ -271,6 +287,8 @@ void playRender()
 
 void menuRender()
 {
+	playInfo.draw(uiPipeline, gltShaderManager);
+
 	glutSwapBuffers();
 	glutPostRedisplay();
 }

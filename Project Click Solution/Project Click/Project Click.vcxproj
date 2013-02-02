@@ -33,6 +33,18 @@
     <ClInclude Include="Shaders.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\ADS_fragment.fp" />
+    <None Include="Shaders\ADS_fragment.vp" />
+    <None Include="Shaders\ADS_vertex.fp" />
+    <None Include="Shaders\ADS_vertex.vp" />
+    <None Include="Shaders\diffuse_vertex.fp" />
+    <None Include="Shaders\diffuse_vertex.vp" />
+    <None Include="Shaders\RectReplace.fp" />
+    <None Include="Shaders\RectReplace.vp" />
+    <None Include="Shaders\UIShader.fp" />
+    <None Include="Shaders\UIShader.vp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C45A7733-A005-441B-84D7-754119F4AAE3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

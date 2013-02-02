@@ -1,14 +1,8 @@
 #include "Shaders.h"
 
 
-Shaders::Shaders(void)
-{
-}
-
-
-Shaders::~Shaders(void)
-{
-}
+Shaders::Shaders(void) {}
+Shaders::~Shaders(void) {}
 
 //Diffuse lighting, per vertex
 void Shaders::initDiffVert()
@@ -87,4 +81,24 @@ void Shaders::useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M
 	glUniformMatrix4fv(fADSMVP, 1, GL_FALSE, tPipeline.GetModelViewProjectionMatrix());
 	glUniformMatrix4fv(fADSMV, 1, GL_FALSE, tPipeline.GetModelViewMatrix());
 	glUniformMatrix3fv(fADSNM, 1, GL_FALSE, tPipeline.GetNormalMatrix());
+}
+
+void Shaders::initUI()
+{
+	//Load and compile the shader programs:
+	UIShader = gltLoadShaderPairWithAttributes("Shaders/UIShader.vp", "Shaders/UIShader.fp", 
+												2, GLT_ATTRIBUTE_VERTEX, "vVertex", 
+												GLT_ATTRIBUTE_TEXTURE0, "vTexCoord");
+                 
+	//Locate uniforms:
+	UIMVP = glGetUniformLocation(UIShader, "mvpMatrix");
+	UITex = glGetUniformLocation(UIShader, "rectangleImage");
+}
+
+void Shaders::useUI(M3DMatrix44f mProj, GLuint texture)
+{
+	glUseProgram(UIShader);
+	glUniform1i(UITex, 0);
+	glUniformMatrix4fv(UIMVP, 1, GL_FALSE, mProj);
+	glBindTexture(GL_TEXTURE_RECTANGLE, texture);
 }
