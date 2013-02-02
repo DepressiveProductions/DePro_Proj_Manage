@@ -71,6 +71,9 @@ const float				blockWidth	= 1.0f;
 const float				blockHeight = 1.0f;
 const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
+static M3DMatrix44f		mCamera;							//Handy to have it in global namespace
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Function primitives:
@@ -78,6 +81,9 @@ const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 void setup();											//One-time setup function
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
+void checkInput();										//Checks if any relevant input has been registred
+void playRender();
+void menuRender();
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -139,54 +145,91 @@ void renderScene()
 {
 	if (Globals::state == Globals::STATE_MENU)
 	{
+		menuRender();
 
 	} else if (Globals::state ==Globals::STATE_PLAY) 
 	{
+		playRender();
 
-		//Lighting variables:
-		static M3DVector4f vLightPos = {1.5f, 0.0f, 0.0f, 1.0f};
-		static M3DVector4f vAmbient = {0.3f, 0.3f, 0.3f, 1.0f};
-		static M3DMatrix44f mCamera;
-
-		//Clear buffers:
-		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-		//Beginning push:
-		modelViewStack.PushMatrix();
-		
-		//Camera matrix:
-		cameraFrame.GetCameraMatrix(mCamera);
-		modelViewStack.PushMatrix(mCamera);
-		
-		//Calc light pos in eye coords:
-		static M3DVector4f vLightEyePos;
-		m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
-		
-		//Draw background:
-		modelViewStack.PushMatrix();
-		bg.draw(gltShaderManager, tPipeline);
-		modelViewStack.PopMatrix();
-
-		//Render stuff here:
-		block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
-		
-		//Camera matrix pop:
-		modelViewStack.PopMatrix();
-		
-		//Ending pop:
-		modelViewStack.PopMatrix();
-		
-		//Swap buffers and tell glut to keep looping:
-		glutSwapBuffers();
-		glutPostRedisplay();
-		
-		//Processor heavy:
-		
-		//Input:
-		
-		//Game layer:
-		//gameLayer.showInfo();
 	}
+	checkInput();
+
+}
+
+void checkInput()
+{
+	if (Input::hasClicked)
+	{
+		Input::hasClicked = false;
+
+		M3DMatrix44f mProjection;
+		projectionStack.GetMatrix(mProjection);
+
+		array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mCamera, mProjection);
+	}
+	if (Input::hasPressed)
+	{
+		Input::hasPressed = false;
+
+		if (/*noBlocks &&*/ Input::pressedKey == ' ')
+		{
+			//restart()
+		}
+
+		if (Input::pressedKey == 'o')
+		{
+			//goToMenu()
+		}
+	}
+	if (Input::hasPressedSpecial)
+	{
+		Input::hasPressedSpecial = false;
+	}
+}
+
+void playRender()
+{
+	//Lighting variables:
+	static M3DVector4f vLightPos = {1.5f, 1.0f, 11.0f, 1.0f};
+	static M3DVector4f vAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
+			
+	//Clear buffers:
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			
+	//Beginning push:
+	modelViewStack.PushMatrix();
+	
+	//Camera matrix:
+	cameraFrame.GetCameraMatrix(mCamera);
+	modelViewStack.PushMatrix(mCamera);
+	
+	//Calc light pos in eye coords:
+	static M3DVector4f vLightEyePos;
+	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
+	
+	//Render stuff here:
+	//TESTBLOCK:
+	block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
+
+			
+	//Draw background:
+	bg.draw(gltShaderManager, tPipeline);
+	
+	//Camera matrix pop:
+	modelViewStack.PopMatrix();
+	
+	//Ending pop:
+	modelViewStack.PopMatrix();
+	
+	//Swap buffers and tell glut to keep looping:
+	glutSwapBuffers();
+	glutPostRedisplay();
+}
+
+void menuRender()
+{
+	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
