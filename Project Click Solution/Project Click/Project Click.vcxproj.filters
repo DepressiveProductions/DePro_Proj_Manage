@@ -84,5 +84,7 @@
     <None Include="Shaders\diffuse_vertex.vp" />
     <None Include="Shaders\RectReplace.fp" />
     <None Include="Shaders\RectReplace.vp" />
+    <None Include="Shaders\UIShader.fp" />
+    <None Include="Shaders\UIShader.vp" />
   </ItemGroup>
 </Project>
