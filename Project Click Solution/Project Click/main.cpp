@@ -135,7 +135,6 @@ void setup()
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
-	blocks.sendWave(8); // Spawns 8 blocks
 }
 
 void shutdownRC()
@@ -198,6 +197,7 @@ void checkInput()
 		if (/*(*/Globals::state == Globals::STATE_MENU /*|| noBlocks)*/ && Input::pressedKey == ' ')
 		{
 			//restart();
+			blocks.sendWave(8);
 			Globals::state = Globals::STATE_PLAY;
 		}
 
