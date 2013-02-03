@@ -36,19 +36,14 @@ void Input::specialKeyBoard(int key, int x, int y)
 
 void Input::keyBoard(unsigned char key, int x, int y)
 {
-	switch (key)
-	{
-	case 27: //Escape
-		glutDestroyWindow(glutGetWindow());
-		exit(0);
+	/*switch (key)
+	case mamma:
 		break;
-	case ' ':
+	default:*/
 		hasPressed = true;
 		pressedKey = key;
-		break;
-	default:
-		break;
-	}
+		/*break;
+	}*/
 }
 
 void Input::mouseClick(int key, int state, int x, int y)

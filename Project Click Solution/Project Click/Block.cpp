@@ -10,7 +10,7 @@ void Block::init(float x, float y, float z, float width, float height)
 
 	w = width/2;
 	h = height/2;
-	d = 1.0f;
+	d = 0.5f;
 
 	aFrame.SetOrigin(x, y, z+d); // x, y, z is the center of the back of the cuboid
 
@@ -52,7 +52,7 @@ void Block::generateBatch()
 	aBatch.Vertex3f(w, -h, d);
 	aBatch.Vertex3f(w, -h, -d);
 	aBatch.Vertex3f(-w, -h, -d);
-	aBatch.Vertex3f(-w, h, d);
+	aBatch.Vertex3f(-w, -h, d);
 	aBatch.Vertex3f(-w, h, -d);
 	aBatch.Vertex3f(-w, h, d);
 	aBatch.End();
@@ -60,7 +60,19 @@ void Block::generateBatch()
 
 void Block::move()
 {
-	aFrame.MoveRight(-0.01f);
+	aFrame.MoveRight(0.03f);
+}
+
+bool Block::isWithin(float x, float y, float z)
+{
+	if ((x <= aFrame.GetOriginX()+w && x >= aFrame.GetOriginX()-w) &&
+		(y <= aFrame.GetOriginY()+h && y >= aFrame.GetOriginY()-h) &&
+		(z <= aFrame.GetOriginZ()+d && z >= aFrame.GetOriginZ()-d))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Block::draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient)

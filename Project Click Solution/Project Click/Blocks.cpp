@@ -13,25 +13,39 @@ void Blocks::init(float floorWidth, float floorHeight, float zPos)
 	fZ = zPos;
 }
 
-void Blocks::sendWave()
+void Blocks::sendWave(int blockAmount)
 {
-	blocks[0] = new Block();
-	blocks[0]->init(randF(fWidth/2,(fWidth/2)+fWidth)  ,  randF(-fHeight/2, fHeight/2)  ,  fZ  ,  randF(0.1f, 2.0f)  ,  randF(0.1f, 2.0f));
+	for (int i=0; i<blockAmount; i++)
+	{
+		blocks.push_back(new Block);
+		blocks[blocks.size()-1]->init(randF(-(fWidth/2),(fWidth/2))  ,  randF(-fHeight/2, fHeight/2)  ,  fZ  ,  randF(1.0f, 2.0f)  ,  randF(1.0f, 2.0f));
+	}
+}
 
-	// Spawn-position
-		// 20 <= x <= 60
-		// -2.5 <= y <= 2.5
-		// z = -10
-	// 20*5
+bool Blocks::remove(float x, float y, float z) // Returns true if a block was removed
+{
+	for (unsigned int i=0; i<blocks.size(); i++)
+	{
+		if (blocks[i]->isWithin(x, y, z))
+		{
+			blocks.erase(blocks.begin() + i);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 float Blocks::randF(float min, float max)
 {
-	return ((float)rand()/RAND_MAX)*(max-min) + min; // A random number between randMin and randMax
+	float random = (((float)rand()/RAND_MAX)*(max-min)) + min; // A random number between randMin and randMax
+	return random;
 }
 
-void Blocks::draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient)
+void Blocks::draw(Shaders *sManager, GLGeometryTransform *tPipeline, GLMatrixStack *mvStack, M3DVector4f vLight, M3DVector4f vAmbient)
 {
-	blocks[0]->move();
-	blocks[0]->draw(sManager, tPipeline, mvStack, vLight, vAmbient);
+	for (unsigned int i=0; i<blocks.size(); i++)
+	{
+		blocks[i]->draw(*sManager, *tPipeline, *mvStack, vLight, vAmbient);
+	}
 }

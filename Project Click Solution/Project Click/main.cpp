@@ -31,17 +31,21 @@
 #include "Globals.h"
 #include "Blocks.h"
 #include "Input.h"
+#include "UserInterface.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //GLTools objects:
 
-GLGeometryTransform tPipeline;
-GLShaderManager gltShaderManager;
-GLMatrixStack projectionStack;
-GLMatrixStack modelViewStack;
-GLFrame cameraFrame;
-GLFrustum viewFrustum;
+GLGeometryTransform		tPipeline;
+GLGeometryTransform		uiPipeline;
+GLShaderManager			gltShaderManager;
+GLMatrixStack			projectionStack;
+GLMatrixStack			modelViewStack;
+GLMatrixStack			uiProjStack;
+GLMatrixStack			uiMVStack;
+GLFrame					cameraFrame;
+GLFrustum				viewFrustum;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,8 +53,9 @@ GLFrustum viewFrustum;
 
 Game gameLayer;
 Shaders customShaders;
-Background bg;
 Blocks blocks;
+Background				bg;
+UserInterface			playInfo;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +65,7 @@ Blocks blocks;
 #define W_HEIGHT 720
 #define W_TITLE "Project Click - Alpha"
 
-const float				bgWidth		= 40.0f;
+const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 
@@ -69,7 +74,9 @@ const float				camYShift	= -1.5f;				//To compensate for tilt
 
 const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
-static M3DMatrix44f		mCamera;							//Handy to have it in global namespace
+M3DMatrix44f			mCamera;							//Handy to have it in global namespace
+M3DMatrix44f			mOrtho;
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +84,7 @@ static M3DMatrix44f		mCamera;							//Handy to have it in global namespace
 //Function primitives:
 
 void setup();											//One-time setup function
+void shutdownRC();										//One-time shutdown function
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
 void checkInput();										//Checks if any relevant input has been registred
@@ -90,9 +98,6 @@ void menuRender();
 //One-time setup function:
 void setup()
 {
-	//Set to play state:
-	Globals::state = Globals::STATE_PLAY;
-
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -104,9 +109,15 @@ void setup()
 	//Initialize GLTools' stock shaders:
 	gltShaderManager.InitializeStockShaders();
 
+	//Orthographic transform pipeline for UI:
+	viewFrustum.SetOrthographic(0.0f, 100.0f, 0.0f, 100.0f, -1.0f, 1.0f);
+	uiProjStack.LoadMatrix(viewFrustum.GetProjectionMatrix());
+	uiPipeline.SetMatrixStacks(uiMVStack, uiProjStack);
+
 	//Initialize custom shaders:
 	customShaders.initADSVert();
 	customShaders.initDiffVert();
+	customShaders.initUI();
 
 	//Initiate game layer:
 	gameLayer.init();
@@ -119,8 +130,18 @@ void setup()
 	//Initiate background:
 	bg.init(bgWidth, bgHeight, 0.0f);
 
+	//Initiate UI elements:
+	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
+
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
+	blocks.sendWave(8); // Spawns 8 blocks
+}
+
+void shutdownRC()
+{
+	glutDestroyWindow(glutGetWindow());
+	playInfo.clearTexture();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -164,14 +185,20 @@ void checkInput()
 		projectionStack.GetMatrix(mProjection);
 
 		array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mCamera, mProjection);
+	
+		if (blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
+		{
+			gameLayer.editBlocks(-1);
+		}
 	}
 	if (Input::hasPressed)
 	{
 		Input::hasPressed = false;
 
-		if (/*noBlocks &&*/ Input::pressedKey == ' ')
+		if (/*(*/Globals::state == Globals::STATE_MENU /*|| noBlocks)*/ && Input::pressedKey == ' ')
 		{
-			//restart()
+			//restart();
+			Globals::state = Globals::STATE_PLAY;
 		}
 
 		//Lighting variables:
@@ -199,7 +226,7 @@ void checkInput()
 		modelViewStack.PopMatrix();
 
 		//Render stuff here:
-		//blocks.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
+		blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
 		
 		//Camera matrix pop:
 		modelViewStack.PopMatrix();
@@ -219,12 +246,13 @@ void checkInput()
 
 		if (Input::pressedKey == 'o')
 		{
-			//goToMenu()
+			Globals::state = Globals::STATE_MENU;
 		}
-		if (Input::pressedKey == 'w')
+		
+		if (Input::pressedKey == 27) //Escape
 		{
-			blocks.sendWave();
-			std::cout << "Wave!" << std::endl;
+			shutdownRC();
+			exit(0);
 		}
 	}
 	if (Input::hasPressedSpecial)
@@ -254,6 +282,7 @@ void playRender()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 	
 	//Render stuff here:
+	blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
 
 	//Draw background:
 	bg.draw(gltShaderManager, tPipeline);
@@ -267,12 +296,14 @@ void playRender()
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
 	glutPostRedisplay();
-
-	blocks.sendWave();
 }
 
 void menuRender()
 {
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	playInfo.draw(uiPipeline, gltShaderManager);
+
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
@@ -312,7 +343,7 @@ int main(int argc, char* argv[]) //Starting point of the application
 	//Run setup and start looping:
 	setup();
 	glutMainLoop();
-	system("PAUSE");
+	shutdownRC();
 	return 0;
 }
 

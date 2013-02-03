@@ -13,6 +13,7 @@ public:
 	void init(float x, float y, float z, float width, float height);
 	void setColor(float r, float g, float b, float a);
 	void move();
+	bool isWithin(float x, float y, float z);
 	void draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient);
 
 private:
