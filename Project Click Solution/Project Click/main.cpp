@@ -201,49 +201,6 @@ void checkInput()
 			Globals::state = Globals::STATE_PLAY;
 		}
 
-		//Lighting variables:
-		static M3DVector4f vLightPos = {1.5f, 0.0f, 0.0f, 1.0f};
-		static M3DVector4f vAmbient = {0.3f, 0.3f, 0.3f, 1.0f};
-		static M3DMatrix44f mCamera;
-
-		//Clear buffers:
-		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-		//Beginning push:
-		modelViewStack.PushMatrix();
-		
-		//Camera matrix:
-		cameraFrame.GetCameraMatrix(mCamera);
-		modelViewStack.PushMatrix(mCamera);
-		
-		//Calc light pos in eye coords:
-		static M3DVector4f vLightEyePos;
-		m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
-		
-		//Draw background:
-		modelViewStack.PushMatrix();
-		bg.draw(gltShaderManager, tPipeline);
-		modelViewStack.PopMatrix();
-
-		//Render stuff here:
-		blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
-		
-		//Camera matrix pop:
-		modelViewStack.PopMatrix();
-		
-		//Ending pop:
-		modelViewStack.PopMatrix();
-		
-		//Swap buffers and tell glut to keep looping:
-		glutSwapBuffers();
-		glutPostRedisplay();
-		
-		//Processor heavy:
-		//Input:
-		
-		//Game layer:
-		//gameLayer.showInfo();
-
 		if (Input::pressedKey == 'o')
 		{
 			Globals::state = Globals::STATE_MENU;
@@ -283,6 +240,8 @@ void playRender()
 	
 	//Render stuff here:
 	blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
+
+	//Render a thing in the thing on the thing:
 
 	//Draw background:
 	bg.draw(gltShaderManager, tPipeline);
