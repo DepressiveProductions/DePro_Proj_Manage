@@ -29,7 +29,7 @@
 #include "Shaders.h"
 #include "Background.h"
 #include "Globals.h"
-#include "Block.h"
+#include "Blocks.h"
 #include "Input.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ GLFrustum viewFrustum;
 Game gameLayer;
 Shaders customShaders;
 Background bg;
-Block block;
+Blocks blocks;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,8 +67,6 @@ const float				bgZpos		= -10.0f;
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
 
-const float				blockWidth	= 1.0f;
-const float				blockHeight = 1.0f;
 const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
 static M3DMatrix44f		mCamera;							//Handy to have it in global namespace
@@ -122,7 +120,7 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//More initiations below here ...
-
+	blocks.init(bgWidth, bgHeight, 0.0f);
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -214,7 +212,6 @@ void checkInput()
 		glutPostRedisplay();
 		
 		//Processor heavy:
-		
 		//Input:
 		
 		//Game layer:
@@ -223,6 +220,11 @@ void checkInput()
 		if (Input::pressedKey == 'o')
 		{
 			//goToMenu()
+		}
+		if (Input::pressedKey == 'w')
+		{
+			blocks.sendWave();
+			std::cout << "Wave!" << std::endl;
 		}
 	}
 	if (Input::hasPressedSpecial)
@@ -252,8 +254,6 @@ void playRender()
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 	
 	//Render stuff here:
-	//TESTBLOCK:
-	block.draw(customShaders, tPipeline, modelViewStack, vLightEyePos, vAmbient);
 
 	//Draw background:
 	bg.draw(gltShaderManager, tPipeline);
@@ -263,10 +263,12 @@ void playRender()
 	
 	//Ending pop:
 	modelViewStack.PopMatrix();
-	
+
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
 	glutPostRedisplay();
+
+	blocks.sendWave();
 }
 
 void menuRender()

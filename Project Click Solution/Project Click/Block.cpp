@@ -58,6 +58,11 @@ void Block::generateBatch()
 	aBatch.End();
 }
 
+void Block::move()
+{
+	aFrame.MoveRight(-0.01f);
+}
+
 void Block::draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient)
 {
 	mvStack.PushMatrix();
