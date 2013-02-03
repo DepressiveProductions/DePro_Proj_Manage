@@ -4,13 +4,14 @@
 UserInterface::UserInterface(void) {}
 UserInterface::~UserInterface(void) {}
 
-void UserInterface::init(float x, float y, float z, float width, float height, std::string texFileName)
+void UserInterface::init(float xmin, float ymin, float xmax, float ymax, float z, std::string texFileName)
 {
-	this->x = x;
-	this->y = y;
+	this->xmin = xmin;
+	this->ymin = ymin;
+	this->xmax = xmax;
+	this->ymax = ymax;
+
 	this->z = z;
-	this->w = width;
-	this->h = height;
 
 	//uiFrame.SetOrigin(x, y, z);
 
@@ -27,19 +28,19 @@ void UserInterface::initiateBatch()
 	
 	// Lower left hand corner
 	rectBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-	rectBatch.Vertex3f(x, y, 0.0f);
+	rectBatch.Vertex3f(xmin, ymin, z);
 
 	// Upper left hand corner
 	rectBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-	rectBatch.Vertex3f(x, y + h, 0.0);  
+	rectBatch.Vertex3f(xmin, ymax, z);  
 
 	// Upper right hand corner
 	rectBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-	rectBatch.Vertex3f(x + w, y + h, 0.0f);
+	rectBatch.Vertex3f(xmax, ymax, z);
 
 	// Lower right hand corner
 	rectBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-	rectBatch.Vertex3f(x + w, y, 0.0f);
+	rectBatch.Vertex3f(xmax, ymin, z);
 
 	rectBatch.End();
 }
