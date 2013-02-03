@@ -131,7 +131,7 @@ void setup()
 
 	//Initiate UI elements:
 	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
-	restartInfo.init(20.0f, 45.0f, 80.0f, 55.0f, 0.0f, "Assets/FONT_BLOCK.tga");
+	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.0f, "Assets/FONT_BLOCK.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -188,7 +188,6 @@ void checkInput()
 		if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 		{
 			Globals::nBlocks -= 1;
-			std::cout << Globals::nBlocks << std::endl;
 		}
 	}
 	if (Input::hasPressed)
