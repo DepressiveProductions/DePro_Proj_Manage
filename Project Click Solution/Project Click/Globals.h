@@ -13,4 +13,5 @@ class Globals
 		};
 
 		static Gamestate state;
+		static int nBlocks;
 };

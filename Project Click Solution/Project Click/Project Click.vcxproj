@@ -15,7 +15,6 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Blocks.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -27,7 +26,6 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Blocks.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Shaders.h" />

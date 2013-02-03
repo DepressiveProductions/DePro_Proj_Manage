@@ -15,6 +15,7 @@ void Blocks::init(float floorWidth, float floorHeight, float zPos)
 
 void Blocks::sendWave(int blockAmount)
 {
+	Globals::nBlocks += blockAmount;
 	for (int i=0; i<blockAmount; i++)
 	{
 		blocks.push_back(new Block);

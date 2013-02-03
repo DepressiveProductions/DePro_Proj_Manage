@@ -1,10 +1,12 @@
 #pragma once
 #include "Block.h"
+#include "Globals.h"
 #include <random>
 #include <ctime>
 #include <iostream>
 #include <array>
 #include <vector>
+
 using std::array;
 using std::vector;
 

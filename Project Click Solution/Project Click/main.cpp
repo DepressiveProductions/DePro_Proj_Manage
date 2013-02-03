@@ -25,7 +25,6 @@
 #include <vector>
 #include <thread>
 #include <array>
-#include "Game.h"
 #include "Shaders.h"
 #include "Background.h"
 #include "Globals.h"
@@ -51,11 +50,12 @@ GLFrustum				viewFrustum;
 
 //Objects:
 
-Game gameLayer;
-Shaders customShaders;
-Blocks blocks;
+Shaders					customShaders;
+Blocks					blocks;
 Background				bg;
 UserInterface			playInfo;
+UserInterface			restartInfo;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -120,7 +120,6 @@ void setup()
 	customShaders.initUI();
 
 	//Initiate game layer:
-	gameLayer.init();
 
 	//Set initial camera position:
 	cameraFrame.MoveForward(bgZpos);
@@ -132,6 +131,7 @@ void setup()
 
 	//Initiate UI elements:
 	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
+	restartInfo.init(20.0f, 45.0f, 80.0f, 55.0f, 0.0f, "Assets/FONT_BLOCK.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -185,18 +185,18 @@ void checkInput()
 
 		array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mCamera, mProjection);
 	
-		if (blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
+		if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 		{
-			gameLayer.editBlocks(-1);
+			Globals::nBlocks -= 1;
+			std::cout << Globals::nBlocks << std::endl;
 		}
 	}
 	if (Input::hasPressed)
 	{
 		Input::hasPressed = false;
 
-		if (/*(*/Globals::state == Globals::STATE_MENU /*|| noBlocks)*/ && Input::pressedKey == ' ')
+		if ((Globals::state == Globals::STATE_MENU || Globals::nBlocks <= 0) && Input::pressedKey == ' ')
 		{
-			//restart();
 			blocks.sendWave(8);
 			Globals::state = Globals::STATE_PLAY;
 		}
@@ -241,8 +241,6 @@ void playRender()
 	//Render stuff here:
 	blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
 
-	//Render a thing in the thing on the thing:
-
 	//Draw background:
 	bg.draw(gltShaderManager, tPipeline);
 	
@@ -251,6 +249,14 @@ void playRender()
 	
 	//Ending pop:
 	modelViewStack.PopMatrix();
+
+	//UI:
+	
+	//Render a thing in the thing on the thing:
+	if (Globals::nBlocks <= 0)
+	{
+		restartInfo.draw(uiPipeline, gltShaderManager);
+	}
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
