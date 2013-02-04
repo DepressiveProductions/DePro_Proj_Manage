@@ -19,6 +19,7 @@ public:
 	void init(float floorWidth, float floorHeight, float zPos);
 	void sendWave(int blockAmount);
 	bool remove(float x, float y, float z);
+	void removeAll();
 	float randF(float min, float max);
 	void draw(Shaders *sManager, GLGeometryTransform *tPipeline, GLMatrixStack *mvStack, M3DVector4f vLight, M3DVector4f vAmbient);
 

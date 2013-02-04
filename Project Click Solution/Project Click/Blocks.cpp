@@ -18,8 +18,42 @@ void Blocks::sendWave(int blockAmount)
 	Globals::nBlocks += blockAmount;
 	for (int i=0; i<blockAmount; i++)
 	{
-		blocks.push_back(new Block);
-		blocks[blocks.size()-1]->init(randF(-(fWidth/2),(fWidth/2))  ,  randF(-fHeight/2, fHeight/2)  ,  fZ  ,  randF(1.0f, 2.0f)  ,  randF(1.0f, 2.0f));
+		float x, y, w, h;
+		
+		x = randF(-(fWidth/2)+1.0f,(fWidth/2)-1.0f);
+		y = randF(-(fHeight/2)+1.0f,(fHeight/2)-1.0f);
+		w = randF(0.25f, 1.0f);
+		h = randF(0.25f, 1.0f);
+		bool valid = true;
+		
+		unsigned int size = blocks.size();
+		for (unsigned int j=0; j<size; j++)
+		{
+			if (blocks[j]->isWithin(x-w, y+h, fZ) || //topleft
+				blocks[j]->isWithin(x+w, y+h, fZ) || //topright
+				blocks[j]->isWithin(x-w, y-h, fZ) || //botleft
+				blocks[j]->isWithin(x+w, y-h, fZ) || //botright
+				blocks[j]->isWithin(x, y, fZ)) // mid
+			{
+				i--;
+				valid = false;
+				break;
+			}
+		}
+
+		if (valid)
+		{
+			blocks.push_back(new Block);
+			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h);
+			blocks[blocks.size()-1]->setColor(randF(0.0f,1.0f), randF(0.0f,1.0f), randF(0.0f,1.0f), 1.0f);
+		}
+		
+		if (blocks.size() == 0)
+		{
+			blocks.push_back(new Block);
+			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h);
+			blocks[blocks.size()-1]->setColor(randF(0.0f,1.0f), randF(0.0f,1.0f), randF(0.0f,1.0f), 1.0f);
+		}
 	}
 }
 
@@ -35,6 +69,11 @@ bool Blocks::remove(float x, float y, float z) // Returns true if a block was re
 	}
 
 	return false;
+}
+
+void Blocks::removeAll()
+{
+	blocks.clear();
 }
 
 float Blocks::randF(float min, float max)

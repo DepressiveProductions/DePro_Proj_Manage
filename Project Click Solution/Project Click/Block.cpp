@@ -10,18 +10,18 @@ void Block::init(float x, float y, float z, float width, float height)
 
 	w = width/2;
 	h = height/2;
-	d = 0.5f;
+	d = 0.3f;
 
 	aFrame.SetOrigin(x, y, z+d); // x, y, z is the center of the back of the cuboid
 
-	vColor[0] = 0.8f;
+	vColor[0] = 0.0f;
 	vColor[1] = 0.8f;
-	vColor[2] = 0.8f;
+	vColor[2] = 0.0f;
 	vColor[3] = 1.0f;
 
-	vShininess[0] = 0.4f;
-	vShininess[1] = 0.4f;
-	vShininess[2] = 0.4f;
+	vShininess[0] = 0.3f;
+	vShininess[1] = 0.3f;
+	vShininess[2] = 0.3f;
 	vShininess[3] = 1.0f;
 
 	generateBatch();

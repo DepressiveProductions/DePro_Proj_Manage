@@ -131,7 +131,7 @@ void setup()
 
 	//Initiate UI elements:
 	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
-	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.0f, "Assets/FONT_BLOCK.tga");
+	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -196,13 +196,15 @@ void checkInput()
 
 		if ((Globals::state == Globals::STATE_MENU || Globals::nBlocks <= 0) && Input::pressedKey == ' ')
 		{
-			blocks.sendWave(8);
+			blocks.sendWave(10);
 			Globals::state = Globals::STATE_PLAY;
 		}
 
 		if (Input::pressedKey == 'o')
 		{
 			Globals::state = Globals::STATE_MENU;
+			blocks.removeAll();
+			Globals::nBlocks = 0;
 		}
 		
 		if (Input::pressedKey == 27) //Escape
@@ -220,8 +222,8 @@ void checkInput()
 void playRender()
 {
 	//Lighting variables:
-	static M3DVector4f vLightPos = {1.5f, 1.0f, 11.0f, 1.0f};
-	static M3DVector4f vAmbient = {0.2f, 0.2f, 0.2f, 1.0f};
+	static M3DVector4f vLightPos = {1.5f, 1.0f, 15.0f, 1.0f};
+	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
 			
 	//Clear buffers:
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
