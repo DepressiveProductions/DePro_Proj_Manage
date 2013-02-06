@@ -58,8 +58,6 @@ void Input::mouseClick(int key, int state, int x, int y)
 
 array<float,3> Input::checkClicked(int x, int y, M3DMatrix44f mCamera, M3DMatrix44f mProj)
 {
-	//M3DVector2f cursor = {x, y};
-
 	GLint viewport[4];
 	GLdouble mv[16];
 	GLdouble proj[16];

@@ -55,6 +55,10 @@ Blocks					blocks;
 Background				bg;
 UserInterface			playInfo;
 UserInterface			restartInfo;
+UserInterface			alphaButton;
+UserInterface			survivalButton;
+UserInterface			optionsButton;
+UserInterface			exitButton;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +73,9 @@ const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 
+const float				mnuBtnLeft	= 25.0f;
+const float				mnuBtnRight	= 75.0f;
+
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
 
@@ -76,6 +83,7 @@ const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
 
 M3DMatrix44f			mCamera;							//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
+M3DMatrix44f			mIdentity;
 
 
 
@@ -88,6 +96,10 @@ void shutdownRC();										//One-time shutdown function
 void changeSize(int w, int h);							//Runs everytime the window 'changes size', for example when the window is created
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
 void checkInput();										//Checks if any relevant input has been registred
+void menuClick();
+void menuKey();
+void playClick();
+void playKey();
 void playRender();
 void menuRender();
 
@@ -114,6 +126,9 @@ void setup()
 	uiProjStack.LoadMatrix(viewFrustum.GetProjectionMatrix());
 	uiPipeline.SetMatrixStacks(uiMVStack, uiProjStack);
 
+	//Identity matrix, handy to have
+	m3dLoadIdentity44(mIdentity);
+
 	//Initialize custom shaders:
 	customShaders.initADSVert();
 	customShaders.initDiffVert();
@@ -132,6 +147,10 @@ void setup()
 	//Initiate UI elements:
 	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
+	alphaButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "");
+	survivalButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "");
+	optionsButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "");
+	exitButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -140,7 +159,12 @@ void setup()
 void shutdownRC()
 {
 	glutDestroyWindow(glutGetWindow());
+
 	playInfo.clearTexture();
+	alphaButton.clearTexture();
+	survivalButton.clearTexture();
+	optionsButton.clearTexture();
+	exitButton.clearTexture();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -159,62 +183,81 @@ void changeSize(int w, int h)
 }
 
 //Basic glutfunc for rendering stuff. Runs every frame:
-void renderScene()
+void renderScene() 
 {
-	if (Globals::state == Globals::STATE_MENU)
-	{
+	if (Globals::state == Globals::STATE_MENU) {
 		menuRender();
-
-	} else if (Globals::state ==Globals::STATE_PLAY) 
-	{
+	} else if (Globals::state ==Globals::STATE_PLAY) {
 		playRender();
-
 	}
 	checkInput();
+}
 
+void playClick()
+{
+	//Ingame clicking
+	M3DMatrix44f mProjection;
+	projectionStack.GetMatrix(mProjection);
+	array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mCamera, mProjection);
+	
+	if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
+	{
+		Globals::nBlocks -= 1;
+	}
+}
+
+void playKey()
+{
+	if (Globals::nBlocks <= 0 && Input::pressedKey == ' ')
+	{
+		blocks.sendWave(10);
+		Globals::state = Globals::STATE_PLAY;
+	} else if (Input::pressedKey == 'o') {
+		Globals::state = Globals::STATE_MENU;
+		blocks.removeAll();
+		Globals::nBlocks = 0;
+	} else if (Input::pressedKey == 27) { //Escape
+		shutdownRC();
+		exit(0);
+	}
+}
+
+void menuClick()
+{
+	//UI clicking:
+	array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mIdentity, mOrtho);
+}
+
+void menuKey()
+{
+	if (Input::pressedKey == ' ') {
+		blocks.sendWave(10);
+		Globals::state = Globals::STATE_PLAY;
+	} else if (Input::pressedKey == 27) { //Escape
+		shutdownRC();
+		exit(0);
+	}
 }
 
 void checkInput()
 {
-	if (Input::hasClicked)
-	{
+	if (Input::hasClicked) {
 		Input::hasClicked = false;
-
-		M3DMatrix44f mProjection;
-		projectionStack.GetMatrix(mProjection);
-
-		array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mCamera, mProjection);
-	
-		if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
-		{
-			Globals::nBlocks -= 1;
+		if (Globals::state == Globals::STATE_PLAY) {
+			playClick(); 
+		} else if (Globals::state == Globals::STATE_MENU) {
+			menuClick();
 		}
 	}
-	if (Input::hasPressed)
-	{
+	if (Input::hasPressed) {
 		Input::hasPressed = false;
-
-		if ((Globals::state == Globals::STATE_MENU || Globals::nBlocks <= 0) && Input::pressedKey == ' ')
-		{
-			blocks.sendWave(10);
-			Globals::state = Globals::STATE_PLAY;
-		}
-
-		if (Input::pressedKey == 'o')
-		{
-			Globals::state = Globals::STATE_MENU;
-			blocks.removeAll();
-			Globals::nBlocks = 0;
-		}
-		
-		if (Input::pressedKey == 27) //Escape
-		{
-			shutdownRC();
-			exit(0);
+		if (Globals::state == Globals::STATE_PLAY) {
+			playKey();
+		} else if (Globals::state == Globals::STATE_MENU) {
+			menuKey();
 		}
 	}
-	if (Input::hasPressedSpecial)
-	{
+	if (Input::hasPressedSpecial) {
 		Input::hasPressedSpecial = false;
 	}
 }
@@ -268,7 +311,12 @@ void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	playInfo.draw(uiPipeline, gltShaderManager);
+	//playInfo.draw(uiPipeline, gltShaderManager);
+
+	alphaButton.draw(uiPipeline, gltShaderManager);
+	survivalButton.draw(uiPipeline, gltShaderManager);
+	optionsButton.draw(uiPipeline, gltShaderManager);
+	exitButton.draw(uiPipeline, gltShaderManager);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
