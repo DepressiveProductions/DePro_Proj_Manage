@@ -147,10 +147,10 @@ void setup()
 	//Initiate UI elements:
 	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
-	alphaButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "");
-	survivalButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "");
-	optionsButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "");
-	exitButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "");
+	alphaButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "Assets/button_alpha.tga");
+	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
+	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
+	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -226,6 +226,20 @@ void menuClick()
 {
 	//UI clicking:
 	array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mIdentity, mOrtho);
+	std::cout << "asd" << clickPos[0] << clickPos[1] << std::endl;
+
+	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
+		if (clickPos[1] < 55.0f) {			//Survival
+			
+		} else if (clickPos[1] < 45.0f) {	//Options
+
+		} else if (clickPos[1] < 35.0f) {	//Quit
+			shutdownRC();
+			exit(0);
+		} else {							//Alpha
+			Globals::state = Globals::STATE_PLAY;
+		}
+	}
 }
 
 void menuKey()

@@ -75,8 +75,15 @@ array<float,3> Input::checkClicked(int x, int y, M3DMatrix44f mCamera, M3DMatrix
 	winX = (float)x;
 	winY = viewport[3] - (float)y;
 
+	std::cout << winX << " " << winY << std::endl;
+
 	glReadPixels(x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
-	gluUnProject(winX, winY, winZ, mv, proj, viewport, &posX, &posY, &posZ);
+	
+	std::cout << winZ << std::endl;
+
+	gluUnProject(winX, winY, /*winZ*/0.0f, mv, proj, viewport, &posX, &posY, &posZ);
+
+	std::cout << posX << std::endl;
 
 	array<float,3> retPos = {posX, posY, posZ};
 	return retPos;
