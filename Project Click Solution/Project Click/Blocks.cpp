@@ -13,7 +13,7 @@ void Blocks::init(float floorWidth, float floorHeight, float zPos)
 	fZ = zPos;
 }
 
-void Blocks::sendWave(int blockAmount)
+void Blocks::spawnBlocks(int blockAmount, float mvSpeed)
 {
 	Globals::nBlocks += blockAmount;
 	for (int i=0; i<blockAmount; i++)
@@ -41,17 +41,22 @@ void Blocks::sendWave(int blockAmount)
 			}
 		}
 
+		if (mvSpeed > 0.0f)
+		{
+			x += fWidth; // Place it further right, will make it come in from the right side
+		}
+
 		if (valid)
 		{
 			blocks.push_back(new Block);
-			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h);
+			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h, mvSpeed);
 			blocks[blocks.size()-1]->setColor(randF(0.0f,1.0f), randF(0.0f,1.0f), randF(0.0f,1.0f), 1.0f);
 		}
 		
 		if (blocks.size() == 0)
 		{
 			blocks.push_back(new Block);
-			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h);
+			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h, mvSpeed);
 			blocks[blocks.size()-1]->setColor(randF(0.0f,1.0f), randF(0.0f,1.0f), randF(0.0f,1.0f), 1.0f);
 		}
 	}
@@ -86,6 +91,7 @@ void Blocks::draw(Shaders *sManager, GLGeometryTransform *tPipeline, GLMatrixSta
 {
 	for (unsigned int i=0; i<blocks.size(); i++)
 	{
+		blocks[i]->move();
 		blocks[i]->draw(*sManager, *tPipeline, *mvStack, vLight, vAmbient);
 	}
 }

@@ -8,7 +8,8 @@ class Globals
 
 		enum Gamestate
 		{
-			STATE_PLAY,
+			STATE_ALPHA,
+			STATE_SURVIVAL,
 			STATE_MENU
 		};
 

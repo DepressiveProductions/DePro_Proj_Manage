@@ -5,7 +5,7 @@ Block::Block(void) {}
 
 Block::~Block(void) {}
 
-void Block::init(float x, float y, float z, float width, float height)
+void Block::init(float x, float y, float z, float width, float height, float moveSpeed)
 {
 
 	w = width/2;
@@ -13,6 +13,8 @@ void Block::init(float x, float y, float z, float width, float height)
 	d = 0.3f;
 
 	aFrame.SetOrigin(x, y, z+d); // x, y, z is the center of the back of the cuboid
+
+	mvSpeed = moveSpeed;
 
 	vColor[0] = 0.0f;
 	vColor[1] = 0.8f;
@@ -60,7 +62,7 @@ void Block::generateBatch()
 
 void Block::move()
 {
-	aFrame.MoveRight(0.03f);
+	aFrame.MoveRight(mvSpeed);
 }
 
 bool Block::isWithin(float x, float y, float z)
