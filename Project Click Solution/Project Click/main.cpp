@@ -92,7 +92,7 @@ M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
 vector< std::string > fontStrings;
-fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_A.tga");
+//fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_A.tga");	//EMIL DEN HÄR FINNS I SETUPPPPPPPP
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -118,6 +118,49 @@ void menuRender();
 //One-time setup function:
 void setup()
 {
+	/*HEJ EMIL JAG VET INTE VAD JAG SKA SKRIVA HER MEN DET FUNKER INTE UTANFER SOM DER UPPA 
+quu..__
+ $$$b  `---.__
+  "$$b        `--.                          ___.---uuudP
+   `$$b           `.__.------.__     __.---'      $$$$"              .
+     "$b          -'            `-.-'            $$$"              .'|
+       ".                                       d$"             _.'  |
+         `.   /                              ..."             .'     |
+           `./                           ..::-'            _.'       |
+            /                         .:::-'            .-'         .'
+           :                          ::''\          _.'            |
+          .' .-.             .-.           `.      .'               |
+          : /'$$|           .@"$\           `.   .'              _.-'
+         .'|$u$$|          |$$,$$|           |  <            _.-'
+         | `:$$:'          :$$$$$:           `.  `.       .-'
+         :                  `"--'             |    `-.     \
+        :##.       ==             .###.       `.      `.    `\
+        |##:                      :###:        |        >     >
+        |#'     `..'`..'          `###'        x:      /     /
+         \                                   xXX|     /    ./
+          \                                xXXX'|    /   ./
+          /`-.                                  `.  /   /
+         :    `-  ...........,                   | /  .'
+         |         ``:::::::'       .            |<    `.
+         |             ```          |           x| \ `.:``.
+         |                         .'    /'   xXX|  `:`M`M':.
+         |    |                    ;    /:' xXXX'|  -'MMMMM:'
+         `.  .'                   :    /:'       |-'MMMM.-'
+          |  |                   .'   /'        .'MMM.-'
+          `'`'                   :  ,'          |MMM<
+            |                     `'            |tbap\
+             \                                  :MM.-'
+              \                 |              .''
+               \.               `.            /
+                /     .:::::::.. :           /
+               |     .:::::::::::`.         /
+               |   .:::------------\       /
+              /   .''               >::'  /
+              `',:                 :    .'*/
+                                    
+	fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_A.tga");
+	//fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_B.tga");		//Får debug assertion fail, ska sova nu
+
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
