@@ -75,16 +75,29 @@ array<float,3> Input::checkClicked(int x, int y, M3DMatrix44f mCamera, M3DMatrix
 	winX = (float)x;
 	winY = viewport[3] - (float)y;
 
-	std::cout << winX << " " << winY << std::endl;
-
 	glReadPixels(x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
-	
-	std::cout << winZ << std::endl;
-
-	gluUnProject(winX, winY, /*winZ*/0.0f, mv, proj, viewport, &posX, &posY, &posZ);
-
-	std::cout << posX << std::endl;
+	gluUnProject(winX, winY, winZ, mv, proj, viewport, &posX, &posY, &posZ);
 
 	array<float,3> retPos = {posX, posY, posZ};
+	return retPos;
+}
+
+array<float,2> Input::getUICoords(int x, int y)
+{
+	GLint viewport[4];
+	GLfloat posX, posY;
+
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	std::cout << x << " " << viewport[2] << std::endl;
+	std::cout << y << " " << viewport[3] << std::endl;
+
+	posX = 100.0f * (float(x)/viewport[2]);
+	posY = 100.0f * (float(viewport[3]-y)/viewport[3]);
+
+	std::cout << posX << std::endl;
+	std::cout << posY << std::endl;
+
+	array<float,2> retPos = {posX, posY};
 	return retPos;
 }

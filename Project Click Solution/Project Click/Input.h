@@ -17,6 +17,7 @@ public:
 	static void				mouseClick(int key, int state, int x, int y);
 	
 	static array<float,3>	checkClicked(int x, int y, M3DMatrix44f mCamera, M3DMatrix44f mProj);
+	static array<float,2>	getUICoords(int x, int y);
 
 	static bool				hasClicked;
 	static array<int,2>		clickPos;

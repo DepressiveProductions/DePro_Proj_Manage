@@ -225,17 +225,17 @@ void playKey()
 void menuClick()
 {
 	//UI clicking:
-	array<float,3> clickPos = Input::checkClicked(Input::clickPos[0], Input::clickPos[1], mIdentity, mOrtho);
-	std::cout << "asd" << clickPos[0] << clickPos[1] << std::endl;
+	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
-		if (clickPos[1] < 55.0f) {			//Survival
-			
-		} else if (clickPos[1] < 45.0f) {	//Options
-
-		} else if (clickPos[1] < 35.0f) {	//Quit
+		if (clickPos[1] < 35.0f) {			//Quit
+			std::cout << "ASD" << std::endl;
 			shutdownRC();
 			exit(0);
+		} else if (clickPos[1] < 45.0f) {	//Options
+
+		} else if (clickPos[1] < 55.0f) {	//Survival
+			
 		} else {							//Alpha
 			Globals::state = Globals::STATE_PLAY;
 		}
