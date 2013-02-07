@@ -211,7 +211,23 @@ void playClick()
 		if (Globals::nBlocks <= 0)
 		{
 			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
-			std::cout << "You did it in: " << finalTime << std::endl;		//Print final time
+			finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
+			if (finalTime <= 2.50)
+			{
+				std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
+			}		
+			else if (finalTime <= 3.00)
+			{
+				std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
+			}
+			else if (finalTime <= 4.5)
+			{
+				std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
+			}
+			else
+			{
+				std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
+			}
 		}
 
 	}
