@@ -25,6 +25,7 @@
 #include <vector>
 #include <thread>
 #include <array>
+#include <StopWatch.h>
 #include "Shaders.h"
 #include "Background.h"
 #include "Globals.h"
@@ -52,6 +53,7 @@ GLFrustum				viewFrustum;
 
 Shaders					customShaders;
 Blocks					blocks;
+CStopWatch				gameTime;
 Background				bg;
 UserInterface			playInfo;
 UserInterface			restartInfo;
@@ -68,6 +70,8 @@ UserInterface			exitButton;
 #define W_WIDTH 1280
 #define W_HEIGHT 720
 #define W_TITLE "Project Click - Alpha"
+
+float					finalTime;
 
 const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
@@ -203,6 +207,13 @@ void playClick()
 	if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 	{
 		Globals::nBlocks -= 1;
+
+		if (Globals::nBlocks <= 0)
+		{
+			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
+			std::cout << "You did it in: " << finalTime << std::endl;		//Print final time
+		}
+
 	}
 }
 
@@ -212,6 +223,7 @@ void playKey()
 	{
 		blocks.sendWave(10);
 		Globals::state = Globals::STATE_PLAY;
+		gameTime.Reset();				  //Reset timer
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -238,6 +250,7 @@ void menuClick()
 		} else {							//Alpha
 			Globals::state = Globals::STATE_PLAY;
 			blocks.sendWave(10);
+			gameTime.Reset();				//Reset timer
 
 		}
 	}
