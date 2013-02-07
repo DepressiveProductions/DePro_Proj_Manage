@@ -25,6 +25,7 @@
 #include <vector>
 #include <thread>
 #include <array>
+#include <string>
 #include <StopWatch.h>
 #include "Shaders.h"
 #include "Background.h"
@@ -32,6 +33,7 @@
 #include "Blocks.h"
 #include "Input.h"
 #include "UserInterface.h"
+#include "Font.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,6 +62,7 @@ UserInterface			alphaButton;
 UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
+Font					font;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +91,8 @@ M3DMatrix44f			mCamera;							//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
+vector< std::string > fontStrings;
+fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_A.tga");
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +158,7 @@ void setup()
 	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
+	font.init(0.0f, 0.0f, 10.0f, 6.0f, 0.0f, fontStrings);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -356,6 +362,8 @@ void menuRender()
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
+
+	font.draw(uiPipeline, gltShaderManager);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
