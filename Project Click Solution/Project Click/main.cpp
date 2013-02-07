@@ -55,7 +55,6 @@ Shaders					customShaders;
 Blocks					blocks;
 CStopWatch				gameTime;
 Background				bg;
-UserInterface			playInfo;
 UserInterface			restartInfo;
 UserInterface			alphaButton;
 UserInterface			survivalButton;
@@ -149,7 +148,6 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//Initiate UI elements:
-	playInfo.init(35.0f, 25.0f, 65.0f, 75.0f, 0.0f, "Assets/Menu_screen.tga");
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
 	alphaButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "Assets/button_alpha.tga");
 	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
@@ -164,7 +162,6 @@ void shutdownRC()
 {
 	glutDestroyWindow(glutGetWindow());
 
-	playInfo.clearTexture();
 	alphaButton.clearTexture();
 	survivalButton.clearTexture();
 	optionsButton.clearTexture();
@@ -354,8 +351,6 @@ void playRender()
 void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-	//playInfo.draw(uiPipeline, gltShaderManager);
 
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
