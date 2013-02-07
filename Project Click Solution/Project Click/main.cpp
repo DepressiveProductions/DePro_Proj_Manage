@@ -208,8 +208,7 @@ void playClick()
 
 void playKey()
 {
-	if (Globals::nBlocks <= 0 && Input::pressedKey == ' ')
-	{
+	if (Input::pressedKey == ' ') {
 		blocks.spawnBlocks(10, 0.0f);
 		Globals::state = Globals::STATE_ALPHA;
 	} else if (Input::pressedKey == 'o') {
@@ -229,25 +228,23 @@ void menuClick()
 
 	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
 		if (clickPos[1] < 35.0f) {			//Quit
-			std::cout << "ASD" << std::endl;
 			shutdownRC();
 			exit(0);
 		} else if (clickPos[1] < 45.0f) {	//Options
 
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
+			blocks.spawnBlocks(10, 0.1f);
 		} else {							//Alpha
 			Globals::state = Globals::STATE_ALPHA;
+			blocks.spawnBlocks(10, 0.0f);
 		}
 	}
 }
 
 void menuKey()
 {
-	if (Input::pressedKey == ' ') {
-		blocks.spawnBlocks(10, 0.0f); // 0.0f speed == no movement
-		Globals::state = Globals::STATE_ALPHA;
-	} else if (Input::pressedKey == 27) { //Escape
+	if (Input::pressedKey == 27) { //Escape
 		shutdownRC();
 		exit(0);
 	}
@@ -257,7 +254,7 @@ void checkInput()
 {
 	if (Input::hasClicked) {
 		Input::hasClicked = false;
-		if (Globals::state == Globals::STATE_ALPHA) {
+		if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 			playClick(); 
 		} else if (Globals::state == Globals::STATE_MENU) {
 			menuClick();
@@ -265,7 +262,7 @@ void checkInput()
 	}
 	if (Input::hasPressed) {
 		Input::hasPressed = false;
-		if (Globals::state == Globals::STATE_ALPHA) {
+		if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 			playKey();
 		} else if (Globals::state == Globals::STATE_MENU) {
 			menuKey();
