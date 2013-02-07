@@ -89,14 +89,8 @@ array<float,2> Input::getUICoords(int x, int y)
 
 	glGetIntegerv(GL_VIEWPORT, viewport);
 
-	std::cout << x << " " << viewport[2] << std::endl;
-	std::cout << y << " " << viewport[3] << std::endl;
-
 	posX = 100.0f * (float(x)/viewport[2]);
 	posY = 100.0f * (float(viewport[3]-y)/viewport[3]);
-
-	std::cout << posX << std::endl;
-	std::cout << posY << std::endl;
 
 	array<float,2> retPos = {posX, posY};
 	return retPos;

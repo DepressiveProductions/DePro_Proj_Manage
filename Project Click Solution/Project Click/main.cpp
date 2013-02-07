@@ -229,7 +229,6 @@ void menuClick()
 
 	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
 		if (clickPos[1] < 35.0f) {			//Quit
-			std::cout << "ASD" << std::endl;
 			shutdownRC();
 			exit(0);
 		} else if (clickPos[1] < 45.0f) {	//Options
@@ -238,6 +237,8 @@ void menuClick()
 			
 		} else {							//Alpha
 			Globals::state = Globals::STATE_PLAY;
+			blocks.sendWave(10);
+
 		}
 	}
 }
