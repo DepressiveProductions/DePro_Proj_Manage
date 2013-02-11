@@ -5,8 +5,9 @@ Block::Block(void) {}
 
 Block::~Block(void) {}
 
-void Block::init(float x, float y, float z, float width, float height)
+void Block::init(float x, float y, float z, float width, float height, float moveSpeed)
 {
+	mvSpeed = moveSpeed;
 
 	w = width/2;
 	h = height/2;
@@ -60,7 +61,7 @@ void Block::generateBatch()
 
 void Block::move()
 {
-	aFrame.MoveRight(0.03f);
+	aFrame.MoveRight(mvSpeed);
 }
 
 bool Block::isWithin(float x, float y, float z)

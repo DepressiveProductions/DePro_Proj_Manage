@@ -10,7 +10,7 @@ class Block : private Actor
 public:
 	Block(void);
 	~Block(void);
-	void init(float x, float y, float z, float width, float height);
+	void init(float x, float y, float z, float width, float height, float moveSpeed);
 	void setColor(float r, float g, float b, float a);
 	void move();
 	bool isWithin(float x, float y, float z);
@@ -19,6 +19,7 @@ public:
 private:
 	// x, y, z stored in actor-frame
 	float w, h, d;
+	float mvSpeed;
 
 	void generateBatch();
 };

@@ -188,7 +188,7 @@ void renderScene()
 {
 	if (Globals::state == Globals::STATE_MENU) {
 		menuRender();
-	} else if (Globals::state ==Globals::STATE_PLAY) {
+	} else if (Globals::state ==Globals::STATE_ALPHA) {
 		playRender();
 	}
 	checkInput();
@@ -234,8 +234,7 @@ void playKey()
 {
 	if (Globals::nBlocks <= 0 && Input::pressedKey == ' ')
 	{
-		blocks.sendWave(10);
-		Globals::state = Globals::STATE_PLAY;
+		blocks.sendWave(10, 0.0f);
 		gameTime.Reset();				  //Reset timer
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
@@ -259,10 +258,12 @@ void menuClick()
 		} else if (clickPos[1] < 45.0f) {	//Options
 
 		} else if (clickPos[1] < 55.0f) {	//Survival
-			
+			Globals::state = Globals::STATE_SURVIVAL;
+			blocks.sendWave(3, 0.01f);
+
 		} else {							//Alpha
-			Globals::state = Globals::STATE_PLAY;
-			blocks.sendWave(10);
+			Globals::state = Globals::STATE_ALPHA;
+			blocks.sendWave(10, 0.0f);
 			gameTime.Reset();				//Reset timer
 
 		}
@@ -271,10 +272,7 @@ void menuClick()
 
 void menuKey()
 {
-	if (Input::pressedKey == ' ') {
-		blocks.sendWave(10);
-		Globals::state = Globals::STATE_PLAY;
-	} else if (Input::pressedKey == 27) { //Escape
+	if (Input::pressedKey == 27) { //Escape
 		shutdownRC();
 		exit(0);
 	}
@@ -284,7 +282,7 @@ void checkInput()
 {
 	if (Input::hasClicked) {
 		Input::hasClicked = false;
-		if (Globals::state == Globals::STATE_PLAY) {
+		if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 			playClick(); 
 		} else if (Globals::state == Globals::STATE_MENU) {
 			menuClick();
@@ -292,7 +290,7 @@ void checkInput()
 	}
 	if (Input::hasPressed) {
 		Input::hasPressed = false;
-		if (Globals::state == Globals::STATE_PLAY) {
+		if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 			playKey();
 		} else if (Globals::state == Globals::STATE_MENU) {
 			menuKey();

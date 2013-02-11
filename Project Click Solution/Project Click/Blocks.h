@@ -17,7 +17,7 @@ public:
 	~Blocks(void);
 
 	void init(float floorWidth, float floorHeight, float zPos);
-	void sendWave(int blockAmount);
+	void sendWave(int blockAmount, float moveSpeed);
 	bool remove(float x, float y, float z);
 	void removeAll();
 	float randF(float min, float max);
