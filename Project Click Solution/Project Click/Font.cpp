@@ -4,20 +4,9 @@
 Font::Font(void) {}
 Font::~Font(void) {}
 
-void Font::init(float xmin, float ymin, float xmax, float ymax, float z, vector<std::string> texFileNames)
+void Font::init(vector<std::string> texFileNames)
 {
-	this->xmin = xmin;
-	this->ymin = ymin;
-	this->xmax = xmax;
-	this->ymax = ymax;
-
-	this->z = z;
-
 	nTextures = texFileNames.size();
-
-	//uiFrame.SetOrigin(x, y, z);
-
-	initiateBatch();
 
 	glGenTextures(nTextures, &uiTexture);
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
@@ -26,37 +15,44 @@ void Font::init(float xmin, float ymin, float xmax, float ymax, float z, vector<
 	}
 }
 
-void Font::initiateBatch()
+void Font::initiateBatch(float x, float y, float width, float height)
 {
-	rectBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+	if (height == 0.0f) {
+		height = width * (5/3);
+	}
+
+	unsigned int i = letters.size();
+	letters[i].lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
 	// Lower left hand corner
-	rectBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-	rectBatch.Vertex3f(xmin, ymin, z);
+	letters[i].lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
+	letters[i].lBatch.Vertex3f(x, y, z);
 
 	// Upper left hand corner
-	rectBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-	rectBatch.Vertex3f(xmin, ymax, z);  
+	letters[i].lBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
+	letters[i].lBatch.Vertex3f(x, y + height, z);  
 
 	// Upper right hand corner
-	rectBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-	rectBatch.Vertex3f(xmax, ymax, z);
+	letters[i].lBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
+	letters[i].lBatch.Vertex3f(x + width, y + height, z);
 
 	// Lower right hand corner
-	rectBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-	rectBatch.Vertex3f(xmax, ymin, z);
+	letters[i].lBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
+	letters[i].lBatch.Vertex3f(x + width, y, z);
 
-	rectBatch.End();
+	letters[i].lBatch.End();
 }
 
-void Font::draw(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
+void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 {
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
-
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), 0);
-	rectBatch.Draw();
+	
+	for (unsigned int i = 0 ; i < letters.size() ; i++) {
+		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), letters[i].iTexture);
+		letters[i].lBatch.Draw();
+	}
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);

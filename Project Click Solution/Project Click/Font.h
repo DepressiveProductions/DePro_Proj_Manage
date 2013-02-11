@@ -16,18 +16,24 @@ public:
 	Font(void);
 	~Font(void);
 
-	void init(float xmin, float ymin, float xmax, float ymax, float z, vector<std::string> texFileNames);
-	void draw(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
+	void init(vector<std::string> texFileNames);
+	void showText();
+	void removeText();
+	void initiateBatch(float x, float y, float width, float height = 0.0f);
+	void drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
 	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	void clearTexture(void); // Goes in main before terminating program
 
 private:
-	void initiateBatch();
+	struct letter {
+		GLBatch lBatch;
+		int iTexture;
+	};
+
+	vector< letter > letters;
 
 	GLuint		uiTexture;
 	int			nTextures;
-	GLBatch		rectBatch;
-	GLFrame		uiFrame;
 	float		xmin, ymin, xmax, ymax, z;
 };
 
