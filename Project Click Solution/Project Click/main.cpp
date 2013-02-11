@@ -188,7 +188,7 @@ void renderScene()
 {
 	if (Globals::state == Globals::STATE_MENU) {
 		menuRender();
-	} else if (Globals::state ==Globals::STATE_ALPHA) {
+	} else if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 		playRender();
 	}
 	checkInput();
@@ -205,37 +205,29 @@ void playClick()
 	{
 		Globals::nBlocks -= 1;
 
-		if (Globals::nBlocks <= 0)
+		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
 			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
 			finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
-			if (finalTime <= 2.50)
-			{
+			if (finalTime <= 2.50) {
 				std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
-			}		
-			else if (finalTime <= 3.00)
-			{
+			} else if (finalTime <= 3.00) {
 				std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
-			}
-			else if (finalTime <= 4.5)
-			{
+			} else if (finalTime <= 4.5) {
 				std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
-			}
-			else
-			{
+			} else {
 				std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
 			}
+		} else if (Globals::nBlocks <=0 && Globals::state == Globals::STATE_SURVIVAL) {
+			blocks.sendWave(3, 0.005f);
 		}
-
 	}
 }
 
 void playKey()
 {
-	if (Globals::nBlocks <= 0 && Input::pressedKey == ' ')
-	{
+	if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_ALPHA && Globals::nBlocks <= 0) {
 		blocks.sendWave(10, 0.0f);
-		gameTime.Reset();				  //Reset timer
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -259,7 +251,7 @@ void menuClick()
 
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
-			blocks.sendWave(3, 0.01f);
+			blocks.sendWave(3, 0.005f);
 
 		} else {							//Alpha
 			Globals::state = Globals::STATE_ALPHA;
@@ -336,8 +328,7 @@ void playRender()
 	//UI:
 	
 	//Render a thing in the thing on the thing:
-	if (Globals::nBlocks <= 0)
-	{
+	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 	}
 
