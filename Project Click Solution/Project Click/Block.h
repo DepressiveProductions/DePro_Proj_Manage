@@ -3,6 +3,7 @@
 #include <GLTools.h>
 #include <GLMatrixStack.h>
 #include <GLGeometryTransform.h>
+#include <ctime>
 #include "Shaders.h"
 
 class Block : private Actor
@@ -20,6 +21,7 @@ private:
 	// x, y, z stored in actor-frame
 	float w, h, d;
 	float mvSpeed;
+	float lastTick;
 
 	void generateBatch();
 };

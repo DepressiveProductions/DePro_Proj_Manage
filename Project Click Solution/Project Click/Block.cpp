@@ -8,6 +8,7 @@ Block::~Block(void) {}
 void Block::init(float x, float y, float z, float width, float height, float moveSpeed)
 {
 	mvSpeed = moveSpeed;
+	lastTick = clock();
 
 	w = width/2;
 	h = height/2;
@@ -61,7 +62,9 @@ void Block::generateBatch()
 
 void Block::move()
 {
-	aFrame.MoveRight(mvSpeed);
+	float timeDiff = clock() - lastTick;
+	lastTick = clock();
+	aFrame.MoveRight(mvSpeed*timeDiff);
 }
 
 bool Block::isWithin(float x, float y, float z)
