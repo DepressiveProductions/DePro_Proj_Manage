@@ -31,7 +31,8 @@ void Font::showText(std::string text, float x, float y, float width, float heigh
 
 void Font::initiateBatch(float x, float y, float width, float height)
 {
-	unsigned int i = letters.size();
+	unsigned int i = letters.size() - 1;
+	std::cout << letters.size() << std::endl;
 	letters[i]->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
 	// Lower left hand corner
@@ -60,7 +61,7 @@ void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 	
 	for (unsigned int i = 0 ; i < letters.size() ; i++) {
-		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), letters[i]->iTexture);
+		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), 0/*letters[i]->iTexture*/);
 		letters[i]->lBatch.Draw();
 	}
 
