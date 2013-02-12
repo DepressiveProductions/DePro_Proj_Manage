@@ -15,32 +15,42 @@ void Font::init(vector<std::string> texFileNames)
 	}
 }
 
-void Font::initiateBatch(float x, float y, float width, float height)
+void Font::showText(std::string text, float x, float y, float width, float height)
 {
-	if (height == 0.0f) {
+	if (height == 0.0f) {										//Default aspect ratio
 		height = width * (5/3);
+	} if (x + (width * ((float)text.size() + 1.0f)) > 100.0f) {	//Not outside screen!
+		x =  -(width * ((float)text.size() + 1.0f)) - 100.0f;
 	}
 
+	for (unsigned int i = 0.0f ; i < text.size() ; i++) {
+		letters.push_back(new letter);
+		initiateBatch(x, y, width, height);
+	}
+}
+
+void Font::initiateBatch(float x, float y, float width, float height)
+{
 	unsigned int i = letters.size();
-	letters[i].lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+	letters[i]->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
 	// Lower left hand corner
-	letters[i].lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-	letters[i].lBatch.Vertex3f(x, y, z);
+	letters[i]->lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
+	letters[i]->lBatch.Vertex3f(x, y, z);
 
 	// Upper left hand corner
-	letters[i].lBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-	letters[i].lBatch.Vertex3f(x, y + height, z);  
+	letters[i]->lBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
+	letters[i]->lBatch.Vertex3f(x, y + height, z);  
 
 	// Upper right hand corner
-	letters[i].lBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-	letters[i].lBatch.Vertex3f(x + width, y + height, z);
+	letters[i]->lBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
+	letters[i]->lBatch.Vertex3f(x + width, y + height, z);
 
 	// Lower right hand corner
-	letters[i].lBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-	letters[i].lBatch.Vertex3f(x + width, y, z);
+	letters[i]->lBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
+	letters[i]->lBatch.Vertex3f(x + width, y, z);
 
-	letters[i].lBatch.End();
+	letters[i]->lBatch.End();
 }
 
 void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
@@ -50,8 +60,8 @@ void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 	
 	for (unsigned int i = 0 ; i < letters.size() ; i++) {
-		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), letters[i].iTexture);
-		letters[i].lBatch.Draw();
+		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), letters[i]->iTexture);
+		letters[i]->lBatch.Draw();
 	}
 
 	glDisable(GL_BLEND);

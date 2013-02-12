@@ -7,8 +7,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 
 using std::vector;
+using std::map;
 
 class Font
 {
@@ -17,9 +19,9 @@ public:
 	~Font(void);
 
 	void init(vector<std::string> texFileNames);
-	void showText();
+	void showText(std::string text, float x, float y, float width, float height = 0.0f);
 	void removeText();
-	void initiateBatch(float x, float y, float width, float height = 0.0f);
+	void initiateBatch(float x, float y, float width, float height);
 	void drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
 	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	void clearTexture(void); // Goes in main before terminating program
@@ -30,10 +32,9 @@ private:
 		int iTexture;
 	};
 
-	vector< letter > letters;
+	vector< letter * > letters;
 
 	GLuint		uiTexture;
 	int			nTextures;
 	float		xmin, ymin, xmax, ymax, z;
 };
-
