@@ -26,6 +26,7 @@
 #include <thread>
 #include <array>
 #include <string>
+#include <map>
 #include <StopWatch.h>
 #include "Shaders.h"
 #include "Background.h"
@@ -35,6 +36,8 @@
 #include "UserInterface.h"
 #include "Font.h"
 #include "TexFont.h"
+#include "font_parser.h"
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,9 +95,7 @@ M3DMatrix44f			mCamera;							//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
-vector< std::string >	fontStrings;
-char					*filename	= "default.txf";
-TexFont					*txf;
+std::map< std::string, std::string > fontStrings;			//Map for all font texture paths
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +149,7 @@ alphaSelect(int value)
 //One-time setup function:
 void setup()
 {
-	fontStrings.push_back("Assets/FONT/TEXT/FONT_ALPHA_A.tga");
+	fontStrings = getFontStrings("Assets/FONTS/ALPHA/");
 
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -190,7 +191,7 @@ void setup()
 	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
-	font.init(fontStrings);
+	//font.init(fontStrings);		//not vector anymore
 
 	txf = txfLoadFont(filename);
 	alphaSelect(GL_ALPHA_TEST);

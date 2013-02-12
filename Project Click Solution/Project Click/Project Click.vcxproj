@@ -16,6 +16,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Blocks.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="font_parser.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -28,6 +29,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Blocks.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="font_parser.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Shaders.h" />
