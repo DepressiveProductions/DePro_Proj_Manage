@@ -219,7 +219,8 @@ void playClick()
 				std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
 			}
 		} else if (Globals::nBlocks <=0 && Globals::state == Globals::STATE_SURVIVAL) {
-			blocks.sendWave(3, 0.005f);
+			Globals::speed *= 1.05f;
+			blocks.sendWave(5, Globals::speed);
 		}
 	}
 }
@@ -228,9 +229,11 @@ void playKey()
 {
 	if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_ALPHA && Globals::nBlocks <= 0) {
 		blocks.sendWave(10, 0.0f);
+		gameTime.Reset();
 	} else if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_SURVIVAL && Globals::lives <= 0) {
 		Globals::lives = 3;
-		blocks.sendWave(3, 0.005f);
+		Globals::speed = 0.002f;
+		blocks.sendWave(5, Globals::speed);
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -255,7 +258,8 @@ void menuClick()
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
 			Globals::lives = 3;
-			blocks.sendWave(3, 0.005f);
+			Globals::speed = 0.002f;
+			blocks.sendWave(5, Globals::speed);
 		} else {							//Alpha
 			Globals::state = Globals::STATE_ALPHA;
 			blocks.sendWave(10, 0.0f);
@@ -335,7 +339,8 @@ void playRender()
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
-		blocks.sendWave(3, 0.005f);
+		Globals::speed *= 1.05f;
+		blocks.sendWave(5, Globals::speed);
 	}
 
 	//Swap buffers and tell glut to keep looping:

@@ -71,7 +71,7 @@ bool Block::isWithin(float x, float y, float z)
 {
 	if ((x <= aFrame.GetOriginX()+w && x >= aFrame.GetOriginX()-w) &&
 		(y <= aFrame.GetOriginY()+h && y >= aFrame.GetOriginY()-h) &&
-		(z <= aFrame.GetOriginZ()+d && z >= aFrame.GetOriginZ()-d))
+		(z <= aFrame.GetOriginZ()+d))
 	{
 		return true;
 	}
@@ -81,8 +81,9 @@ bool Block::isWithin(float x, float y, float z)
 
 bool Block::hasPassed(float fWidth)
 {
-	if (aFrame.GetOriginX() < -(fWidth/2)-w)
+	if (aFrame.GetOriginX() < -(fWidth/2)-w) {
 		return true;
+	}
 
 	return false;
 }
