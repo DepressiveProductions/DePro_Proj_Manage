@@ -15,4 +15,5 @@ class Globals
 
 		static Gamestate state;
 		static int nBlocks;
+		static int lives;
 };

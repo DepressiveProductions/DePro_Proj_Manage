@@ -15,6 +15,7 @@ public:
 	void setColor(float r, float g, float b, float a);
 	void move();
 	bool isWithin(float x, float y, float z);
+	bool hasPassed(float fWidth);
 	void draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient);
 
 private:

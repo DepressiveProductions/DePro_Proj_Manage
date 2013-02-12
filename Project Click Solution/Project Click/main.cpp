@@ -228,6 +228,9 @@ void playKey()
 {
 	if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_ALPHA && Globals::nBlocks <= 0) {
 		blocks.sendWave(10, 0.0f);
+	} else if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_SURVIVAL && Globals::lives <= 0) {
+		Globals::lives = 3;
+		blocks.sendWave(3, 0.005f);
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -251,13 +254,12 @@ void menuClick()
 
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
+			Globals::lives = 3;
 			blocks.sendWave(3, 0.005f);
-
 		} else {							//Alpha
 			Globals::state = Globals::STATE_ALPHA;
 			blocks.sendWave(10, 0.0f);
 			gameTime.Reset();				//Reset timer
-
 		}
 	}
 }
@@ -330,6 +332,10 @@ void playRender()
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
+	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
+		restartInfo.draw(uiPipeline, gltShaderManager);
+	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
+		blocks.sendWave(3, 0.005f);
 	}
 
 	//Swap buffers and tell glut to keep looping:

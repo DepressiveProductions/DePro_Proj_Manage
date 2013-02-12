@@ -79,6 +79,14 @@ bool Block::isWithin(float x, float y, float z)
 	return false;
 }
 
+bool Block::hasPassed(float fWidth)
+{
+	if (aFrame.GetOriginX() < -(fWidth/2)-w)
+		return true;
+
+	return false;
+}
+
 void Block::draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient)
 {
 	mvStack.PushMatrix();

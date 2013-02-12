@@ -88,5 +88,11 @@ void Blocks::draw(Shaders *sManager, GLGeometryTransform *tPipeline, GLMatrixSta
 	{
 		blocks[i]->move();
 		blocks[i]->draw(*sManager, *tPipeline, *mvStack, vLight, vAmbient);
+		
+		if (blocks[i]->hasPassed(fWidth)) {
+			Globals::lives --;
+			Globals::nBlocks--;
+			blocks.erase(blocks.begin()+i);
+		}
 	}
 }
