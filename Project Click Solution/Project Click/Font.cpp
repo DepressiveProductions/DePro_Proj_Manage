@@ -4,14 +4,17 @@
 Font::Font(void) {}
 Font::~Font(void) {}
 
-void Font::init(vector<std::string> texFileNames)
+void Font::init(map<char,std::string> texFileNames)
 {
 	nTextures = texFileNames.size();
 
 	glGenTextures(nTextures, &uiTexture);
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	for (unsigned int i = 0 ; i < nTextures ; i++) {
-		loadTGATexture(texFileNames[i].c_str(), GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
+	int counter = 0;
+	for (auto i = texFileNames.begin() ; i != texFileNames.end(); i++) {
+		loadTGATexture(i->second.c_str(), GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
+		texIDs[i->first] = counter;
+		counter++;
 	}
 }
 
@@ -23,35 +26,36 @@ void Font::showText(std::string text, float x, float y, float width, float heigh
 		x =  -(width * ((float)text.size() + 1.0f)) - 100.0f;
 	}
 
+	vector<letter *> tempVec;
+
 	for (unsigned int i = 0.0f ; i < text.size() ; i++) {
-		letters.push_back(new letter);
-		initiateBatch(x, y, width, height);
+		tempVec.push_back(new letter);
+		initiateBatch(tempVec[tempVec.size()], x + (i+1)*width, y, width, height);
+		tempVec[tempVec.size()]->iTexture = texIDs[text[i]];
 	}
 }
 
-void Font::initiateBatch(float x, float y, float width, float height)
+void Font::initiateBatch(letter *l, float x, float y, float width, float height)
 {
-	unsigned int i = letters.size() - 1;
-	std::cout << letters.size() << std::endl;
-	letters[i]->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+	l->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
 	// Lower left hand corner
-	letters[i]->lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-	letters[i]->lBatch.Vertex3f(x, y, z);
+	l->lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
+	l->lBatch.Vertex3f(x, y, z);
 
 	// Upper left hand corner
-	letters[i]->lBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-	letters[i]->lBatch.Vertex3f(x, y + height, z);  
+	l->lBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
+	l->lBatch.Vertex3f(x, y + height, z);  
 
 	// Upper right hand corner
-	letters[i]->lBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-	letters[i]->lBatch.Vertex3f(x + width, y + height, z);
+	l->lBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
+	l->lBatch.Vertex3f(x + width, y + height, z);
 
 	// Lower right hand corner
-	letters[i]->lBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-	letters[i]->lBatch.Vertex3f(x + width, y, z);
+	l->lBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
+	l->lBatch.Vertex3f(x + width, y, z);
 
-	letters[i]->lBatch.End();
+	l->lBatch.End();
 }
 
 void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
@@ -60,9 +64,11 @@ void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 	glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 	
-	for (unsigned int i = 0 ; i < letters.size() ; i++) {
-		shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), 0/*letters[i]->iTexture*/);
-		letters[i]->lBatch.Draw();
+	for (auto iter = allText.begin() ; iter != allText.end() ; iter++) {
+		for (unsigned int i = 0 ; i < iter->second.size() ; i++) {
+			shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), iter->second[i]->iTexture);
+			iter->second[i]->lBatch.Draw();
+		}
 	}
 
 	glDisable(GL_BLEND);
