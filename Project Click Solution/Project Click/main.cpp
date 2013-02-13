@@ -118,34 +118,6 @@ void menuRender();
 
 //Function definitions:
 
-void
-minifySelect(int value)
-{
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, value);
-  glutPostRedisplay();
-}
-
-void
-alphaSelect(int value)
-{
-  switch (value) {
-  case GL_ALPHA_TEST:
-    glDisable(GL_BLEND);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GEQUAL, 0.5);
-    break;
-  case GL_BLEND:
-    glDisable(GL_ALPHA_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    break;
-  case GL_NONE:
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_BLEND);
-    break;
-  }
-}
-
 //One-time setup function:
 void setup()
 {
@@ -191,12 +163,8 @@ void setup()
 	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
-	//font.init(fontStrings);		//not vector anymore
 
-
-	alphaSelect(GL_ALPHA_TEST);
-	minifySelect(GL_NEAREST);
-
+	//font.init(fontStrings);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);

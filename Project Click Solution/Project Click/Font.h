@@ -18,21 +18,22 @@ public:
 	Font(void);
 	~Font(void);
 
-	void init(vector<std::string> texFileNames);
-	void showText(std::string text, float x, float y, float width, float height = 0.0f);
-	void removeText();
-	void initiateBatch(float x, float y, float width, float height);
-	void drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
-	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
-	void clearTexture(void); // Goes in main before terminating program
-
-private:
 	struct letter {
 		GLBatch lBatch;
 		int iTexture;
 	};
 
-	vector< letter * > letters;
+	void init(map<char,std::string> texFileNames);
+	void showText(std::string text, float x, float y, float width, float height = 0.0f);
+	void removeText(std::string key);
+	void initiateBatch(letter *l, float x, float y, float width, float height);
+	void drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
+	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
+	void clearTexture(void); // Goes in main before terminating program
+
+private:
+	map< std::string, vector< letter * >> allText;
+	map< char, int > texIDs;
 
 	GLuint		uiTexture;
 	int			nTextures;
