@@ -8,12 +8,12 @@ void Font::init(map<char,std::string> texFileNames)
 {
 	nTextures = texFileNames.size();
 
-	glGenTextures(nTextures, uiTexture);
 	int counter = 0;
 	for (auto i = texFileNames.begin() ; i != texFileNames.end(); i++) {
-		glBindTexture(GL_TEXTURE_2D, uiTexture[counter]);
+		glGenTextures(1, &texIDs[i->first]);
+		glBindTexture(GL_TEXTURE_2D, texIDs[i->first]);
 		loadTGATexture(i->second.c_str(), GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
-		texIDs[i->first] = counter;
+		//texIDs[i->first] = counter;
 		counter++;
 	}
 }
@@ -31,7 +31,7 @@ void Font::showText(std::string text, float x, float y, float width, float heigh
 	for (unsigned int i = 0.0f ; i < text.size() ; i++) {
 		tempVec.push_back(new letter);
 		initiateBatch(tempVec[tempVec.size()-1], x + i*width, y, width, height);
-		tempVec[tempVec.size()-1]->iTexture = texIDs[text[i]];
+		//tempVec[tempVec.size()-1]->iTexture = texIDs[text[i]];
 		tempVec[tempVec.size()-1]->c = text[i];
 		allText[text] = tempVec;
 	}
@@ -70,7 +70,7 @@ void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 	for (auto iter = allText.begin() ; iter != allText.end() ; iter++) {
 
 		for (unsigned int i = 0 ; i < iter->second.size() ; i++) {
-			glBindTexture(GL_TEXTURE_2D, uiTexture[iter->second[i]->iTexture]);
+			glBindTexture(GL_TEXTURE_2D, texIDs[iter->second[i]->c]);
 			shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), iter->second[i]->iTexture);
 			iter->second[i]->lBatch.Draw();
 		}

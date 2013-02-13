@@ -165,7 +165,7 @@ void setup()
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
 	font.init(fontStrings);
-	font.showText("HEJ", 0.0f, 0.0f, 10.0f);
+	font.showText("STAFFAN", 0.0f, 0.0f, 3.0f);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -267,7 +267,7 @@ void menuClick()
 	//UI clicking:
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
+	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f && clickPos[1] > 25.0f) {
 		if (clickPos[1] < 35.0f) {			//Quit
 			shutdownRC();
 			exit(0);

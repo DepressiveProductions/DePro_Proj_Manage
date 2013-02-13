@@ -34,7 +34,7 @@ public:
 
 private:
 	map< std::string, vector< letter * >> allText;
-	map< char, int > texIDs;
+	map< char, GLuint > texIDs;
 
 	GLuint		uiTexture[50];
 	int			nTextures;
