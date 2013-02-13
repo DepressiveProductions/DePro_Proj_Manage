@@ -1,8 +1,8 @@
 #include "font_parser.h"
 
-std::map< std::string, std::string > getFontStrings(const char *fontDir)
+std::map< char, std::string > getFontStrings(const char *fontDir)
 {
-	std::map< std::string, std::string > fontStrings;				//Map that will be returned
+	std::map< char, std::string > fontStrings;				//Map that will be returned
 
 	DIR *dir;
 	struct dirent *ent;
@@ -11,7 +11,8 @@ std::map< std::string, std::string > getFontStrings(const char *fontDir)
 		while ((ent = readdir(dir)) != NULL)			//Add the paths to all files and directories to fontStrings
 		{
 			std::string fileName = std::string(ent->d_name);
-			std::string key = "FONT_" + fileName.substr(0, fileName.length()-4);
+			std::string key1 = fileName.substr(0, fileName.length()-4);
+			char key = (char) atoi(key1.c_str());
 			std::cout << key << " " << fontDir << fileName << std::endl;
 			fontStrings[key] = (fontDir + fileName);
 			//std::cout << ent->d_name << std::endl;
@@ -24,9 +25,13 @@ std::map< std::string, std::string > getFontStrings(const char *fontDir)
 		//return some error exception thingything
 	}
 
-	fontStrings["FONT_."].erase();
-	fontStrings["FONT_.."].erase();
+//	fontStrings["."].erase();
+//	fontStrings[".."].erase();
 	return fontStrings;
 }
 
 
+char a3toc(const char *ptr)
+{
+    return (ptr[0]-'0')*100 + (ptr[1]-'0')*10 + (ptr[0]-'0');
+}

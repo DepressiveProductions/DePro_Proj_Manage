@@ -6,4 +6,4 @@
 #include <iostream>
 
 //Prototypes
-std::map< std::string, std::string > getFontStrings(const char *fontDir);	//Returns a vector with paths to files for each symbol in the font
+std::map< char, std::string > getFontStrings(const char *fontDir);	//Returns a vector with paths to files for each symbol in the font

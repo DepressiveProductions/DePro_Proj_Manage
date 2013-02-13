@@ -95,7 +95,7 @@ M3DMatrix44f			mCamera;							//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
-std::map< std::string, std::string > fontStrings;			//Map for all font texture paths
+std::map< char, std::string > fontStrings;			//Map for all font texture paths
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -193,10 +193,10 @@ void setup()
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 	//font.init(fontStrings);		//not vector anymore
 
-	txf = txfLoadFont(filename);
+
 	alphaSelect(GL_ALPHA_TEST);
 	minifySelect(GL_NEAREST);
-	txfEstablishTexture(txf, 0, GL_TRUE);
+
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -400,7 +400,6 @@ void menuRender()
 
 	char *str;
 	str = "DePro";
-	txfRenderString(txf, str, strlen(str));
 
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
