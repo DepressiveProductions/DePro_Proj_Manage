@@ -21,7 +21,7 @@ void Font::init(map<char,std::string> texFileNames)
 void Font::showText(std::string text, float x, float y, float width, float height)
 {
 	if (height == 0.0f) {										//Default aspect ratio
-		height = width * (5/3);
+		height = width * 5 / 3;
 	} if (x + (width * ((float)text.size() + 1.0f)) > 100.0f) {	//Not outside screen!
 		x =  -(width * ((float)text.size() + 1.0f)) - 100.0f;
 	}
@@ -30,7 +30,7 @@ void Font::showText(std::string text, float x, float y, float width, float heigh
 
 	for (unsigned int i = 0.0f ; i < text.size() ; i++) {
 		tempVec.push_back(new letter);
-		initiateBatch(tempVec[tempVec.size()-1], x + (i+1)*width, y, width, height);
+		initiateBatch(tempVec[tempVec.size()-1], x + i*width, y, width, height);
 		tempVec[tempVec.size()-1]->iTexture = texIDs[text[i]];
 		tempVec[tempVec.size()-1]->c = text[i];
 		allText[text] = tempVec;
@@ -41,6 +41,8 @@ void Font::initiateBatch(letter *l, float x, float y, float width, float height)
 {
 	l->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 	
+	z = 0.0f;
+
 	// Lower left hand corner
 	l->lBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
 	l->lBatch.Vertex3f(x, y, z);
@@ -68,7 +70,7 @@ void Font::drawAll(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
 	for (auto iter = allText.begin() ; iter != allText.end() ; iter++) {
 
 		for (unsigned int i = 0 ; i < iter->second.size() ; i++) {
-			glBindTexture(GL_TEXTURE_2D, uiTexture[texIDs[iter->second[i]->c]]);
+			glBindTexture(GL_TEXTURE_2D, uiTexture[iter->second[i]->iTexture]);
 			shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), iter->second[i]->iTexture);
 			iter->second[i]->lBatch.Draw();
 		}
