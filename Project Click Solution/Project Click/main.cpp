@@ -165,7 +165,6 @@ void setup()
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
 	font.init(fontStrings);
-	font.showText("STAFFAN", 0.0f, 0.0f, 3.0f);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -279,7 +278,6 @@ void menuClick()
 			Globals::state = Globals::STATE_PLAY;
 			blocks.sendWave(10);
 			gameTime.Reset();				//Reset timer
-
 		}
 	}
 }
@@ -358,6 +356,8 @@ void playRender()
 		restartInfo.draw(uiPipeline, gltShaderManager);
 	}
 
+	font.drawAll(uiPipeline, gltShaderManager);
+
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -366,6 +366,8 @@ void playRender()
 void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	
+	font.showText("STAFFAN", 0.0f, 0.0f, 3.0f);
 
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
@@ -376,6 +378,8 @@ void menuRender()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+
+	//font.removeText("STAFFAN");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

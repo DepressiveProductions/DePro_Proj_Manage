@@ -37,6 +37,16 @@ void Font::showText(std::string text, float x, float y, float width, float heigh
 	}
 }
 
+void Font::removeText(std::string key)
+{
+	for (auto iterator = allText.begin() ; iterator != allText.end() ; iterator++) {
+		if (iterator->first == key) {
+			delete &allText[key];
+			allText.erase(key);
+		}
+	}
+}
+
 void Font::initiateBatch(letter *l, float x, float y, float width, float height)
 {
 	l->lBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
