@@ -21,6 +21,7 @@ public:
 	struct letter {
 		GLBatch lBatch;
 		int iTexture;
+		char c;
 	};
 
 	void init(map<char,std::string> texFileNames);
@@ -35,7 +36,7 @@ private:
 	map< std::string, vector< letter * >> allText;
 	map< char, int > texIDs;
 
-	GLuint		uiTexture;
+	GLuint		*uiTexture;
 	int			nTextures;
 	float		xmin, ymin, xmax, ymax, z;
 };

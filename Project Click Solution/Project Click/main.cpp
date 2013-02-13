@@ -164,7 +164,8 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	//font.init(fontStrings);
+	font.init(fontStrings);
+	font.showText("HEJ", 0.0f, 0.0f, 10.0f);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -366,13 +367,12 @@ void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	char *str;
-	str = "DePro";
-
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
+
+	font.drawAll(uiPipeline, gltShaderManager);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
