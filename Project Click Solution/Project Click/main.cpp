@@ -218,7 +218,7 @@ void playClick()
 			} else {
 				std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
 			}
-		} else if (Globals::nBlocks <=0 && Globals::state == Globals::STATE_SURVIVAL) {
+		} else if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::lives > 0) {
 			Globals::speed *= 1.05f;
 			blocks.sendWave(5, Globals::speed);
 		}
@@ -234,6 +234,7 @@ void playKey()
 		Globals::lives = 3;
 		Globals::speed = 0.002f;
 		blocks.sendWave(5, Globals::speed);
+		gameTime.Reset();
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -260,6 +261,7 @@ void menuClick()
 			Globals::lives = 3;
 			Globals::speed = 0.002f;
 			blocks.sendWave(5, Globals::speed);
+			gameTime.Reset();
 		} else {							//Alpha
 			Globals::state = Globals::STATE_ALPHA;
 			blocks.sendWave(10, 0.0f);
@@ -338,6 +340,10 @@ void playRender()
 		restartInfo.draw(uiPipeline, gltShaderManager);
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
+		if (finalTime == 0.0f) {
+			finalTime = gameTime.GetElapsedSeconds();
+			std::cout << "You survived " << finalTime << " seconds!" << std::endl;
+		}
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.05f;
 		blocks.sendWave(5, Globals::speed);
