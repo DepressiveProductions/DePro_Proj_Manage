@@ -35,7 +35,6 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
-#include "TexFont.h"
 #include "font_parser.h"
 
 
@@ -95,7 +94,6 @@ M3DMatrix44f			mCamera;							//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
-std::map< char, std::string > fontStrings;			//Map for all font texture paths
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -121,8 +119,6 @@ void menuRender();
 //One-time setup function:
 void setup()
 {
-	fontStrings = getFontStrings("Assets/FONTS/ALPHA/");
-
 	//Background:
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -164,7 +160,6 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	font.init(fontStrings);
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -356,8 +351,6 @@ void playRender()
 		restartInfo.draw(uiPipeline, gltShaderManager);
 	}
 
-	font.drawAll(uiPipeline, gltShaderManager);
-
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -367,19 +360,14 @@ void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	
-	font.showText("STAFFAN", 0.0f, 0.0f, 3.0f);
-
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
 
-	font.drawAll(uiPipeline, gltShaderManager);
-
 	glutSwapBuffers();
 	glutPostRedisplay();
 
-	//font.removeText("STAFFAN");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
