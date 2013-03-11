@@ -33,6 +33,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Shaders.h" />
+    <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <ItemGroup>

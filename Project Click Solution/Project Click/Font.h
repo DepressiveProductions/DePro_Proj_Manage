@@ -9,6 +9,10 @@
 #include <vector>
 #include <map>
 
+#include <stdio.h>
+#define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
+#include "stb_truetype.h"
+
 using std::vector;
 using std::map;
 
@@ -19,7 +23,7 @@ public:
 	~Font(void);
 
 	void init();
-	void showText(std::string text, float x, float y, 
+	void showText(char *text, float x, float y, 
 					float width, float height, GLShaderManager &sm,
 					GLGeometryTransform tp);
 	void draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp);
@@ -27,6 +31,6 @@ public:
 	void clearTexture(void); // Goes in main before terminating program
 
 private:
-	GLuint		*uiTexture;
+	GLuint		uiTexture;
 	GLfloat		vColor[4];
 };
