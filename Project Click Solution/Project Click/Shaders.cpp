@@ -18,7 +18,7 @@ void Shaders::initDiffVert()
 	vDiffNM = glGetUniformLocation(diffVert, "normalMatrix");
 }
 
-void Shaders::useDiffVert(M3DVector4f vDiffuseColor, M3DVector3f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useDiffVert(GLfloat vDiffuseColor[4], M3DVector3f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(diffVert);
 	glUniform4fv(vDiffColor, 1, vDiffuseColor);
@@ -45,7 +45,7 @@ void Shaders::initADSVert()
 	vADSNM = glGetUniformLocation(ADSVert, "normalMatrix");
 }
 
-void Shaders::useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useADSVert(GLfloat vDiffuseColor[4], GLfloat vAmbientColor[4], GLfloat vSpecularColor[4], M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(ADSVert);
 	glUniform4fv(vADSambColor, 1, vAmbientColor);

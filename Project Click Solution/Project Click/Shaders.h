@@ -17,7 +17,7 @@ class Shaders
 
 		//ADS lighting, per vertex:
 		void initADSVert();
-		void useADSVert(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
+		void useADSVert(GLfloat vDiffuseColor[4], GLfloat vAmbientColor[4], GLfloat vSpecularColor[4], M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
 
 		//ADS lighting, per fragment:
 		void initADSFrag();

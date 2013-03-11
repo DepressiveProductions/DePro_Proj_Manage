@@ -31,18 +31,18 @@ void main(void)
 	vVaryingColor.rgb = diff * diffuseColor.rgb;
 
 	//Ambient light:
-	vVaryingColor += ambientColor;
+	//vVaryingColor += ambientColor;
 
 	//Specular light:
-	vec3 vReflection = normalize(reflect(-vLightDir, vEyeNormal));
-	float spec = max(0.0, dot(vEyeNormal, vReflection));
-	if (diff != 0)
-	{
-		float fSpec = pow(spec, 128.0);
-		vVaryingColor.rgb += vec3(fSpec, fSpec, fSpec);
-	}
+	//vec3 vReflection = normalize(reflect(-vLightDir, vEyeNormal));
+	//float spec = max(0.0, dot(vEyeNormal, vReflection));
+	//if (diff != 0)
+	//{
+	//	float fSpec = pow(spec, 128.0);
+	//	vVaryingColor.rgb += vec3(fSpec, fSpec, fSpec);
+	//}
 
-	//vVaryingColor.a = 1.0;
+	vVaryingColor.a = 1.0;
 
 	gl_Position = mvpMatrix * vVertex;
 }
