@@ -19,11 +19,14 @@ public:
 	~Font(void);
 
 	void init();
-	void showText(std::string text, float x, float y, float width, float height = 0.0f);
+	void showText(std::string text, float x, float y, 
+					float width, float height, GLShaderManager &sm,
+					GLGeometryTransform tp);
+	void draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp);
 	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	void clearTexture(void); // Goes in main before terminating program
 
 private:
 	GLuint		*uiTexture;
-	float		xmin, ymin, xmax, ymax, z;
+	GLfloat		vColor[4];
 };

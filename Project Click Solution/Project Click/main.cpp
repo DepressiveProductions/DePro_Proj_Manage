@@ -160,6 +160,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
+	font.init();
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -364,6 +365,8 @@ void menuRender()
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
+
+	font.showText("text", 0.0f, 0.0f, 10.0f, 10.0f, gltShaderManager, uiPipeline);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
