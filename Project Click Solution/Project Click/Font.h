@@ -9,8 +9,6 @@
 #include <vector>
 #include <map>
 
-#include <stdio.h>
-#define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
 #include "stb_truetype.h"
 
 using std::vector;
@@ -31,6 +29,7 @@ public:
 	void clearTexture(void); // Goes in main before terminating program
 
 private:
-	GLuint		uiTexture;
-	GLfloat		vColor[4];
+	GLuint				uiTexture;
+	GLfloat				vColor[4];
+	stbtt_bakedchar		cdata[96]; // ASCII 32..126 is 95 glyphs
 };

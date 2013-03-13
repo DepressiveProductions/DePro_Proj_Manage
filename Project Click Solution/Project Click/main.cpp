@@ -1,3 +1,5 @@
+#define STB_TRUETYPE_IMPLEMENTATION
+
 //OpenGL Includes:
 
 #include <GLTools.h>
@@ -36,6 +38,7 @@
 #include "UserInterface.h"
 #include "Font.h"
 #include "font_parser.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
