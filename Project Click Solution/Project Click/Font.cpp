@@ -6,10 +6,10 @@ Font::~Font(void) {}
 void Font::init()
 {
 	/**/
-	unsigned char ttf_buffer[1<<20];	// One of theese
+	char ttf_buffer[1<<20];	// One of theese
 	unsigned char temp_bitmap[512*512]; // provoke stack overflow
-	fread(ttf_buffer, 1, 1<<20, fopen("c:/windows/fonts/times.ttf", "rb"));
-	stbtt_BakeFontBitmap(ttf_buffer, 0, 32.0f, temp_bitmap, 512, 512, 32, 96, cdata);
+	unsigned char data = fread(ttf_buffer, 1, 1<<20, fopen("c:/windows/fonts/times.ttf", "rb"));
+	stbtt_BakeFontBitmap(&data, 0, 32.0f, temp_bitmap, 512, 512, 32, 96, cdata);
 	// can free ttf_buffer at this point
 	
 	glGenTextures(1, &uiTexture);
