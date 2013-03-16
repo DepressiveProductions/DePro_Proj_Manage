@@ -36,22 +36,23 @@ void Font::showText(char *text, float x, float y,
 		xc = x + (glyphWidth * i); //Current xpos
 
 		//Compute texcoords:
-
+		float xtex = (text[i]%16)/16;
+		float ytex = (int(text[i]/16))/16;
 
 		// Lower left hand corner
-		tempBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
+		tempBatch.MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch.Vertex3f(xc, y, z);
 
 		// Upper left hand corner
-		tempBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
+		tempBatch.MultiTexCoord2f(0, xtex, 1.0f - ytex);
 		tempBatch.Vertex3f(xc, y + height, z);  
 
 		// Upper right hand corner
-		tempBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
+		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0f - ytex);
 		tempBatch.Vertex3f(xc + glyphWidth, y + height, z);
 
 		// Lower right hand corner
-		tempBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
+		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch.Vertex3f(xc + glyphWidth, y, z);
 	}
 	
@@ -66,8 +67,8 @@ void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	sm.UseStockShader(GLT_SHADER_FLAT, tp.GetModelViewProjectionMatrix(), vColor);
-	//sm.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, tp.GetModelViewProjectionMatrix(), 0);
+	//sm.UseStockShader(GLT_SHADER_FLAT, tp.GetModelViewProjectionMatrix(), vColor);
+	sm.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, tp.GetModelViewProjectionMatrix(), 0);
 	ba.Draw();
 
 	glEnable(GL_DEPTH_TEST);
