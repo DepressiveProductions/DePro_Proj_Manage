@@ -25,6 +25,8 @@
 #include <vector>
 #include <thread>
 #include <array>
+#include <string>
+#include <map>
 #include <StopWatch.h>
 #include "Shaders.h"
 #include "Background.h"
@@ -32,6 +34,7 @@
 #include "Blocks.h"
 #include "Input.h"
 #include "UserInterface.h"
+#include "Font.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,6 +63,7 @@ UserInterface			alphaButton;
 UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
+Font					font;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -154,6 +158,8 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
+	font.init("Assets/Holstein2.tga");
+
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
 }
@@ -166,6 +172,8 @@ void shutdownRC()
 	survivalButton.clearTexture();
 	optionsButton.clearTexture();
 	exitButton.clearTexture();
+
+	font.clearTexture();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
@@ -250,7 +258,7 @@ void menuClick()
 	//UI clicking:
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f) {
+	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f && clickPos[1] > 25.0f) {
 		if (clickPos[1] < 35.0f) {			//Quit
 			shutdownRC();
 			exit(0);
@@ -335,9 +343,14 @@ void playRender()
 
 	//UI:
 	
+	char gtime[64];
+
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
+		sprintf(gtime, "%.2f sec", finalTime);
+	} else if (Globals::nBlocks > 0 && Globals::state == Globals::STATE_ALPHA) {
+		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		if (finalTime == 0.0f) {
@@ -347,7 +360,9 @@ void playRender()
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.05f;
 		blocks.sendWave(5, Globals::speed);
-	}
+	} 
+	
+	font.showText(gtime, 1.0f, 90.0f, 15.0f, 7.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
@@ -357,14 +372,17 @@ void playRender()
 void menuRender()
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+	
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
 
+	font.showText("JAG HAR FIXAT TEXT", 0.0f, 0.0f, 100.0f, 10.0f, gltShaderManager, uiPipeline);
+
 	glutSwapBuffers();
 	glutPostRedisplay();
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

@@ -4,9 +4,10 @@
 smooth in vec4 vVaryingColor;
 
 //Output:
-out vec4 vFragColor;
+//out vec4 vFragColor;
 
 void main(void)
 {
 	gl_FragColor = vVaryingColor;
+	//vFragColor = vVaryingColor;
 }

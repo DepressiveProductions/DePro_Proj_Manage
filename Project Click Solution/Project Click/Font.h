@@ -7,8 +7,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
+
 
 using std::vector;
+using std::map;
 
 class Font
 {
@@ -16,18 +19,15 @@ public:
 	Font(void);
 	~Font(void);
 
-	void init(float xmin, float ymin, float xmax, float ymax, float z, vector<std::string> texFileNames);
-	void draw(GLGeometryTransform pipeline, GLShaderManager &shaderManager);
+	void init(std::string fontFileName);
+	void showText(char *text, float x, float y, 
+					float width, float height, GLShaderManager &sm,
+					GLGeometryTransform tp);
+	void draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp);
 	bool loadTGATexture(const char *szFileNames, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	void clearTexture(void); // Goes in main before terminating program
 
 private:
-	void initiateBatch();
-
-	GLuint		uiTexture;
-	int			nTextures;
-	GLBatch		rectBatch;
-	GLFrame		uiFrame;
-	float		xmin, ymin, xmax, ymax, z;
+	GLuint				uiTexture;
+	GLfloat				vColor[4];
 };
-

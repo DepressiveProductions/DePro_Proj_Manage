@@ -1,65 +1,78 @@
 #include "Font.h"
 
-
 Font::Font(void) {}
 Font::~Font(void) {}
 
-void Font::init(float xmin, float ymin, float xmax, float ymax, float z, vector<std::string> texFileNames)
+void Font::init(std::string fontFileName)
 {
-	this->xmin = xmin;
-	this->ymin = ymin;
-	this->xmax = xmax;
-	this->ymax = ymax;
-
-	this->z = z;
-
-	nTextures = texFileNames.size();
-
-	//uiFrame.SetOrigin(x, y, z);
-
-	initiateBatch();
-
-	glGenTextures(nTextures, &uiTexture);
+	glGenTextures(1, &uiTexture);
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	for (unsigned int i = 0 ; i < nTextures ; i++) {
-		loadTGATexture(texFileNames[i].c_str(), GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
-	}
-}
-
-void Font::initiateBatch()
-{
-	rectBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+	loadTGATexture(fontFileName.c_str(), GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE);
 	
-	// Lower left hand corner
-	rectBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-	rectBatch.Vertex3f(xmin, ymin, z);
-
-	// Upper left hand corner
-	rectBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-	rectBatch.Vertex3f(xmin, ymax, z);  
-
-	// Upper right hand corner
-	rectBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-	rectBatch.Vertex3f(xmax, ymax, z);
-
-	// Lower right hand corner
-	rectBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-	rectBatch.Vertex3f(xmax, ymin, z);
-
-	rectBatch.End();
+	vColor[0] = 0.0f;
+	vColor[1] = 0.0f;
+	vColor[2] = 1.0f;
+	vColor[3] = 1.0f;
 }
 
-void Font::draw(GLGeometryTransform pipeline, GLShaderManager &shaderManager)
+void Font::showText(char *text, float x, float y,
+					float width, float height, GLShaderManager &sm,
+					GLGeometryTransform tp)
+{
+	float z = 0.0f;
+	int len = strlen(text);
+	float glyphWidth = width/len;
+	float xc;
+
+	glBindTexture(GL_TEXTURE_2D, uiTexture);
+
+	GLBatch tempBatch;
+	
+	for (int i = 0 ; i < len ; i++)
+	{
+		tempBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+
+		xc = x + (glyphWidth * i); //Current xpos
+
+		//Compute texcoords:
+		float xtex = float((int(text[i]) % 16))		/ 16;
+		float ytex = float((int(int(text[i])/16)))	/ 16;
+
+		// Lower left hand corner
+		tempBatch.MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
+		tempBatch.Vertex3f(xc, y, z);
+
+		// Upper left hand corner
+		tempBatch.MultiTexCoord2f(0, xtex, 1.0f - ytex);
+		tempBatch.Vertex3f(xc, y + height, z);
+
+		// Upper right hand corner
+		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0f - ytex);
+		tempBatch.Vertex3f(xc + glyphWidth, y + height, z);
+
+		// Lower right hand corner
+		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
+		tempBatch.Vertex3f(xc + glyphWidth, y, z);
+		
+		tempBatch.End();
+		draw(tempBatch, sm, tp);
+		tempBatch.Reset();
+	}
+	
+
+}
+
+void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
 {
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	shaderManager.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, pipeline.GetModelViewProjectionMatrix(), 0);
-	rectBatch.Draw();
+	sm.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, tp.GetModelViewProjectionMatrix(), 0);
+	ba.Draw();
 
-	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 bool Font::loadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode)
@@ -98,5 +111,5 @@ bool Font::loadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFi
 
 void Font::clearTexture()
 {
-	glDeleteTextures(nTextures, &uiTexture);
+	//glDeleteTextures(1, uiTexture);
 }
