@@ -15,8 +15,6 @@ void Font::init(std::string fontFileName)
 	vColor[3] = 1.0f;
 }
 
-
-
 void Font::showText(char *text, float x, float y,
 					float width, float height, GLShaderManager &sm,
 					GLGeometryTransform tp)
@@ -55,6 +53,7 @@ void Font::showText(char *text, float x, float y,
 		// Lower right hand corner
 		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch.Vertex3f(xc + glyphWidth, y, z);
+		
 		tempBatch.End();
 		draw(tempBatch, sm, tp);
 		tempBatch.Reset();
