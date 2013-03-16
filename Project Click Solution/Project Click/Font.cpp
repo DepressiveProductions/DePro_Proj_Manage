@@ -29,10 +29,11 @@ void Font::showText(char *text, float x, float y,
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 
 	GLBatch tempBatch;
-	tempBatch.Begin(GL_TRIANGLE_FAN, 4 * len, 1);
 	
 	for (int i = 0 ; i < len ; i++)
 	{
+		tempBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+
 		xc = x + (glyphWidth * i); //Current xpos
 
 		//Compute texcoords:
@@ -54,11 +55,12 @@ void Font::showText(char *text, float x, float y,
 		// Lower right hand corner
 		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch.Vertex3f(xc + glyphWidth, y, z);
+		tempBatch.End();
+		draw(tempBatch, sm, tp);
+		tempBatch.Reset();
 	}
 	
-	tempBatch.End();
 
-	draw(tempBatch, sm, tp);
 }
 
 void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
@@ -67,8 +69,8 @@ void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	sm.UseStockShader(GLT_SHADER_FLAT, tp.GetModelViewProjectionMatrix(), vColor);
-	ba.Draw();
+	//sm.UseStockShader(GLT_SHADER_FLAT, tp.GetModelViewProjectionMatrix(), vColor);
+	//ba.Draw();
 	sm.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, tp.GetModelViewProjectionMatrix(), 0);
 	ba.Draw();
 
