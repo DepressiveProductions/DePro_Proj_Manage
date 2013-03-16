@@ -158,7 +158,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	font.init("Assets/Holstein2.tga");
+	font.init("Assets/boldArial.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -350,7 +350,7 @@ void playRender()
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		tw = 80.0f;
+		tw = 90.0f;
 		if (finalTime <= 2.50) {
 			grade = "GODLIKE!!!";
 		} else if (finalTime <= 3.00) {
@@ -362,18 +362,18 @@ void playRender()
 		}
 		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
 	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
-		tw = 15.0f;
+		tw = 20.0f;
 		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		tw = 60.0f;
+		tw = 75.0f;
 		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.05f;
 		blocks.sendWave(5, Globals::speed);
 	} 
 	
-	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 8.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
@@ -388,8 +388,6 @@ void menuRender()
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
-
-	font.showText("JAG HAR FIXAT TEXT", 0.0f, 0.0f, 100.0f, 10.0f, gltShaderManager, uiPipeline);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
