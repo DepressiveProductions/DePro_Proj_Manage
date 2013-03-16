@@ -68,8 +68,6 @@ void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
-	//sm.UseStockShader(GLT_SHADER_FLAT, tp.GetModelViewProjectionMatrix(), vColor);
-	//ba.Draw();
 	sm.UseStockShader(GLT_SHADER_TEXTURE_REPLACE, tp.GetModelViewProjectionMatrix(), 0);
 	ba.Draw();
 
