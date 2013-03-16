@@ -216,16 +216,16 @@ void playClick()
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
 			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
-			finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
-			if (finalTime <= 2.50) {
-				std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
-			} else if (finalTime <= 3.00) {
-				std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
-			} else if (finalTime <= 4.5) {
-				std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
-			} else {
-				std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
-			}
+			//finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
+			//if (finalTime <= 2.50) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
+			//} else if (finalTime <= 3.00) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
+			//} else if (finalTime <= 4.5) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
+			//} else {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
+			//}
 		} else if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::lives > 0) {
 			Globals::speed *= 1.05f;
 			blocks.sendWave(5, Globals::speed);
@@ -344,25 +344,36 @@ void playRender()
 	//UI:
 	
 	char gtime[64];
+	float tw;
+	char *grade;
 
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		sprintf(gtime, "%.2f sec", finalTime);
-	} else if (Globals::nBlocks > 0 && Globals::state == Globals::STATE_ALPHA) {
+		tw = 80.0f;
+		if (finalTime <= 2.50) {
+			grade = "GODLIKE!!!";
+		} else if (finalTime <= 3.00) {
+			grade = "MASTER!";
+		} else if (finalTime <= 4.5) {
+			grade = "REGULAR";
+		} else {
+			grade = "GRANNY ...";
+		}
+		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
+	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
+		tw = 15.0f;
 		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		if (finalTime == 0.0f) {
-			finalTime = gameTime.GetElapsedSeconds();
-			std::cout << "You survived " << finalTime << " seconds!" << std::endl;
-		}
+		tw = 60.0f;
+		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.05f;
 		blocks.sendWave(5, Globals::speed);
 	} 
 	
-	font.showText(gtime, 1.0f, 90.0f, 15.0f, 7.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
