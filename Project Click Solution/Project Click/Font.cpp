@@ -35,8 +35,8 @@ void Font::showText(char *text, float x, float y,
 		xc = x + (glyphWidth * i); //Current xpos
 
 		//Compute texcoords:
-		float xtex = (text[i]%16)/16;
-		float ytex = (int(text[i]/16))/16;
+		float xtex = float((int(text[i]) % 16))		/ 16;
+		float ytex = float((int(int(text[i])/16)))	/ 16;
 
 		// Lower left hand corner
 		tempBatch.MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
@@ -44,7 +44,7 @@ void Font::showText(char *text, float x, float y,
 
 		// Upper left hand corner
 		tempBatch.MultiTexCoord2f(0, xtex, 1.0f - ytex);
-		tempBatch.Vertex3f(xc, y + height, z);  
+		tempBatch.Vertex3f(xc, y + height, z);
 
 		// Upper right hand corner
 		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0f - ytex);

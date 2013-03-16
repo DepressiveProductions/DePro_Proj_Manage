@@ -35,9 +35,6 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
-#include "font_parser.h"
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -347,12 +344,21 @@ void playRender()
 
 	//UI:
 	
+	char gtime[64];
+
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0)
 	{
 		restartInfo.draw(uiPipeline, gltShaderManager);
+		sprintf(gtime, "%.2f sec", finalTime);
+	
+	} else {
+		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	}
+	
+	font.showText(gtime, 1.0f, 90.0f, 15.0f, 7.0f, gltShaderManager, uiPipeline);
 
+	
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -367,7 +373,7 @@ void menuRender()
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
 
-	font.showText("abcdefghijklmnopqrstuvwxyz123456789", 0.0f, 0.0f, 100.0f, 10.0f, gltShaderManager, uiPipeline);
+	font.showText("JAG HAR FIXAT TEXT", 0.0f, 0.0f, 100.0f, 10.0f, gltShaderManager, uiPipeline);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
