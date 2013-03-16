@@ -22,31 +22,37 @@ void Font::showText(char *text, float x, float y,
 					GLGeometryTransform tp)
 {
 	float z = 0.0f;
-
-	float glyphWidth = width/strlen(text);
+	int len = strlen(text);
+	float glyphWidth = width/len;
+	float xc;
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 
 	GLBatch tempBatch;
-	tempBatch.Begin(GL_TRIANGLE_FAN, 4 * strlen(text), 1);
+	tempBatch.Begin(GL_TRIANGLE_FAN, 4 * len, 1);
 	
-	for (int i = 0 ; i < strlen(text) ; i++)
+	for (int i = 0 ; i < len ; i++)
 	{
+		xc = x + (glyphWidth * i); //Current xpos
+
+		//Compute texcoords:
+
+
 		// Lower left hand corner
 		tempBatch.MultiTexCoord2f(0, 0.0f, 0.0f);
-		tempBatch.Vertex3f(x, y, z);
+		tempBatch.Vertex3f(xc, y, z);
 
 		// Upper left hand corner
 		tempBatch.MultiTexCoord2f(0, 0.0f, 1.0f);
-		tempBatch.Vertex3f(x, y + height, z);  
+		tempBatch.Vertex3f(xc, y + height, z);  
 
 		// Upper right hand corner
 		tempBatch.MultiTexCoord2f(0, 1.0f, 1.0f);
-		tempBatch.Vertex3f(x + width, y + height, z);
+		tempBatch.Vertex3f(xc + glyphWidth, y + height, z);
 
 		// Lower right hand corner
 		tempBatch.MultiTexCoord2f(0, 1.0f, 0.0f);
-		tempBatch.Vertex3f(x + width, y, z);
+		tempBatch.Vertex3f(xc + glyphWidth, y, z);
 	}
 	
 	tempBatch.End();
