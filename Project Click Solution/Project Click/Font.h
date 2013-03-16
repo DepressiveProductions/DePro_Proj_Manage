@@ -9,7 +9,6 @@
 #include <vector>
 #include <map>
 
-#include "stb_truetype.h"
 
 using std::vector;
 using std::map;
@@ -20,7 +19,7 @@ public:
 	Font(void);
 	~Font(void);
 
-	void init();
+	void init(std::string fontFileName);
 	void showText(char *text, float x, float y, 
 					float width, float height, GLShaderManager &sm,
 					GLGeometryTransform tp);
@@ -31,5 +30,4 @@ public:
 private:
 	GLuint				uiTexture;
 	GLfloat				vColor[4];
-	stbtt_bakedchar		cdata[96]; // ASCII 32..126 is 95 glyphs
 };
