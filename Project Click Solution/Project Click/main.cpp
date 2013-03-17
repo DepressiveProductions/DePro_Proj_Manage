@@ -35,11 +35,8 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
-<<<<<<< HEAD
 #include "MenuButton.h"
-=======
 #include "Sound.h"
->>>>>>> Music
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,12 +66,8 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 Font					font;
-<<<<<<< HEAD
 MenuButton				mBBack;
-=======
 Sound					music;
->>>>>>> Music
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -266,6 +259,7 @@ void playKey()
 		gameTime.Reset();
 	} else if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_SURVIVAL && Globals::lives <= 0) {
 		Globals::lives = 3;
+		Globals::score = 0;
 		Globals::speed = 0.002f;
 		blocks.sendWave(5, Globals::speed);
 		gameTime.Reset();
@@ -292,6 +286,7 @@ void menuClick()
 	} else if (survivalButton.isClicked(clickPos)) {
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
+		Globals::score = 0;
 		Globals::speed = 0.003f;
 		blocks.sendWave(5, Globals::speed);
 		gameTime.Reset();
