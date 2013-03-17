@@ -11,15 +11,17 @@ public:
 	Sound(void);
 	~Sound(void);
 
-	int init(const char *szFileName);
+	void init(const char *szFileName);
 	int play(ALfloat sourcePos[], ALfloat sourceVel[]);
 	void play(ALfloat sourcePos[]);
 	void play();
 	int endWithError(char *msg, int error = 0);
 	void clearSound(); // Goes in main before terminating program
+	void clearSoundPartial();
 
 private:
 	FILE *fp;
+	const char *fileName;
 	unsigned char* buf;
 	ALuint source;
 	ALuint buffer;

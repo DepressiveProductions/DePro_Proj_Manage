@@ -3,11 +3,16 @@
 Sound::Sound(void){}
 Sound::~Sound(void){}
 
-int Sound::init(const char *szFileName)
+void Sound::init(const char *szFileName)
+{
+	fileName = szFileName;
+}
+
+int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
 {
 	//Load WAVE file:
 	//FILE *fp = NULL;															//Create FILE pointer for the WAVE file
-	fp = fopen(szFileName, "rb");												//Open the WAVE file
+	fp = fopen(fileName, "rb");												//Open the WAVE file
 	if(!fp)
 		return endWithError("Failed to open file");								//Could not open file
 
@@ -107,10 +112,8 @@ int Sound::init(const char *szFileName)
     alBufferData(buffer, format, buf, dataSize, frequency);						//Store the sound data in the OpenAL Buffer
     if(alGetError() != AL_NO_ERROR) 
 		return endWithError("Error loading ALBuffer");                          //Error during buffer loading
-}
 
-int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
-{
+
 /*	//Sound setting variables
     ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };                                    //Position of the source sound
     ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };                                    //Velocity of the source sound	*/
@@ -129,22 +132,25 @@ int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
     alSourcef (source, AL_GAIN,     1.0f     );                                 //Set the gain of the source
     alSourcefv(source, AL_POSITION, sourcePos);                                 //Set the position of the source
     alSourcefv(source, AL_VELOCITY, sourceVel);                                 //Set the velocity of the source
-    alSourcei (source, AL_LOOPING,  AL_TRUE );                                 //Set if source is looping sound
+    alSourcei (source, AL_LOOPING,  AL_TRUE );									//Set if source is looping sound
     
     //PLAY 
     alSourcePlay(source);                                                       //Play the sound buffer linked to the source
     if(alGetError() != AL_NO_ERROR) 
 		return endWithError("Error playing sound");								//Error when playing sound
-    //system("PAUSE");                                                            //Pause to let the sound play
+    //system("PAUSE");															//Pause to let the sound play
+
+	//Clear things
+	clearSoundPartial();
 }
 
-void Sound::play(ALfloat sourcePos[])													//Default value for sourceVel
+void Sound::play(ALfloat sourcePos[])											//Default value for sourceVel
 {
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
 	play(sourcePos, sourceVel);
 }
 
-void Sound::play()																		//Default value for sourcePos and sourceVel
+void Sound::play()																//Default value for sourcePos and sourceVel
 {
 	ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
@@ -159,7 +165,7 @@ int Sound::endWithError(char* msg, int error)
     return error;
 }
 
-void Sound::clearSound()																//Clean-up
+void Sound::clearSound()														//Clean-up
 {
     fclose(fp);																	//Close the WAVE file
     delete[] buf;																//Delete the sound data buffer
@@ -168,4 +174,15 @@ void Sound::clearSound()																//Clean-up
     alcMakeContextCurrent(NULL);												//Make no context current
     alcDestroyContext(context);													//Destroy the OpenAL Context
     alcCloseDevice(device);														//Close the OpenAL Device
+}
+
+void Sound::clearSoundPartial()													//Clean-up
+{
+    fclose(fp);																	//Close the WAVE file
+    //delete[] buf;																//Delete the sound data buffer
+    //alDeleteSources(1, &source);												//Delete the OpenAL Source
+    alDeleteBuffers(1, &buffer);												//Delete the OpenAL Buffer
+    //alcMakeContextCurrent(NULL);												//Make no context current
+    //alcDestroyContext(context);													//Destroy the OpenAL Context
+    //alcCloseDevice(device);														//Close the OpenAL Device
 }

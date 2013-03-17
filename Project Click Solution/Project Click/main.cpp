@@ -69,6 +69,7 @@ UserInterface			optSoundToggle;
 UserInterface			optBackButton;
 Font					font;
 Sound					music;
+Sound					menuClickSound;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -179,6 +180,8 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
+	menuClickSound.init("Assets/douf.wav");
+
 	gameTime.Reset();
 }
 
@@ -283,11 +286,14 @@ void menuClick()
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (exitButton.isClicked(clickPos)) {
+		menuClickSound.play();
 		shutdownRC();
 		exit(0);
 	} else if (optionsButton.isClicked(clickPos)) {
+		menuClickSound.play();
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
+		menuClickSound.play();
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
 		Globals::score = 0;
@@ -295,6 +301,7 @@ void menuClick()
 		blocks.sendWave(5, Globals::speed);
 		gameTime.Reset();
 	} else if (alphaButton.isClicked(clickPos)) {
+		menuClickSound.play();
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
 		gameTime.Reset();
