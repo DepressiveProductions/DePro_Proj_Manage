@@ -19,7 +19,7 @@ void Font::showText(char *text, float x, float y,
 					float width, float height, GLShaderManager &sm,
 					GLGeometryTransform tp)
 {
-	float z = 0.0f;
+	const float z = 0.0f;
 	int len = strlen(text);
 	float glyphWidth = width/len;
 	float xc;
