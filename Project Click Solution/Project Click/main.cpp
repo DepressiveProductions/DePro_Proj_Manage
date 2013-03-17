@@ -181,13 +181,10 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
-<<<<<<< HEAD
 	menuClickSound.init("Assets/douf.wav");
 
-	gameTime.Reset();
-=======
 	gameTime.resetTime();
->>>>>>> Real timer, no fake.
+
 }
 
 void shutdownRC()
@@ -327,6 +324,8 @@ void menuKey()
 	if (Input::pressedKey == 27) { //Escape
 		shutdownRC();
 		exit(0);
+	} else if (Input::pressedKey == 'o') {
+		Globals::state = Globals::STATE_MENU;
 	}
 }
 

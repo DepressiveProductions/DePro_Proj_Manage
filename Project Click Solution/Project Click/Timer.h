@@ -6,7 +6,7 @@ class Timer
 public:
 	Timer(void);
 	~Timer(void);
-	double getElapsedTime();
+	float getElapsedTime();
 	void resetTime();
 
 private:

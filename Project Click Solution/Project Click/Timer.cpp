@@ -9,10 +9,10 @@ Timer::~Timer(void)
 {
 }
 
-double Timer::getElapsedTime()
+float Timer::getElapsedTime()
 {
 	now = time(NULL);
-	return difftime(now, startingTime);
+	return float(difftime(now, startingTime));
 }
 
 void Timer::resetTime()
