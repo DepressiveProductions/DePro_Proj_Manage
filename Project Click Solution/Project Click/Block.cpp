@@ -21,9 +21,9 @@ void Block::init(float x, float y, float z, float width, float height, float mov
 	vColor[2] = 0.0f;
 	vColor[3] = 1.0f;
 
-	vShininess[0] = 0.3f;
-	vShininess[1] = 0.3f;
-	vShininess[2] = 0.3f;
+	vShininess[0] = 1.0f;
+	vShininess[1] = 1.0f;
+	vShininess[2] = 1.0f;
 	vShininess[3] = 1.0f;
 
 	generateBatch();
@@ -40,23 +40,60 @@ void Block::setColor(float r, float g, float b, float a)
 void Block::generateBatch()
 {
 	aBatch.Begin(GL_TRIANGLE_STRIP, 17); //Why not use CopyVertexData3f like before?
-	aBatch.Vertex3f(-w, h, d);
+	
+	float len = 1.73205f;
+
+	aBatch.Vertex3f(-w, h, d); 
+	aBatch.Normal3f(-1/len, 1/len, 1/len);
+	
 	aBatch.Vertex3f(w, h, d);
+	aBatch.Normal3f(1/len, 1/len, 1/len);
+	
 	aBatch.Vertex3f(-w, -h, d);
+	aBatch.Normal3f(-1/len, -1/len, 1/len);
+
 	aBatch.Vertex3f(w, -h, d);
+	aBatch.Normal3f(1/len, -1/len, 1/len);
+	
 	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	
 	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Normal3f(1/len, -1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Normal3f(-1/len, 1/len, -1/len);
+	
 	aBatch.Vertex3f(w, h, -d);
+	aBatch.Normal3f(1/len, 1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, h, d);
+	aBatch.Normal3f(-1/len, 1/len, 1/len);
+	
 	aBatch.Vertex3f(w, h, d);
+	aBatch.Normal3f(1/len, 1/len, 1/len);
+	
 	aBatch.Vertex3f(w, h, -d);
+	aBatch.Normal3f(1/len, 1/len, -1/len);
+	
 	aBatch.Vertex3f(w, -h, d);
+	aBatch.Normal3f(1/len, -1/len, 1/len);
+	
 	aBatch.Vertex3f(w, -h, -d);
+	aBatch.Normal3f(1/len, -1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, -h, -d);
+	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, -h, d);
+	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Normal3f(-1/len, 1/len, -1/len);
+	
 	aBatch.Vertex3f(-w, h, d);
+	aBatch.Normal3f(-1/len, 1/len, 1/len);
+	
 	aBatch.End();
 }
 
@@ -84,7 +121,6 @@ bool Block::hasPassed(float fWidth)
 	if (aFrame.GetOriginX() < -(fWidth/2)-w) {
 		return true;
 	}
-
 	return false;
 }
 
@@ -92,7 +128,7 @@ void Block::draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStac
 {
 	mvStack.PushMatrix();
 	mvStack.MultMatrix(aFrame);
-	sManager.useADSVert(vColor, vAmbient, vShininess, vLight, tPipeline);
+	sManager.useADSFrag(vColor, vAmbient, vShininess, vLight, tPipeline);
 	aBatch.Draw();
 	mvStack.PopMatrix();
 }

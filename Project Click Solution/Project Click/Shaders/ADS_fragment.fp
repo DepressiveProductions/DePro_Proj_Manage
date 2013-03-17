@@ -1,45 +1,30 @@
-#version 330
+#version 130
 
-//Uniforms:
-uniform vec4 ambientColor;
-uniform vec4 diffuseColor;
-uniform vec4 specularColor;
-
-uniform vec3 vLightPosition;
-uniform mat3 normalMatrix;
-
-//Input:
-smooth in vec3 vNormalNew;
-smooth in vec3 vPosition3;
-
-//Output:
 out vec4 vFragColor;
 
-vec4 vColor;
+uniform vec4    ambientColor;
+uniform vec4    diffuseColor;   
+uniform vec4    specularColor;
+
+smooth in vec3 vVaryingNormal;
+smooth in vec3 vVaryingLightDir;
 
 void main(void)
-{
-	vec3 vEyeNormal = normalMatrix * vNormalNew;
+{ 
+	// Dot product gives us diffuse intensity
+	float diff = max(0.0, dot(normalize(vVaryingNormal), normalize(vVaryingLightDir)));
 
-	vec3 vLightDir = normalize(vLightPosition - vPosition3);
+	// Multiply intensity by diffuse color, force alpha to 1.0
+	vFragColor = diff * diffuseColor;
 
-	//Diffuse light:
-	float diff = max(0.0, dot(vEyeNormal, vLightDir));
-	vColor.rgb = diff * diffuseColor.rgb;
+	// Add in ambient light
+	vFragColor += ambientColor;
 
-	//Ambient light:
-	vColor += ambientColor;
-
-	//Specular light:
-	vec3 vReflection = normalize(reflect(-vLightDir, vEyeNormal));
-	float spec = max(0.0, dot(vEyeNormal, vReflection));
-	if (diff != 0)
-	{
+	// Specular Light
+	vec3 vReflection = normalize(reflect(-normalize(vVaryingLightDir), normalize(vVaryingNormal)));
+	float spec = max(0.0, dot(normalize(vVaryingNormal), vReflection));
+	if(diff != 0) {
 		float fSpec = pow(spec, 128.0);
-		vColor.rgb += vec3(fSpec, fSpec, fSpec);
+		vFragColor.rgb += vec3(fSpec, fSpec, fSpec);
 	}
-
-
-
-	gl_FragColor = vColor;
 }

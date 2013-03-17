@@ -72,7 +72,7 @@ void Shaders::initADSFrag()
 	fADSNM = glGetUniformLocation(ADSFrag, "normalMatrix");
 }
 
-void Shaders::useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline)
+void Shaders::useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector3f vLightEyePos, GLGeometryTransform tPipeline)
 {
 	glUseProgram(ADSFrag);
 	glUniform4fv(fADSambColor, 1, vAmbientColor);

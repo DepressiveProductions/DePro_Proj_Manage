@@ -140,6 +140,7 @@ void setup()
 	//Initialize custom shaders:
 	customShaders.initADSVert();
 	customShaders.initDiffVert();
+	customShaders.initADSFrag();
 	customShaders.initUI();
 
 	//Initiate game layer:
@@ -315,8 +316,8 @@ void checkInput()
 void playRender()
 {
 	//Lighting variables:
-	static M3DVector4f vLightPos = {1.5f, 1.0f, 15.0f, 1.0f};
-	static M3DVector4f vAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+	static GLfloat vLightPos[] = {1.5f, 1.0f, 15.0f};
+	static GLfloat vAmbient[] = {0.1f, 0.1f, 0.1f, 1.0f};
 			
 	//Clear buffers:
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -329,7 +330,7 @@ void playRender()
 	modelViewStack.PushMatrix(mCamera);
 	
 	//Calc light pos in eye coords:
-	static M3DVector4f vLightEyePos;
+	static GLfloat vLightEyePos[3];
 	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
 	
 	//Render stuff here:

@@ -21,7 +21,7 @@ class Shaders
 
 		//ADS lighting, per fragment:
 		void initADSFrag();
-		void useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector4f vLightEyePos, GLGeometryTransform tPipeline);
+		void useADSFrag(M3DVector4f vDiffuseColor, M3DVector4f vAmbientColor, M3DVector4f vSpecularColor, M3DVector3f vLightEyePos, GLGeometryTransform tPipeline);
 
 		//UI Shader:
 		void initUI();
