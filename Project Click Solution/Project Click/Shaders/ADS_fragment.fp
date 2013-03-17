@@ -21,7 +21,7 @@ void main(void)
 	vFragColor += ambientColor;
 
 	// Specular Light
-	vec3 vReflection = normalize(reflect(-normalize(vVaryingLightDir), normalize(vVaryingNormal)));
+	vec3 vReflection = normalize(reflect(-vVaryingLightDir, vVaryingNormal));
 	float spec = max(0.0, dot(normalize(vVaryingNormal), vReflection));
 	if(diff != 0) {
 		float fSpec = pow(spec, 128.0);

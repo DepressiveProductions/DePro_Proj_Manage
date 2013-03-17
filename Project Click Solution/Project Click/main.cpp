@@ -165,6 +165,8 @@ void setup()
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
+
+	gameTime.Reset();
 }
 
 void shutdownRC()
