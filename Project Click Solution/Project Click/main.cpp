@@ -264,7 +264,7 @@ void menuClick()
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
 			Globals::lives = 3;
-			Globals::speed = 0.002f;
+			Globals::speed = 0.003f;
 			blocks.sendWave(5, Globals::speed);
 			gameTime.Reset();
 		} else {							//Alpha
@@ -340,9 +340,9 @@ void alphaRender()
 
 	//UI:
 	
-	char gtime[64];
-	float tw = 0.0f;
-	char *grade;
+	static char gtime[64];
+	static float tw = 0.0f;
+	static char *grade;
 
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0) {
@@ -407,6 +407,7 @@ void survivalRender()
 	static char gtime[64];
 	static float tw = 0.0f;
 
+	font.showText(asdfg, 1.0f, 1.0f, 10.0f, 6.0f, gltShaderManager, uiPipeline);
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks > 0) {
 		tw = 20.0f;
