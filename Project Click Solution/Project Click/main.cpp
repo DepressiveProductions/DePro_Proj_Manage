@@ -175,7 +175,7 @@ void setup()
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
 
-	music.init("Assets/AGFG_02_rep.wav");
+	music.init("Assets/Lobby2.wav");
 	music.play();
 
 	gameTime.Reset();
@@ -193,6 +193,8 @@ void shutdownRC()
 	mBBack.unloadTexture();
 
 	font.clearTexture();
+
+	music.clearSound();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
