@@ -170,7 +170,7 @@ void setup()
 
 	mBBack.init("Assets/Buttons2.0/button_alpha_OUT.tga", 25.0f, 25.0f, 28.0f, 15.0f);
 
-	font.init("Assets/Lato.tga");
+	font.init("Assets/fatLato.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
