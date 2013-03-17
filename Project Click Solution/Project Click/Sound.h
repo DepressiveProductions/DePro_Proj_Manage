@@ -12,8 +12,9 @@ public:
 	~Sound(void);
 
 	void init(const char *szFileName);
-	int play(ALfloat sourcePos[], ALfloat sourceVel[]);
-	void play(ALfloat sourcePos[]);
+	int play(bool loop, ALfloat sourcePos[], ALfloat sourceVel[]);
+	void play(bool loop, ALfloat sourcePos[]);
+	void play(bool loop);
 	void play();
 	int endWithError(char *msg, int error = 0);
 	void clearSound(); // Goes in main before terminating program

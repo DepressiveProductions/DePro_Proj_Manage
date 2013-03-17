@@ -181,7 +181,7 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
-	menuClickSound.init("Assets/douf.wav");
+	//menuClickSound.init("Assets/douf.wav");
 
 	gameTime.resetTime();
 

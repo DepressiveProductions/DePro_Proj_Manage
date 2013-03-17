@@ -8,7 +8,7 @@ void Sound::init(const char *szFileName)
 	fileName = szFileName;
 }
 
-int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
+int Sound::play(bool loop, ALfloat sourcePos[], ALfloat sourceVel[])
 {
 	//Load WAVE file:
 	//FILE *fp = NULL;															//Create FILE pointer for the WAVE file
@@ -132,7 +132,10 @@ int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
     alSourcef (source, AL_GAIN,     1.0f     );                                 //Set the gain of the source
     alSourcefv(source, AL_POSITION, sourcePos);                                 //Set the position of the source
     alSourcefv(source, AL_VELOCITY, sourceVel);                                 //Set the velocity of the source
-    alSourcei (source, AL_LOOPING,  AL_TRUE );									//Set if source is looping sound
+	if (loop)
+		alSourcei (source, AL_LOOPING,  AL_TRUE );								//Set if source is looping sound
+	else
+		alSourcei (source, AL_LOOPING, AL_FALSE );
     
     //PLAY 
     alSourcePlay(source);                                                       //Play the sound buffer linked to the source
@@ -144,17 +147,25 @@ int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
 	//clearSoundPartial();
 }
 
-void Sound::play(ALfloat sourcePos[])											//Default value for sourceVel
+void Sound::play(bool loop, ALfloat sourcePos[])								//Default value for sourceVel
 {
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
-	play(sourcePos, sourceVel);
+	play(loop, sourcePos, sourceVel);
 }
 
-void Sound::play()																//Default value for sourcePos and sourceVel
+void Sound::play(bool loop)														//Default value for sourcePos and sourceVel
 {
 	ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
-	play(sourcePos, sourceVel);
+	play(loop, sourcePos, sourceVel);
+}
+
+void Sound::play()																//Default value for sourcePos, sourceVel and loop
+{
+	bool loop = FALSE;
+	ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };
+	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
+	play(loop, sourcePos, sourceVel);
 }
 
 int Sound::endWithError(char* msg, int error)
