@@ -35,7 +35,6 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
-#include "MenuButton.h"
 #include "Sound.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -66,8 +65,9 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 UserInterface			menuBG;
+UserInterface			optMusicToggle;
+UserInterface			optBackButton;
 Font					font;
-MenuButton				mBBack;
 Sound					music;
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +112,7 @@ void changeSize(int w, int h);							//Runs everytime the window 'changes size',
 void renderScene();										//Basic glutfunc for rendering stuff. Runs every frame
 void checkInput();										//Checks if any relevant input has been registred
 void menuClick();
+void optionsClick();
 void menuKey();
 void playClick();
 void playKey();
@@ -168,7 +169,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
-	mBBack.init("Assets/Buttons2.0/button_alpha_OUT.tga", 25.0f, 25.0f, 28.0f, 15.0f);
+	optMusicToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
 	font.init("Assets/fatLato.tga");
 
