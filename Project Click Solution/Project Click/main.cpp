@@ -181,17 +181,10 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
-<<<<<<< HEAD
 	menuClickSound.init("Assets/douf.wav");
 
 	// start/reset time
 	gameTime.start();
-=======
-	//menuClickSound.init("Assets/douf.wav");
-
-	gameTime.resetTime();
-
->>>>>>> 87b59232ff3a548352d60e0ab04d45f0efbc222d
 }
 
 void shutdownRC()
