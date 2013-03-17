@@ -10,7 +10,8 @@ class Globals
 		{
 			STATE_ALPHA,
 			STATE_SURVIVAL,
-			STATE_MENU
+			STATE_MENU,
+			STATE_OPTIONS
 		};
 
 		static Gamestate state;
