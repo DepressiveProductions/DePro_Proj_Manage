@@ -220,6 +220,8 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene() 
 {
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
 	if (Globals::state == Globals::STATE_MENU)				{
 		menuRender();
 	} else if (Globals::state == Globals::STATE_OPTIONS)	{
@@ -229,6 +231,10 @@ void renderScene()
 	} else if (Globals::state == Globals::STATE_SURVIVAL)	{
 		survivalRender();
 	}
+
+	glutSwapBuffers();
+	glutPostRedisplay();
+
 	checkInput();
 }
 
@@ -344,9 +350,6 @@ void alphaRender()
 	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
 	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
 			
-	//Clear buffers:
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-			
 	//Beginning push:
 	modelViewStack.PushMatrix();
 	
@@ -396,10 +399,6 @@ void alphaRender()
 	}
 	
 	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
-
-	//Swap buffers and tell glut to keep looping:
-	glutSwapBuffers();
-	glutPostRedisplay();
 }
 
 void survivalRender()
@@ -408,9 +407,6 @@ void survivalRender()
 	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
 	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
 			
-	//Clear buffers:
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
 	//Beginning push:
 	modelViewStack.PushMatrix();
 	
@@ -462,34 +458,19 @@ void survivalRender()
 	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 	font.showText(gscore, 1.0f, 1.0f, 16.0f, 6.0f, gltShaderManager, uiPipeline);
 	font.showText(glives, 80.0f, 1.0f, 16.0f, 6.0f, gltShaderManager, uiPipeline);
-
-	//Swap buffers and tell glut to keep looping:
-	glutSwapBuffers();
-	glutPostRedisplay();
 }
 
 void menuRender()
 {
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
-
-	glutSwapBuffers();
-	glutPostRedisplay();
-
 }
 
 void optionsRender() {
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
-
 	mBBack.draw(uiPipeline, gltShaderManager);
-
-	glutSwapBuffers();
-	glutPostRedisplay();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
