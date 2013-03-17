@@ -65,6 +65,7 @@ UserInterface			alphaButton;
 UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
+UserInterface			menuBG;
 Font					font;
 MenuButton				mBBack;
 Sound					music;
@@ -151,8 +152,6 @@ void setup()
 	customShaders.initADSFrag();
 	customShaders.initUI();
 
-	//Initiate game layer:
-
 	//Set initial camera position:
 	cameraFrame.MoveForward(bgZpos);
 	cameraFrame.MoveUp(camYShift);
@@ -163,6 +162,7 @@ void setup()
 
 	//Initiate UI elements:
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
+	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f, "Assets/menu+buttons3.0/MenuBackground.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/button_alpha.tga");
 	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/button_survival.tga");
 	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
@@ -457,6 +457,7 @@ void survivalRender()
 
 void menuRender()
 {
+	menuBG.draw(uiPipeline, gltShaderManager);
 	alphaButton.draw(uiPipeline, gltShaderManager);
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
