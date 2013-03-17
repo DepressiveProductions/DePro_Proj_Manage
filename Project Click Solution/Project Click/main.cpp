@@ -109,6 +109,7 @@ void playClick();
 void playKey();
 void playRender();
 void menuRender();
+void optionsRender();
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -158,7 +159,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	font.init("Assets/Lato.tga");
+	font.init("Assets/boldArial.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -196,6 +197,8 @@ void renderScene()
 {
 	if (Globals::state == Globals::STATE_MENU) {
 		menuRender();
+	} else if (Globals::state == Globals::STATE_OPTIONS) {
+		optionsRender();
 	} else if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 		playRender();
 	}
@@ -216,6 +219,16 @@ void playClick()
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
 			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
+			//finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
+			//if (finalTime <= 2.50) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
+			//} else if (finalTime <= 3.00) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
+			//} else if (finalTime <= 4.5) {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
+			//} else {
+			//	std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
+			//}
 		} else if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::lives > 0) {
 			Globals::speed *= 1.05f;
 			blocks.sendWave(5, Globals::speed);
@@ -253,7 +266,7 @@ void menuClick()
 			shutdownRC();
 			exit(0);
 		} else if (clickPos[1] < 45.0f) {	//Options
-
+			Globals::state = Globals::STATE_OPTIONS;
 		} else if (clickPos[1] < 55.0f) {	//Survival
 			Globals::state = Globals::STATE_SURVIVAL;
 			Globals::lives = 3;
@@ -333,9 +346,9 @@ void playRender()
 
 	//UI:
 	
-	static char gtime[64];
-	static float tw;
-	static char *grade;
+	char gtime[64];
+	float tw = 0.0f;
+	char *grade;
 
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
@@ -350,20 +363,21 @@ void playRender()
 		} else {
 			grade = "GRANNY ...";
 		}
-		sprintf_s(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
+		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
 	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
 		tw = 20.0f;
-		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
+		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
-		Globals::speed *= 1.05f;
+		Globals::speed *= 1.1f;
+		tw = 75.0f;
 		blocks.sendWave(5, Globals::speed);
 	} 
 	
-	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 8.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
@@ -382,6 +396,14 @@ void menuRender()
 	glutSwapBuffers();
 	glutPostRedisplay();
 
+}
+
+void optionsRender() {
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
+
+	glutSwapBuffers();
+	glutPostRedisplay();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
