@@ -350,14 +350,14 @@ void playRender()
 		} else {
 			grade = "GRANNY ...";
 		}
-		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
+		sprintf_s(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
 	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
 		tw = 20.0f;
-		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
 	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
+		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.05f;
 		blocks.sendWave(5, Globals::speed);

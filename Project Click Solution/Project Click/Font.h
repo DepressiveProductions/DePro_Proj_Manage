@@ -6,12 +6,6 @@
 #include <GLFrame.h>
 #include <string>
 #include <iostream>
-#include <vector>
-#include <map>
-
-
-using std::vector;
-using std::map;
 
 class Font
 {
@@ -30,6 +24,6 @@ public:
 private:
 	GLuint				uiTexture;
 	GLfloat				vColor[4];
-	GLBatch tempBatch;
+	GLBatch				tempBatch;
 
 };
