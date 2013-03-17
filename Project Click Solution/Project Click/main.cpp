@@ -35,7 +35,11 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
+<<<<<<< HEAD
 #include "MenuButton.h"
+=======
+#include "Sound.h"
+>>>>>>> Music
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +69,11 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 Font					font;
+<<<<<<< HEAD
 MenuButton				mBBack;
+=======
+Sound					music;
+>>>>>>> Music
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +181,9 @@ void setup()
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
+
+	music.init("Assets/AGFG_02_rep.wav");
+	music.play();
 
 	gameTime.Reset();
 }
