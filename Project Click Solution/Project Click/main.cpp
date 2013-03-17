@@ -107,7 +107,8 @@ void menuClick();
 void menuKey();
 void playClick();
 void playKey();
-void playRender();
+void alphaRender();
+void survivalRender();
 void menuRender();
 void optionsRender();
 
@@ -196,12 +197,14 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene() 
 {
-	if (Globals::state == Globals::STATE_MENU) {
+	if (Globals::state == Globals::STATE_MENU)				{
 		menuRender();
-	} else if (Globals::state == Globals::STATE_OPTIONS) {
+	} else if (Globals::state == Globals::STATE_OPTIONS)	{
 		optionsRender();
-	} else if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
-		playRender();
+	} else if (Globals::state == Globals::STATE_ALPHA)		{
+		alphaRender();
+	} else if (Globals::state == Globals::STATE_SURVIVAL)	{
+		survivalRender();
 	}
 	checkInput();
 }
@@ -303,7 +306,7 @@ void checkInput()
 	}
 }
 
-void playRender()
+void alphaRender()
 {
 	//Lighting variables:
 	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
@@ -342,7 +345,7 @@ void playRender()
 	char *grade;
 
 	//Render a thing in the thing on the thing:
-	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
+	if (Globals::nBlocks <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 90.0f;
 		if (finalTime <= 2.50) {
@@ -354,21 +357,72 @@ void playRender()
 		} else {
 			grade = "GRANNY ...";
 		}
-		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
-	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
+		sprintf_s(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
+	} else if (Globals::nBlocks > 0) {
 		tw = 20.0f;
-		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
-	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	}
+	
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
+
+	//Swap buffers and tell glut to keep looping:
+	glutSwapBuffers();
+	glutPostRedisplay();
+}
+
+void survivalRender()
+{
+	//Lighting variables:
+	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
+	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
+			
+	//Clear buffers:
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	//Beginning push:
+	modelViewStack.PushMatrix();
+	
+	//Camera matrix:
+	cameraFrame.GetCameraMatrix(mCamera);
+	modelViewStack.PushMatrix(mCamera);
+	
+	//Calc light pos in eye coords:
+	static GLfloat vLightEyePos[3];
+	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
+	
+	//Render stuff here:
+	blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
+
+	//Draw background:
+	bg.draw(gltShaderManager, tPipeline);
+	
+	//Camera matrix pop:
+	modelViewStack.PopMatrix();
+	
+	//Ending pop:
+	modelViewStack.PopMatrix();
+
+	//UI:
+	
+	static char gtime[64];
+	static float tw = 0.0f;
+
+	//Render a thing in the thing on the thing:
+	if (Globals::nBlocks > 0) {
+		tw = 20.0f;
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	} else if (Globals::lives <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
-	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
+		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
+	} else if (Globals::lives > 0 && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.1f;
-		tw = 75.0f;
+		tw = 20.0f;
 		blocks.sendWave(5, Globals::speed);
-	} 
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	}
 	
-	font.showText(gtime, 1.0f, 90.0f, tw, 8.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
