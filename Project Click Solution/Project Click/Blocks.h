@@ -5,6 +5,7 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <math.h>
 
 using std::array;
 using std::vector;
@@ -21,6 +22,8 @@ public:
 	void removeAll();
 	float randF(float min, float max);
 	void draw(Shaders *sManager, GLGeometryTransform *tPipeline, GLMatrixStack *mvStack, M3DVector4f vLight, M3DVector4f vAmbient);
+
+	array<array<GLfloat,4>,5> colorPalette;
 
 	vector<Block *> blocks;
 	float fWidth, fHeight, fZ;
