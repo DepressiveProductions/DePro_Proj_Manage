@@ -181,13 +181,10 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
-<<<<<<< HEAD
 	menuClickSound.init("Assets/douf.wav");
 
-	gameTime.Reset();
-=======
-	gameTime.resetTime();
->>>>>>> Real timer, no fake.
+	// start/reset time
+	gameTime.start();
 }
 
 void shutdownRC()
@@ -268,13 +265,13 @@ void playKey()
 {
 	if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_ALPHA && Globals::nBlocks <= 0) {
 		blocks.sendWave(10, 0.0f);
-		gameTime.resetTime();
+		gameTime.start();	// start/reset time
 	} else if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_SURVIVAL && Globals::lives <= 0) {
 		Globals::lives = 3;
 		Globals::score = 0;
 		Globals::speed = 0.002f;
 		blocks.sendWave(5, Globals::speed);
-		gameTime.resetTime();
+		gameTime.start();	// start/reset time
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -304,12 +301,12 @@ void menuClick()
 		Globals::score = 0;
 		Globals::speed = 0.003f;
 		blocks.sendWave(5, Globals::speed);
-		gameTime.resetTime();
+		gameTime.start();	// start/reset time
 	} else if (alphaButton.isClicked(clickPos)) {
 		//menuClickSound.play();
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
-		gameTime.resetTime();
+		gameTime.start();	// start/reset time
 	}
 }
 
