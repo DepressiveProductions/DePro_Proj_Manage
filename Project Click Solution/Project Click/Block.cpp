@@ -21,10 +21,10 @@ void Block::init(float x, float y, float z, float width, float height, float mov
 	vColor[2] = 0.0f;
 	vColor[3] = 1.0f;
 
-	vShininess[0] = 0.03f;
-	vShininess[1] = 0.03f;
-	vShininess[2] = 0.03f;
-	vShininess[3] = 0.03f;
+	vShininess[0] = 0.1f;
+	vShininess[1] = 0.1f;
+	vShininess[2] = 0.1f;
+	vShininess[3] = 0.1f;
 
 	generateBatch();
 }

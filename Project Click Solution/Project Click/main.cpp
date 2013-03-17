@@ -82,8 +82,12 @@ const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 
-const float				mnuBtnLeft	= 25.0f;
-const float				mnuBtnRight	= 75.0f;
+const float				nMnuBtns		= 4.0f;
+const float				mnuBtnLeft		= 25.0f;
+const float				mnuBtnRight		= 75.0f;
+const float				mnuBtnTop		= 65.0f;
+const float				mnuBtnBot		= 25.0f;
+const float				mnuBtnHeight	= abs(mnuBtnTop - mnuBtnBot) / nMnuBtns;
 
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
@@ -109,7 +113,8 @@ void menuClick();
 void menuKey();
 void playClick();
 void playKey();
-void playRender();
+void alphaRender();
+void survivalRender();
 void menuRender();
 void optionsRender();
 
@@ -157,10 +162,10 @@ void setup()
 
 	//Initiate UI elements:
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
-	alphaButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "Assets/button_alpha.tga");
-	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
-	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
-	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
+	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/button_alpha.tga");
+	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/button_survival.tga");
+	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
+	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
 	mBBack.init("Assets/Buttons2.0/button_alpha_OUT.tga", 25.0f, 25.0f, 28.0f, 15.0f);
 
@@ -168,6 +173,8 @@ void setup()
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
+
+	gameTime.Reset();
 }
 
 void shutdownRC()
@@ -202,12 +209,14 @@ void changeSize(int w, int h)
 //Basic glutfunc for rendering stuff. Runs every frame:
 void renderScene() 
 {
-	if (Globals::state == Globals::STATE_MENU) {
+	if (Globals::state == Globals::STATE_MENU)				{
 		menuRender();
-	} else if (Globals::state == Globals::STATE_OPTIONS) {
+	} else if (Globals::state == Globals::STATE_OPTIONS)	{
 		optionsRender();
-	} else if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
-		playRender();
+	} else if (Globals::state == Globals::STATE_ALPHA)		{
+		alphaRender();
+	} else if (Globals::state == Globals::STATE_SURVIVAL)	{
+		survivalRender();
 	}
 	checkInput();
 }
@@ -258,23 +267,21 @@ void menuClick()
 	//UI clicking:
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f && clickPos[1] > 25.0f) {
-		if (clickPos[1] < 35.0f) {			//Quit
-			shutdownRC();
-			exit(0);
-		} else if (clickPos[1] < 45.0f) {	//Options
-			Globals::state = Globals::STATE_OPTIONS;
-		} else if (clickPos[1] < 55.0f) {	//Survival
-			Globals::state = Globals::STATE_SURVIVAL;
-			Globals::lives = 3;
-			Globals::speed = 0.002f;
-			blocks.sendWave(5, Globals::speed);
-			gameTime.Reset();
-		} else {							//Alpha
-			Globals::state = Globals::STATE_ALPHA;
-			blocks.sendWave(10, 0.0f);
-			gameTime.Reset();				//Reset timer
-		}
+	if (exitButton.isClicked(clickPos)) {
+		shutdownRC();
+		exit(0);
+	} else if (optionsButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_OPTIONS;
+	} else if (survivalButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_SURVIVAL;
+		Globals::lives = 3;
+		Globals::speed = 0.003f;
+		blocks.sendWave(5, Globals::speed);
+		gameTime.Reset();
+	} else if (alphaButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_ALPHA;
+		blocks.sendWave(10, 0.0f);
+		gameTime.Reset();
 	}
 }
 
@@ -320,7 +327,7 @@ void checkInput()
 	}
 }
 
-void playRender()
+void alphaRender()
 {
 	//Lighting variables:
 	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
@@ -354,14 +361,14 @@ void playRender()
 
 	//UI:
 	
-	char gtime[64];
-	float tw = 0.0f;
-	char *grade;
+	static char gtime[64];
+	static float tw = 0.0f;
+	static char *grade;
 
 	//Render a thing in the thing on the thing:
-	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
+	if (Globals::nBlocks <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		tw = 90.0f;
+		tw = 80.0f;
 		if (finalTime <= 2.50) {
 			grade = "GODLIKE!!!";
 		} else if (finalTime <= 3.00) {
@@ -371,21 +378,72 @@ void playRender()
 		} else {
 			grade = "GRANNY ...";
 		}
-		sprintf(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
-	} else if (Globals::nBlocks > 0 && (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL)) {
+		sprintf_s(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
+	} else if (Globals::nBlocks > 0) {
 		tw = 20.0f;
-		sprintf(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
-	} else if (Globals::lives <= 0 && Globals::state == Globals::STATE_SURVIVAL) {
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	}
+	
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
+
+	//Swap buffers and tell glut to keep looping:
+	glutSwapBuffers();
+	glutPostRedisplay();
+}
+
+void survivalRender()
+{
+	//Lighting variables:
+	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
+	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
+			
+	//Clear buffers:
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	//Beginning push:
+	modelViewStack.PushMatrix();
+	
+	//Camera matrix:
+	cameraFrame.GetCameraMatrix(mCamera);
+	modelViewStack.PushMatrix(mCamera);
+	
+	//Calc light pos in eye coords:
+	static GLfloat vLightEyePos[3];
+	m3dTransformVector4(vLightEyePos, vLightPos, mCamera);
+	
+	//Render stuff here:
+	blocks.draw(&customShaders, &tPipeline, &modelViewStack, vLightEyePos, vAmbient);
+
+	//Draw background:
+	bg.draw(gltShaderManager, tPipeline);
+	
+	//Camera matrix pop:
+	modelViewStack.PopMatrix();
+	
+	//Ending pop:
+	modelViewStack.PopMatrix();
+
+	//UI:
+	
+	static char gtime[64];
+	static float tw = 0.0f;
+
+	//Render a thing in the thing on the thing:
+	if (Globals::nBlocks > 0) {
+		tw = 20.0f;
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	} else if (Globals::lives <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
-	} else if (Globals::lives > 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::nBlocks <= 0) {
+		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
+	} else if (Globals::lives > 0 && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.1f;
-		tw = 75.0f;
+		tw = 20.0f;
 		blocks.sendWave(5, Globals::speed);
-	} 
+		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+	}
 	
-	font.showText(gtime, 1.0f, 90.0f, tw, 8.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();

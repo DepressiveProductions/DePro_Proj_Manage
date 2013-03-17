@@ -96,3 +96,13 @@ void UserInterface::clearTexture()
 {
 	glDeleteTextures(1, &uiTexture);
 }
+
+bool UserInterface::isClicked(array<float,2> pos)
+{
+	if (pos[0] > xmin && pos[0] < xmax &&
+		pos[1] > ymin && pos[1] < ymax) {
+			return true;
+	} else {
+		return false;
+	}
+}
