@@ -11,16 +11,8 @@
 class Timer
 {
 public:
-<<<<<<< HEAD
     Timer();                                    // default constructor
     ~Timer();                                   // default destructor
-=======
-	Timer(void);
-	~Timer(void);
-	float getElapsedTime();
-	void resetTime();
->>>>>>> 87b59232ff3a548352d60e0ab04d45f0efbc222d
-
     void   start();                             // start timer
     void   stop();                              // stop the timer
     void   resetTime();							// resets the time
