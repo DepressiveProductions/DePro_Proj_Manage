@@ -158,7 +158,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	font.init("Assets/boldArial.tga");
+	font.init("Assets/Lato.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -373,7 +373,7 @@ void playRender()
 		blocks.sendWave(5, Globals::speed);
 	} 
 	
-	font.showText(gtime, 1.0f, 90.0f, tw, 8.0f, gltShaderManager, uiPipeline);
+	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();
