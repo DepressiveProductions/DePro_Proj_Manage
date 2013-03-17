@@ -349,7 +349,7 @@ void alphaRender()
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
-		tw = 90.0f;
+		tw = 80.0f;
 		if (finalTime <= 2.50) {
 			grade = "GODLIKE!!!";
 		} else if (finalTime <= 3.00) {
