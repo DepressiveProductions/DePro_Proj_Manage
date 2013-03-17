@@ -21,10 +21,10 @@ void Block::init(float x, float y, float z, float width, float height, float mov
 	vColor[2] = 0.0f;
 	vColor[3] = 1.0f;
 
-	vShininess[0] = 1.0f;
-	vShininess[1] = 1.0f;
-	vShininess[2] = 1.0f;
-	vShininess[3] = 1.0f;
+	vShininess[0] = 0.03f;
+	vShininess[1] = 0.03f;
+	vShininess[2] = 0.03f;
+	vShininess[3] = 0.03f;
 
 	generateBatch();
 }
@@ -41,58 +41,58 @@ void Block::generateBatch()
 {
 	aBatch.Begin(GL_TRIANGLE_STRIP, 17); //Why not use CopyVertexData3f like before?
 	
-	float len = 1.73205f;
+	float len = 1.7321f;
 
+	aBatch.Normal3f(-1/len, 1/len, 1/len);
 	aBatch.Vertex3f(-w, h, d); 
-	aBatch.Normal3f(-1/len, 1/len, 1/len);
 	
-	aBatch.Vertex3f(w, h, d);
 	aBatch.Normal3f(1/len, 1/len, 1/len);
-	
-	aBatch.Vertex3f(-w, -h, d);
-	aBatch.Normal3f(-1/len, -1/len, 1/len);
+	aBatch.Vertex3f(w, h, d);
 
-	aBatch.Vertex3f(w, -h, d);
-	aBatch.Normal3f(1/len, -1/len, 1/len);
-	
-	aBatch.Vertex3f(-w, -h, -d);
-	aBatch.Normal3f(-1/len, -1/len, -1/len);
-	
-	aBatch.Vertex3f(w, -h, -d);
-	aBatch.Normal3f(1/len, -1/len, -1/len);
-	
-	aBatch.Vertex3f(-w, h, -d);
-	aBatch.Normal3f(-1/len, 1/len, -1/len);
-	
-	aBatch.Vertex3f(w, h, -d);
-	aBatch.Normal3f(1/len, 1/len, -1/len);
-	
-	aBatch.Vertex3f(-w, h, d);
-	aBatch.Normal3f(-1/len, 1/len, 1/len);
-	
-	aBatch.Vertex3f(w, h, d);
-	aBatch.Normal3f(1/len, 1/len, 1/len);
-	
-	aBatch.Vertex3f(w, h, -d);
-	aBatch.Normal3f(1/len, 1/len, -1/len);
-	
-	aBatch.Vertex3f(w, -h, d);
-	aBatch.Normal3f(1/len, -1/len, 1/len);
-	
-	aBatch.Vertex3f(w, -h, -d);
-	aBatch.Normal3f(1/len, -1/len, -1/len);
-	
-	aBatch.Vertex3f(-w, -h, -d);
-	aBatch.Normal3f(-1/len, -1/len, -1/len);
-	
+	aBatch.Normal3f(-1/len, -1/len, 1/len);
 	aBatch.Vertex3f(-w, -h, d);
+
+	aBatch.Normal3f(1/len, -1/len, 1/len);
+	aBatch.Vertex3f(w, -h, d);
+	
 	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	aBatch.Vertex3f(-w, -h, -d);
 	
-	aBatch.Vertex3f(-w, h, -d);
+	aBatch.Normal3f(1/len, -1/len, -1/len);
+	aBatch.Vertex3f(w, -h, -d);
+	
 	aBatch.Normal3f(-1/len, 1/len, -1/len);
+	aBatch.Vertex3f(-w, h, -d);
 	
-	aBatch.Vertex3f(-w, h, d);
+	aBatch.Normal3f(1/len, 1/len, -1/len);
+	aBatch.Vertex3f(w, h, -d);
+	
 	aBatch.Normal3f(-1/len, 1/len, 1/len);
+	aBatch.Vertex3f(-w, h, d);
+	
+	aBatch.Normal3f(1/len, 1/len, 1/len);
+	aBatch.Vertex3f(w, h, d);
+	
+	aBatch.Normal3f(1/len, 1/len, -1/len);
+	aBatch.Vertex3f(w, h, -d);
+	
+	aBatch.Normal3f(1/len, -1/len, 1/len);
+	aBatch.Vertex3f(w, -h, d);
+	
+	aBatch.Normal3f(1/len, -1/len, -1/len);
+	aBatch.Vertex3f(w, -h, -d);
+	
+	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	aBatch.Vertex3f(-w, -h, -d);
+	
+	aBatch.Normal3f(-1/len, -1/len, -1/len);
+	aBatch.Vertex3f(-w, -h, d);
+	
+	aBatch.Normal3f(-1/len, 1/len, -1/len);
+	aBatch.Vertex3f(-w, h, -d);
+	
+	aBatch.Normal3f(-1/len, 1/len, 1/len);
+	aBatch.Vertex3f(-w, h, d);
 	
 	aBatch.End();
 }

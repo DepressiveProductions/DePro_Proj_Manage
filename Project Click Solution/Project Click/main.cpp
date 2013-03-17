@@ -160,7 +160,7 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
-	font.init("Assets/boldArial.tga");
+	font.init("Assets/Lato.tga");
 
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
@@ -220,16 +220,6 @@ void playClick()
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
 			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
-			//finalTime = floorf(finalTime * 100 + 0.5) / 100;  // Round to nearest 2nd decimal
-			//if (finalTime <= 2.50) {
-			//	std::cout << "You did it in: " << finalTime <<" | Rating: GODLIKE!!!" << std::endl;	//Print final time GODLIKE
-			//} else if (finalTime <= 3.00) {
-			//	std::cout << "You did it in: " << finalTime <<" | Rating: MASTER!" << std::endl; //Print final time MASTER
-			//} else if (finalTime <= 4.5) {
-			//	std::cout << "You did it in: " << finalTime <<" | Rating: REGULAR" << std::endl; //Print final time not bad
-			//} else {
-			//	std::cout << "You did it in: " << finalTime <<" | Rating: Slow as a f****** granny on a highway!" << std::endl;	//Print final time slow as f
-			//}
 		} else if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::lives > 0) {
 			Globals::speed *= 1.05f;
 			blocks.sendWave(5, Globals::speed);
@@ -316,8 +306,8 @@ void checkInput()
 void playRender()
 {
 	//Lighting variables:
-	static GLfloat vLightPos[] = {1.5f, 1.0f, 15.0f};
-	static GLfloat vAmbient[] = {0.1f, 0.1f, 0.1f, 1.0f};
+	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
+	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
 			
 	//Clear buffers:
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
