@@ -169,6 +169,8 @@ void setup()
 	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
+	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/menu/Sound_normal.tga");
+
 	font.init("Assets/fatLato.tga");
 
 	//More initiations below here ...
@@ -303,9 +305,9 @@ void optionsClick() {
 	// Clicking position in UI-coords
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	//if (mBBack.isClicked(clickPos[0], clickPos[1])) {
-	//	Globals::state = Globals::STATE_MENU;
-	//}
+	if (optSoundToggle.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_MENU;
+	}
 }
 
 void menuKey()
@@ -468,7 +470,7 @@ void menuRender()
 
 void optionsRender() {
 	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
-	//mBBack.draw(uiPipeline, gltShaderManager);
+	optSoundToggle.draw(uiPipeline, gltShaderManager);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
