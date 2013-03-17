@@ -13,6 +13,7 @@
     <ClCompile Include="Shaders.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stb_truetype.h" />
     <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ADS_fragment.fp" />

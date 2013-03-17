@@ -27,7 +27,7 @@
 #include <array>
 #include <string>
 #include <map>
-#include <StopWatch.h>
+#include <ctime>
 #include "Shaders.h"
 #include "Background.h"
 #include "Globals.h"
@@ -36,6 +36,7 @@
 #include "UserInterface.h"
 #include "Font.h"
 #include "Sound.h"
+#include "Timer.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,7 +58,7 @@ GLFrustum				viewFrustum;
 
 Shaders					customShaders;
 Blocks					blocks;
-CStopWatch				gameTime;
+Timer					gameTime;
 Background				bg;
 UserInterface			restartInfo;
 UserInterface			alphaButton;
@@ -180,9 +181,13 @@ void setup()
 	music.init("Assets/Lobby2.wav");
 	music.play();
 
+<<<<<<< HEAD
 	menuClickSound.init("Assets/douf.wav");
 
 	gameTime.Reset();
+=======
+	gameTime.resetTime();
+>>>>>>> Real timer, no fake.
 }
 
 void shutdownRC()
@@ -251,7 +256,7 @@ void playClick()
 
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
-			finalTime = gameTime.GetElapsedSeconds();	//Save final time to finalTime
+			finalTime = gameTime.getElapsedTime();	//Save final time to finalTime
 		} else if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_SURVIVAL && Globals::lives > 0) {
 			Globals::speed *= 1.05f;
 			blocks.sendWave(5, Globals::speed);
@@ -263,13 +268,13 @@ void playKey()
 {
 	if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_ALPHA && Globals::nBlocks <= 0) {
 		blocks.sendWave(10, 0.0f);
-		gameTime.Reset();
+		gameTime.resetTime();
 	} else if (Input::pressedKey == ' ' && Globals::state == Globals::STATE_SURVIVAL && Globals::lives <= 0) {
 		Globals::lives = 3;
 		Globals::score = 0;
 		Globals::speed = 0.002f;
 		blocks.sendWave(5, Globals::speed);
-		gameTime.Reset();
+		gameTime.resetTime();
 	} else if (Input::pressedKey == 'o') {
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -299,12 +304,12 @@ void menuClick()
 		Globals::score = 0;
 		Globals::speed = 0.003f;
 		blocks.sendWave(5, Globals::speed);
-		gameTime.Reset();
+		gameTime.resetTime();
 	} else if (alphaButton.isClicked(clickPos)) {
 		//menuClickSound.play();
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
-		gameTime.Reset();
+		gameTime.resetTime();
 	}
 }
 
@@ -401,7 +406,7 @@ void alphaRender()
 		sprintf_s(gtime, "You did it in: %.2f sec | Rating: %s", finalTime, grade);
 	} else if (Globals::nBlocks > 0) {
 		tw = 20.0f;
-		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+		sprintf_s(gtime, "%.2f sec", gameTime.getElapsedTime());
 	}
 	
 	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
@@ -446,16 +451,16 @@ void survivalRender()
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks > 0) {
 		tw = 20.0f;
-		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+		sprintf_s(gtime, "%.2f sec", gameTime.getElapsedTime());
 	} else if (Globals::lives <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
+		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.getElapsedTime()); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.1f;
 		tw = 20.0f;
 		blocks.sendWave(5, Globals::speed);
-		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
+		sprintf_s(gtime, "%.2f sec", gameTime.getElapsedTime());
 	}
 
 	sprintf_s(gscore, "Score: %i", Globals::score);
