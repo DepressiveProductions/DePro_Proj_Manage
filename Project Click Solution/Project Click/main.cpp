@@ -35,6 +35,7 @@
 #include "Input.h"
 #include "UserInterface.h"
 #include "Font.h"
+#include "MenuButton.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,6 +65,7 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 Font					font;
+MenuButton				mBBack;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +162,8 @@ void setup()
 	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
 
+	mBBack.init("Assets/Buttons2.0/button_alpha_OUT.tga", 25.0f, 25.0f, 28.0f, 15.0f);
+
 	font.init("Assets/Lato.tga");
 
 	//More initiations below here ...
@@ -174,6 +178,8 @@ void shutdownRC()
 	survivalButton.clearTexture();
 	optionsButton.clearTexture();
 	exitButton.clearTexture();
+
+	mBBack.unloadTexture();
 
 	font.clearTexture();
 }
@@ -272,6 +278,15 @@ void menuClick()
 	}
 }
 
+void optionsClick() {
+	// Clicking position in UI-coords
+	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
+
+	if (mBBack.isClicked(clickPos[0], clickPos[1])) {
+		Globals::state = Globals::STATE_MENU;
+	}
+}
+
 void menuKey()
 {
 	if (Input::pressedKey == 27) { //Escape
@@ -288,13 +303,15 @@ void checkInput()
 			playClick(); 
 		} else if (Globals::state == Globals::STATE_MENU) {
 			menuClick();
+		} else if (Globals::state == Globals::STATE_OPTIONS) {
+			optionsClick();
 		}
 	}
 	if (Input::hasPressed) {
 		Input::hasPressed = false;
 		if (Globals::state == Globals::STATE_ALPHA || Globals::state == Globals::STATE_SURVIVAL) {
 			playKey();
-		} else if (Globals::state == Globals::STATE_MENU) {
+		} else if (Globals::state == Globals::STATE_MENU || Globals::state == Globals::STATE_OPTIONS) {
 			menuKey();
 		}
 	}
@@ -392,6 +409,8 @@ void menuRender()
 void optionsRender() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
+
+	mBBack.draw(uiPipeline, gltShaderManager);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
