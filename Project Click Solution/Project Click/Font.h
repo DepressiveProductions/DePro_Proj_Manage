@@ -30,4 +30,6 @@ public:
 private:
 	GLuint				uiTexture;
 	GLfloat				vColor[4];
+	GLBatch tempBatch;
+
 };

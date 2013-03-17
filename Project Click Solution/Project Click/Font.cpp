@@ -26,8 +26,6 @@ void Font::showText(char *text, float x, float y,
 
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 
-	GLBatch tempBatch;
-	
 	for (int i = 0 ; i < len ; i++)
 	{
 		tempBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
@@ -58,8 +56,6 @@ void Font::showText(char *text, float x, float y,
 		draw(tempBatch, sm, tp);
 		tempBatch.Reset();
 	}
-	
-
 }
 
 void Font::draw(GLBatch &ba, GLShaderManager &sm, GLGeometryTransform tp)
@@ -111,5 +107,5 @@ bool Font::loadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFi
 
 void Font::clearTexture()
 {
-	//glDeleteTextures(1, uiTexture);
+	glDeleteTextures(1, &uiTexture);
 }
