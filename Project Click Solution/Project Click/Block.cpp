@@ -1,5 +1,6 @@
 #include "Block.h"
 
+#include <iostream>
 
 Block::Block(void) {}
 
@@ -7,7 +8,7 @@ Block::~Block(void) {}
 
 void Block::init(float x, float y, float z, float width, float height, float moveSpeed)
 {
-	mvSpeed = moveSpeed;
+	mvSpeed = moveSpeed  * (1.0f + blocktype /  5.0f);
 	lastTick = clock();
 
 	w = width/2;

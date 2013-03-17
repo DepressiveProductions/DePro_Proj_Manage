@@ -426,29 +426,31 @@ void survivalRender()
 	//UI:
 	
 	static char gtime[64];
-	static char gscore[32];
+	static char gscore[16];
+	static char glives[16];
 	static float tw = 0.0f;
 
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks > 0) {
 		tw = 20.0f;
 		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
-		sprintf_s(gscore, "Score: %i", Globals::score);
 	} else if (Globals::lives <= 0) {
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
 		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.GetElapsedSeconds()); // Get the final time Jonas?
-		sprintf_s(gscore, "Score: %i", Globals::score);
 	} else if (Globals::lives > 0 && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.1f;
 		tw = 20.0f;
 		blocks.sendWave(5, Globals::speed);
 		sprintf_s(gtime, "%.2f sec", gameTime.GetElapsedSeconds());
-		sprintf_s(gscore, "Score: %i", Globals::score);
 	}
+
+	sprintf_s(gscore, "Score: %i", Globals::score);
+	sprintf_s(glives, "Lives : %i", Globals::lives);
 	
 	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 	font.showText(gscore, 1.0f, 1.0f, 16.0f, 6.0f, gltShaderManager, uiPipeline);
+	font.showText(glives, 80.0f, 1.0f, 16.0f, 6.0f, gltShaderManager, uiPipeline);
 
 	//Swap buffers and tell glut to keep looping:
 	glutSwapBuffers();

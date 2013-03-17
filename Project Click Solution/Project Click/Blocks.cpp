@@ -83,8 +83,8 @@ void Blocks::sendWave(int blockAmount, float moveSpeed)
 
 		if (valid) {
 			blocks.push_back(new Block);
-			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h, moveSpeed);
 			blocks[blocks.size()-1]->blocktype = int(randF(0.0f,4.0f));
+			blocks[blocks.size()-1]->init(x, y, fZ, 2*w, 2*h, moveSpeed);
 			blocks[blocks.size()-1]->setColor(colorPalette[blocks[blocks.size()-1]->blocktype][0], 
 											  colorPalette[blocks[blocks.size()-1]->blocktype][1], 
 											  colorPalette[blocks[blocks.size()-1]->blocktype][2], 
