@@ -80,8 +80,12 @@ const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 
-const float				mnuBtnLeft	= 25.0f;
-const float				mnuBtnRight	= 75.0f;
+const float				nMnuBtns		= 4.0f;
+const float				mnuBtnLeft		= 25.0f;
+const float				mnuBtnRight		= 75.0f;
+const float				mnuBtnTop		= 65.0f;
+const float				mnuBtnBot		= 25.0f;
+const float				mnuBtnHeight	= abs(mnuBtnTop - mnuBtnBot) / nMnuBtns;
 
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
 const float				camYShift	= -1.5f;				//To compensate for tilt
@@ -156,10 +160,10 @@ void setup()
 
 	//Initiate UI elements:
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
-	alphaButton.init(mnuBtnLeft, 55.0f, mnuBtnRight, 65.0f, 0.0f, "Assets/button_alpha.tga");
-	survivalButton.init(mnuBtnLeft, 45.0f, mnuBtnRight, 55.0f, 0.0f, "Assets/button_survival.tga");
-	optionsButton.init(mnuBtnLeft, 35.0f, mnuBtnRight, 45.0f, 0.0f, "Assets/button_options.tga");
-	exitButton.init(mnuBtnLeft, 25.0f, mnuBtnRight, 35.0f, 0.0f, "Assets/button_quit.tga");
+	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/button_alpha.tga");
+	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/button_survival.tga");
+	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
+	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
 	font.init("Assets/Lato.tga");
 
@@ -257,23 +261,21 @@ void menuClick()
 	//UI clicking:
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (clickPos[0] > mnuBtnLeft && clickPos[0] < mnuBtnRight && clickPos[1] < 65.0f && clickPos[1] > 25.0f) {
-		if (clickPos[1] < 35.0f) {			//Quit
-			shutdownRC();
-			exit(0);
-		} else if (clickPos[1] < 45.0f) {	//Options
-			Globals::state = Globals::STATE_OPTIONS;
-		} else if (clickPos[1] < 55.0f) {	//Survival
-			Globals::state = Globals::STATE_SURVIVAL;
-			Globals::lives = 3;
-			Globals::speed = 0.003f;
-			blocks.sendWave(5, Globals::speed);
-			gameTime.Reset();
-		} else {							//Alpha
-			Globals::state = Globals::STATE_ALPHA;
-			blocks.sendWave(10, 0.0f);
-			gameTime.Reset();				//Reset timer
-		}
+	if (exitButton.isClicked(clickPos)) {
+		shutdownRC();
+		exit(0);
+	} else if (optionsButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_OPTIONS;
+	} else if (survivalButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_SURVIVAL;
+		Globals::lives = 3;
+		Globals::speed = 0.003f;
+		blocks.sendWave(5, Globals::speed);
+		gameTime.Reset();
+	} else if (alphaButton.isClicked(clickPos)) {
+		Globals::state = Globals::STATE_ALPHA;
+		blocks.sendWave(10, 0.0f);
+		gameTime.Reset();
 	}
 }
 
