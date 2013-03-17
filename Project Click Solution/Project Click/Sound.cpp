@@ -141,7 +141,7 @@ int Sound::play(ALfloat sourcePos[], ALfloat sourceVel[])
     //system("PAUSE");															//Pause to let the sound play
 
 	//Clear things
-	clearSoundPartial();
+	//clearSoundPartial();
 }
 
 void Sound::play(ALfloat sourcePos[])											//Default value for sourceVel
