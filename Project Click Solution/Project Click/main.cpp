@@ -298,7 +298,7 @@ void menuClick()
 		//menuClickSound.play();
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
-		//menuClickSound.play();
+		menuClickSound.play();
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
 		Globals::score = 0;
