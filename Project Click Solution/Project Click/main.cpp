@@ -65,7 +65,7 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 UserInterface			menuBG;
-UserInterface			optMusicToggle;
+UserInterface			optSoundToggle;
 UserInterface			optBackButton;
 Font					font;
 Sound					music;
@@ -163,13 +163,11 @@ void setup()
 
 	//Initiate UI elements:
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
-	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f, "Assets/menu+buttons3.0/MenuBackground.tga");
+	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f, "Assets/MenuBackground.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/button_alpha.tga");
 	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/button_survival.tga");
 	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
-
-	optMusicToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
 
 	font.init("Assets/fatLato.tga");
 
@@ -191,7 +189,8 @@ void shutdownRC()
 	optionsButton.clearTexture();
 	exitButton.clearTexture();
 
-	mBBack.unloadTexture();
+	optSoundToggle.clearTexture();
+	optBackButton.clearTexture();
 
 	font.clearTexture();
 
@@ -304,9 +303,9 @@ void optionsClick() {
 	// Clicking position in UI-coords
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (mBBack.isClicked(clickPos[0], clickPos[1])) {
-		Globals::state = Globals::STATE_MENU;
-	}
+	//if (mBBack.isClicked(clickPos[0], clickPos[1])) {
+	//	Globals::state = Globals::STATE_MENU;
+	//}
 }
 
 void menuKey()
@@ -469,7 +468,7 @@ void menuRender()
 
 void optionsRender() {
 	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
-	mBBack.draw(uiPipeline, gltShaderManager);
+	//mBBack.draw(uiPipeline, gltShaderManager);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
