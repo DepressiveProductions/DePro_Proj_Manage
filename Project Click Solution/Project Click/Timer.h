@@ -13,6 +13,11 @@ class Timer
 public:
     Timer();                                    // default constructor
     ~Timer();                                   // default destructor
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 3961af6111abaa8bfb15233816235d1e9a1d1867
     void   start();                             // start timer
     void   stop();                              // stop the timer
     void   resetTime();							// resets the time
