@@ -333,9 +333,9 @@ void playRender()
 
 	//UI:
 	
-	char gtime[64];
-	float tw;
-	char *grade;
+	static char gtime[64];
+	static float tw;
+	static char *grade;
 
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA) {
