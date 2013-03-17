@@ -407,7 +407,6 @@ void survivalRender()
 	static char gtime[64];
 	static float tw = 0.0f;
 
-	font.showText(asdfg, 1.0f, 1.0f, 10.0f, 6.0f, gltShaderManager, uiPipeline);
 	//Render a thing in the thing on the thing:
 	if (Globals::nBlocks > 0) {
 		tw = 20.0f;
