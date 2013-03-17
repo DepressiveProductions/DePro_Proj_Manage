@@ -17,6 +17,7 @@ public:
 	bool isWithin(float x, float y, float z);
 	bool hasPassed(float fWidth);
 	void draw(Shaders &sManager, GLGeometryTransform &tPipeline, GLMatrixStack &mvStack, M3DVector4f vLight, M3DVector4f vAmbient);
+	unsigned int blocktype;
 
 private:
 	// x, y, z stored in actor-frame

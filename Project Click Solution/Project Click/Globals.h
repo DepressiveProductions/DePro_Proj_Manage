@@ -18,4 +18,5 @@ class Globals
 		static int nBlocks;
 		static int lives;
 		static float speed;
+		static int score;
 };
