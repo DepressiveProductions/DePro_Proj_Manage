@@ -172,9 +172,9 @@ void setup()
 					"Assets/menu/MenuBackground2.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Play_normal.tga");
-	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f,
+	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight + 3.0f, mnuBtnTop - mnuBtnHeight, 0.0f,
 					"Assets/menu/Survival_normal.tga");
-	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f,
+	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight + 1.0f, mnuBtnTop - 2 * mnuBtnHeight, 0.0f,
 					"Assets/menu/Options_normal.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
 					"Assets/menu/Quit_normal.tga");
