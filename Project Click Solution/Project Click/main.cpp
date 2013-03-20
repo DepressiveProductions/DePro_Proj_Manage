@@ -81,6 +81,8 @@ Sound					menuClickSound;
 #define W_TITLE "Project Click - Alpha"
 
 float					finalTime;
+float					survivedTime;
+
 
 const float				bgWidth		= 12.0f;
 const float				bgHeight	= 5.0f;
@@ -166,10 +168,10 @@ void setup()
 	//Initiate UI elements:
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
 	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f, "Assets/menu/MenuBackground.tga");
-	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/button_alpha.tga");
-	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/button_survival.tga");
-	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/button_options.tga");
-	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/button_quit.tga");
+	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/menu/Play_normal.tga");
+	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/menu/Survival_normal.tga");
+	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/menu/Options_normal.tga");
+	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/menu/Quit_normal.tga");
 
 	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/menu/Sound_normal.tga");
 
@@ -416,7 +418,7 @@ void survivalRender()
 	//Lighting variables:
 	static GLfloat vLightPos[] = {-500.0f, 50.0f, 100.0f};
 	static GLfloat vAmbient[] = {0.2f, 0.2f, 0.2f, 0.2f};
-			
+
 	//Beginning push:
 	modelViewStack.PushMatrix();
 	
@@ -448,13 +450,17 @@ void survivalRender()
 	static float tw = 0.0f;
 
 	//Render a thing in the thing on the thing:
-	if (Globals::nBlocks > 0) {
+	if (Globals::nBlocks > 0 && Globals::lives > 0) {
 		tw = 20.0f;
 		sprintf_s(gtime, "%.2f sec", gameTime.getElapsedTime());
 	} else if (Globals::lives <= 0) {
+		if (Globals::lives > -20) {
+			Globals::lives = -20;
+			survivedTime = gameTime.getElapsedTime();
+		}
 		restartInfo.draw(uiPipeline, gltShaderManager);
 		tw = 75.0f;
-		sprintf_s(gtime, "You survived for: %.2f sec", gameTime.getElapsedTime()); // Get the final time Jonas?
+		sprintf_s(gtime, "You survived for: %.2f sec", survivedTime); // Get the final time Jonas?
 	} else if (Globals::lives > 0 && Globals::nBlocks <= 0) {
 		Globals::speed *= 1.1f;
 		tw = 20.0f;
@@ -463,7 +469,11 @@ void survivalRender()
 	}
 
 	sprintf_s(gscore, "Score: %i", Globals::score);
-	sprintf_s(glives, "Lives : %i", Globals::lives);
+	if (Globals::lives > 0) {
+		sprintf_s(glives, "Lives : %i", Globals::lives);
+	} else {
+		sprintf_s(glives, "Lives : 0");
+	}
 	
 	font.showText(gtime, 1.0f, 90.0f, tw, 6.0f, gltShaderManager, uiPipeline);
 	font.showText(gscore, 1.0f, 1.0f, 16.0f, 6.0f, gltShaderManager, uiPipeline);
