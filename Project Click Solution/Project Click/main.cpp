@@ -84,9 +84,9 @@ float					finalTime;
 float					survivedTime;
 
 
-const float				bgWidth		= 12.0f;
-const float				bgHeight	= 5.0f;
-const float				bgZpos		= -10.0f;
+const float				bgWidth			= 12.0f;
+const float				bgHeight		= 5.0f;
+const float				bgZpos			= -10.0f;
 
 const float				nMnuBtns		= 4.0f;
 const float				mnuBtnLeft		= 5.0f;
@@ -95,12 +95,12 @@ const float				mnuBtnTop		= 85.0f;
 const float				mnuBtnBot		= 35.0f;
 const float				mnuBtnHeight	= abs(mnuBtnTop - mnuBtnBot) / nMnuBtns;
 
-const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
-const float				camYShift	= -1.5f;				//To compensate for tilt
+const float				camTilt			= 0.15f;				//Looks nicer, stronger 3D effect
+const float				camYShift		= -1.5f;				//To compensate for tilt
 
-const array<float,3>	blockPos	= {0.0f, 0.0f, 0.0f};
+const array<float,3>	blockPos		= {0.0f, 0.0f, 0.0f};
 
-M3DMatrix44f			mCamera;							//Handy to have it in global namespace
+M3DMatrix44f			mCamera;								//Handy to have it in global namespace
 M3DMatrix44f			mOrtho;
 M3DMatrix44f			mIdentity;
 
@@ -166,14 +166,20 @@ void setup()
 	bg.init(bgWidth, bgHeight, 0.0f);
 
 	//Initiate UI elements:
-	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, "Assets/FONT_BLOCK.tga");
-	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f, "Assets/menu/MenuBackground.tga");
-	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f, "Assets/menu/Play_normal.tga");
-	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f, "Assets/menu/Survival_normal.tga");
-	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f, "Assets/menu/Options_normal.tga");
-	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/menu/Quit_normal.tga");
-
-	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f, "Assets/menu/Sound_normal.tga");
+	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, 
+					"Assets/FONT_BLOCK.tga");
+	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f,
+					"Assets/menu/MenuBackground.tga");
+	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
+					"Assets/menu/Play_normal.tga");
+	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f,
+					"Assets/menu/Survival_normal.tga");
+	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - 2 * mnuBtnHeight, 0.0f,
+					"Assets/menu/Options_normal.tga");
+	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+					"Assets/menu/Quit_normal.tga");
+	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+					"Assets/menu/Sound_normal.tga");
 
 	font.init("Assets/fatLato.tga");
 
