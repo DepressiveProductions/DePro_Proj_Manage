@@ -90,9 +90,9 @@ const float				bgZpos			= -10.0f;
 
 const float				nMnuBtns		= 4.0f;
 const float				mnuBtnLeft		= 5.0f;
-const float				mnuBtnRight		= 30.0f;
+const float				mnuBtnRight		= 15.0f;
 const float				mnuBtnTop		= 85.0f;
-const float				mnuBtnBot		= 35.0f;
+const float				mnuBtnBot		= 60.0f;
 const float				mnuBtnHeight	= abs(mnuBtnTop - mnuBtnBot) / nMnuBtns;
 
 const float				camTilt			= 0.15f;				//Looks nicer, stronger 3D effect
@@ -169,7 +169,7 @@ void setup()
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, 
 					"Assets/FONT_BLOCK.tga");
 	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f,
-					"Assets/menu/MenuBackground.tga");
+					"Assets/menu/MenuBackground2.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Play_normal.tga");
 	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight, mnuBtnTop - mnuBtnHeight, 0.0f,
