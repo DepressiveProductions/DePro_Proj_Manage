@@ -89,10 +89,10 @@ const float				bgHeight	= 5.0f;
 const float				bgZpos		= -10.0f;
 
 const float				nMnuBtns		= 4.0f;
-const float				mnuBtnLeft		= 25.0f;
-const float				mnuBtnRight		= 75.0f;
-const float				mnuBtnTop		= 65.0f;
-const float				mnuBtnBot		= 25.0f;
+const float				mnuBtnLeft		= 5.0f;
+const float				mnuBtnRight		= 30.0f;
+const float				mnuBtnTop		= 85.0f;
+const float				mnuBtnBot		= 35.0f;
 const float				mnuBtnHeight	= abs(mnuBtnTop - mnuBtnBot) / nMnuBtns;
 
 const float				camTilt		= 0.15f;				//Looks nicer, stronger 3D effect
