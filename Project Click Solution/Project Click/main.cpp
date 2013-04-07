@@ -187,11 +187,11 @@ void setup()
 
 	sound.init();
 
-	sound.load("Assets/Lobby2.wav");
+	sound.load("Assets/AGFG_02_rep.wav");
 	ALfloat pos[] = {1.0, 0.0, 0.0};
-	sound.play("Assets/Lobby2.wav", true, pos);
+	sound.play("Assets/AGFG_02_rep.wav", true, pos);
 
-	//.init("Assets/douf.wav");
+	sound.load("Assets/douf.wav");
 
 	// start/reset time
 	gameTime.start();
@@ -298,14 +298,14 @@ void menuClick()
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (exitButton.isClicked(clickPos)) {
-		//menuClickSound.play();
+		sound.play("Assets/douf.wav");
 		shutdownRC();
 		exit(0);
 	} else if (optionsButton.isClicked(clickPos)) {
-		//menuClickSound.play();
+		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
-		//menuClickSound.play();
+		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
 		Globals::score = 0;
@@ -313,7 +313,7 @@ void menuClick()
 		blocks.sendWave(5, Globals::speed);
 		gameTime.start();	// start/reset time
 	} else if (alphaButton.isClicked(clickPos)) {
-		//menuClickSound.play();
+		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
 		gameTime.start();	// start/reset time
@@ -325,6 +325,7 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
+		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_MENU;
 	}
 }
