@@ -188,10 +188,11 @@ void setup()
 	sound.init();
 
 	sound.load("Assets/AGFG_02_rep.wav");
-	ALfloat pos[] = {1.0, 0.0, 0.0};
-	sound.play("Assets/AGFG_02_rep.wav", true, pos);
+	//ALfloat pos[] = {20.0, 0.0, 0.0};
+	sound.play("Assets/AGFG_02_rep.wav", true);
 
 	sound.load("Assets/douf.wav");
+	sound.load("Assets/blub.wav");
 
 	// start/reset time
 	gameTime.start();
@@ -260,6 +261,7 @@ void playClick()
 	if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 	{
 		Globals::nBlocks -= 1;
+		sound.play("Assets/blub.wav");
 
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
@@ -305,6 +307,7 @@ void menuClick()
 		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
+		//sound.stop("Assets/AGFG_02_rep.wav");
 		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;

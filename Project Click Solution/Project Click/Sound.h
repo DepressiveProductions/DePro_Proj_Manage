@@ -21,7 +21,7 @@ public:
 	void play(const char *key, bool loop);
 	void play(const char *key);
 	
-	void newSpeed(const char *key, ALfloat sourceVel);
+	void stop(const char *key);
 	int endWithError(char *msg, int error = 0);
 	void clearSound(); // Goes in main before terminating program
 	//void clearSoundPartial();

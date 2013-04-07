@@ -15,6 +15,16 @@ int Sound::init()
     alcMakeContextCurrent(context);                                             //Make the context the current
     if(!context) 
 		return endWithError("no sound context");								//Error during context handeling
+
+	//Listener
+	ALfloat listenerPos[] = { 0.0, 0.0, 0.0 };                                  //Position of the listener
+    ALfloat listenerVel[] = { 0.0, 0.0, 0.0 };                                  //Velocity of the listener
+    ALfloat listenerOri[] = { 0.0, 0.0, -1.0,  0.0, 1.0, 0.0 };                 //Orientation of the listener
+                                                                                //First direction vector, then vector pointing up)	 
+                                                                                   
+    alListenerfv(AL_POSITION,    listenerPos);                                  //Set position of the listener
+    alListenerfv(AL_VELOCITY,    listenerVel);                                  //Set velocity of the listener
+    alListenerfv(AL_ORIENTATION, listenerOri);                                  //Set orientation of the listener
 }
 
 int Sound::load(const char *szFileName)
@@ -120,22 +130,16 @@ int Sound::load(const char *szFileName)
 
 int Sound::play(const char *key, bool loop, ALfloat sourcePos[], ALfloat sourceVel[])
 {
+	this->stop(key);
+
 	/*	//Sound setting variables
     ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };                                    //Position of the source sound
     ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };                                    //Velocity of the source sound	*/
-    ALfloat listenerPos[] = { 0.0, 0.0, 0.0 };                                  //Position of the listener
-    ALfloat listenerVel[] = { 0.0, 0.0, 0.0 };                                  //Velocity of the listener
-    ALfloat listenerOri[] = { 0.0, 0.0, -1.0,  0.0, 1.0, 0.0 };                 //Orientation of the listener
-                                                                                //First direction vector, then vector pointing up)	 
-    //Listener                                                                               
-    alListenerfv(AL_POSITION,    listenerPos);                                  //Set position of the listener
-    alListenerfv(AL_VELOCITY,    listenerVel);                                  //Set velocity of the listener
-    alListenerfv(AL_ORIENTATION, listenerOri);                                  //Set orientation of the listener
     
     //Source
     alSourcei (source[key], AL_BUFFER,   buffer[key]);								 //Link the buffer to the source
     alSourcef (source[key], AL_PITCH,    1.0f     );                                 //Set the pitch of the source
-    alSourcef (source[key], AL_GAIN,     1.0f     );                                 //Set the gain of the source
+    alSourcef (source[key], AL_GAIN,     0.3f     );                                 //Set the gain of the source
     alSourcefv(source[key], AL_POSITION, sourcePos);                                 //Set the position of the source
     alSourcefv(source[key], AL_VELOCITY, sourceVel);                                 //Set the velocity of the source
 	if (loop)
@@ -171,9 +175,9 @@ void Sound::play(const char *key)																//Default value for sourcePos, 
 	play(key, loop, sourcePos, sourceVel);
 }
 
-void Sound::newSpeed(const char *key, ALfloat sourceVel)
+void Sound::stop(const char *key)
 {
-
+	alSourceStop(source[key]);
 }
 
 int Sound::endWithError(char* msg, int error)
