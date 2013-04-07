@@ -69,8 +69,7 @@ UserInterface			menuBG;
 UserInterface			optSoundToggle;
 UserInterface			optBackButton;
 Font					font;
-Sound					music;
-Sound					menuClickSound;
+Sound					sound;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -186,10 +185,13 @@ void setup()
 	//More initiations below here ...
 	blocks.init(bgWidth, bgHeight, 0.0f);
 
-	music.init("Assets/Lobby2.wav");
-	music.play();
+	sound.init();
 
-	menuClickSound.init("Assets/douf.wav");
+	sound.load("Assets/Lobby2.wav");
+	ALfloat pos[] = {1.0, 0.0, 0.0};
+	sound.play("Assets/Lobby2.wav", true, pos);
+
+	//.init("Assets/douf.wav");
 
 	// start/reset time
 	gameTime.start();
@@ -209,7 +211,7 @@ void shutdownRC()
 
 	font.clearTexture();
 
-	music.clearSound();
+	sound.clearSound();
 }
 
 //Runs everytime the window 'changes size', for example when the window is created:
