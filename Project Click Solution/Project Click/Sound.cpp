@@ -186,7 +186,7 @@ int Sound::endWithError(char* msg, int error)
 
 void Sound::clearSound()														//Clean-up
 {
-	for(int i = 0; i < fileNames.size(); i++)
+	for(unsigned int i = 0; i < fileNames.size(); i++)
 	{
 		fclose(fp[fileNames[i]]);												//Close the WAVE file
 		alDeleteSources(1, &source[fileNames[i]]);								//Delete the OpenAL Source
