@@ -187,10 +187,14 @@ void setup()
 
 	sound.init();
 
+	//music
+	sound.load("Assets/EDCB_02.wav");
 	sound.load("Assets/AGFG_02_rep.wav");
+	sound.load("Assets/AF#AG_01.wav");
 	//ALfloat pos[] = {20.0, 0.0, 0.0};
-	sound.play("Assets/AGFG_02_rep.wav", true);
+	sound.play("Assets/EDCB_02.wav", true);
 
+	//effects
 	sound.load("Assets/douf.wav");
 	sound.load("Assets/blub.wav");
 
@@ -285,6 +289,11 @@ void playKey()
 		blocks.sendWave(5, Globals::speed);
 		gameTime.start();	// start/reset time
 	} else if (Input::pressedKey == 'o') {
+		sound.stop("Assets/EDCB_02.wav");
+		sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/AF#AG_01.wav");
+		//sound.play("Assets/douf.wav");
+		sound.play("Assets/EDCB_02.wav", true);
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
 		Globals::nBlocks = 0;
@@ -307,8 +316,11 @@ void menuClick()
 		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
-		//sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/EDCB_02.wav");
+		sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/AF#AG_01.wav");
 		sound.play("Assets/douf.wav");
+		sound.play("Assets/AGFG_02_rep.wav", true);
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
 		Globals::score = 0;
@@ -316,7 +328,11 @@ void menuClick()
 		blocks.sendWave(5, Globals::speed);
 		gameTime.start();	// start/reset time
 	} else if (alphaButton.isClicked(clickPos)) {
+		sound.stop("Assets/EDCB_02.wav");
+		sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/AF#AG_01.wav");
 		sound.play("Assets/douf.wav");
+		sound.play("Assets/AF#AG_01.wav", true);
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
 		gameTime.start();	// start/reset time
