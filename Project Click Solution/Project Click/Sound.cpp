@@ -75,7 +75,7 @@ int Sound::load(const char *szFileName)
     std::cout << "Data Size: " << dataSize << std::endl;
         
     buf[szFileName] = new unsigned char[dataSize];															//Allocate memory for the sound data
-    std::cout << fread(buf[szFileName], sizeof(BYTE), dataSize, fp[szFileName] << " bytes loaded\n");		//Read the sound data and display the 
+    std::cout << fread(buf[szFileName], sizeof(BYTE), dataSize, fp[szFileName]) << " bytes loaded\n";		//Read the sound data and display the 
 																											//number of bytes loaded.
 																											//Should be the same as the Data Size if OK
     

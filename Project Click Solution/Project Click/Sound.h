@@ -28,7 +28,7 @@ public:
 
 private:
 	std::vector<const char *> fileNames;
-	std::map<const char *, FILE> *fp;
+	std::map<const char *, FILE *> fp;
 	std::map<const char *, unsigned char *> buf;
 	std::map<const char *, ALuint> source;
 	std::map<const char *, ALuint> buffer;
