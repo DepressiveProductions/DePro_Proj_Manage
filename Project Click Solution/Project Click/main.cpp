@@ -363,7 +363,11 @@ void optionsClick() {
 		else
 			volume = 0.0f;										// MUTE SOUND ANTON
 
+		sound.stop("Assets/EDCB_02.wav");
+		sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/AF#AG_01.wav");
 		sound.play("Assets/douf.wav", volume*1.5f);
+		sound.play("Assets/EDCB_02.wav", volume, true);
 	}
 	else if (optSoundInc.isClicked(clickPos)) {
 		volume *= 1.25f;									// INCREASE SOUND ANTON
