@@ -84,7 +84,7 @@ Sound					sound;
 
 float					finalTime;
 float					survivedTime;
-float					volume = 0.5f;
+float					volume = 0.25f;
 
 
 const float				bgWidth			= 12.0f;
@@ -279,7 +279,7 @@ void playClick()
 	if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 	{
 		Globals::nBlocks -= 1;
-		sound.play("Assets/blub.wav", volume);
+		sound.play("Assets/blub.wav", volume*10.0f);
 
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
@@ -306,7 +306,7 @@ void playKey()
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		//sound.play("Assets/douf.wav", volume);
+		//sound.play("Assets/douf.wav", volume*1.5f);
 		sound.play("Assets/EDCB_02.wav", volume, true);
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -323,17 +323,17 @@ void menuClick()
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (exitButton.isClicked(clickPos)) {
-		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/douf.wav", volume*1.5f);
 		shutdownRC();
 		exit(0);
 	} else if (optionsButton.isClicked(clickPos)) {
-		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/douf.wav", volume*1.5f);
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/douf.wav", volume*1.5f);
 		sound.play("Assets/AGFG_02_rep.wav", volume, true);
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
@@ -345,7 +345,7 @@ void menuClick()
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/douf.wav", volume*1.5f);
 		sound.play("Assets/AF#AG_01.wav", volume, true);
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
@@ -358,22 +358,22 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
-		volume = 0.0f;									// MUTE SOUND ANTON
-		sound.play("Assets/douf.wav", volume);
+		volume = 0.0f;										// MUTE SOUND ANTON
+		sound.play("Assets/douf.wav", volume*1.5f);
 	}
 	else if (optSoundInc.isClicked(clickPos)) {
-		volume *= 2.0f;									// INCREASE SOUND ANTON
-		sound.play("Assets/douf.wav", volume);
+		volume *= 1.25f;									// INCREASE SOUND ANTON
+		sound.play("Assets/douf.wav", volume*1.5f);
 	}
 	else if (optSoundDec.isClicked(clickPos)) {
-		volume /= 2.0f;									// DECREASE SOUND ANTON
-		sound.play("Assets/douf.wav", volume);
+		volume /= 1.25f;									// DECREASE SOUND ANTON
+		sound.play("Assets/douf.wav", volume*1.5f);
 	}
 	else if (optBackButton.isClicked(clickPos)) {
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/douf.wav", volume*1.5f);
 		sound.play("Assets/EDCB_02.wav", volume, true);
 		Globals::state = Globals::STATE_MENU;
 	}
