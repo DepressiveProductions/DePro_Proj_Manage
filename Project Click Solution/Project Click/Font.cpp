@@ -28,6 +28,7 @@ void Font::showText(char *text, float x, float y,
 
 	for (int i = 0 ; i < len ; i++)
 	{
+		GLBatch				tempBatch;
 		tempBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
 
 		xc = x + (glyphWidth * i); //Current xpos
