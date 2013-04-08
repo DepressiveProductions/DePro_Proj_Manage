@@ -68,6 +68,8 @@ UserInterface			exitButton;
 UserInterface			menuBG;
 UserInterface			optionsBG;
 UserInterface			optSoundToggle;
+UserInterface			optSoundInc;
+UserInterface			optSoundDec;
 UserInterface			optBackButton;
 Font					font;
 Sound					sound;
@@ -181,8 +183,14 @@ void setup()
 					"Assets/menu/Options_normal.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
 					"Assets/menu/Quit_normal.tga");
-	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+	optSoundToggle.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Sound_normal.tga");
+	optSoundInc.init(mnuBtnLeft+26.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+21.0f, mnuBtnTop, 0.0f,
+					"Assets/menu/Plus_normal.tga");
+	optSoundDec.init(mnuBtnLeft+20.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+15.0f, mnuBtnTop, 0.0f,
+					"Assets/menu/Minus_normal.tga");
+	optBackButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+					"Assets/menu/Back_normal.tga");
 
 	font.init("Assets/fatLato.tga");
 
@@ -216,6 +224,8 @@ void shutdownRC()
 	exitButton.clearTexture();
 
 	optSoundToggle.clearTexture();
+	optSoundInc.clearTexture();
+	optSoundDec.clearTexture();
 	optBackButton.clearTexture();
 
 	font.clearTexture();
@@ -296,7 +306,7 @@ void playKey()
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		//sound.play("Assets/douf.wav");
+		//sound.play("Assets/douf.wav", volume);
 		sound.play("Assets/EDCB_02.wav", volume, true);
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
@@ -348,7 +358,23 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
+		volume = 0.0f;									// MUTE SOUND ANTON
 		sound.play("Assets/douf.wav", volume);
+	}
+	else if (optSoundInc.isClicked(clickPos)) {
+		volume *= 2.0f;									// INCREASE SOUND ANTON
+		sound.play("Assets/douf.wav", volume);
+	}
+	else if (optSoundDec.isClicked(clickPos)) {
+		volume /= 2.0f;									// DECREASE SOUND ANTON
+		sound.play("Assets/douf.wav", volume);
+	}
+	else if (optBackButton.isClicked(clickPos)) {
+		sound.stop("Assets/EDCB_02.wav");
+		sound.stop("Assets/AGFG_02_rep.wav");
+		sound.stop("Assets/AF#AG_01.wav");
+		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/EDCB_02.wav", volume, true);
 		Globals::state = Globals::STATE_MENU;
 	}
 }
@@ -523,8 +549,10 @@ void menuRender()
 
 void optionsRender() {
 	optionsBG.draw(uiPipeline, gltShaderManager);
-	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
 	optSoundToggle.draw(uiPipeline, gltShaderManager);
+	optSoundInc.draw(uiPipeline, gltShaderManager);
+	optSoundDec.draw(uiPipeline, gltShaderManager);
+	optBackButton.draw(uiPipeline, gltShaderManager);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
