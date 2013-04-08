@@ -358,7 +358,11 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
-		volume = 0.0f;										// MUTE SOUND ANTON
+		if (volume == 0)
+			volume = 0.25f;
+		else
+			volume = 0.0f;										// MUTE SOUND ANTON
+
 		sound.play("Assets/douf.wav", volume*1.5f);
 	}
 	else if (optSoundInc.isClicked(clickPos)) {
