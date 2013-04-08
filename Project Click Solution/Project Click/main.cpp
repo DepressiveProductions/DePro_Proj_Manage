@@ -82,6 +82,7 @@ Sound					sound;
 
 float					finalTime;
 float					survivedTime;
+float					volume = 0.5f;
 
 
 const float				bgWidth			= 12.0f;
@@ -195,7 +196,7 @@ void setup()
 	sound.load("Assets/AGFG_02_rep.wav");
 	sound.load("Assets/AF#AG_01.wav");
 	//ALfloat pos[] = {20.0, 0.0, 0.0};
-	sound.play("Assets/EDCB_02.wav", true);
+	sound.play("Assets/EDCB_02.wav", volume, true);
 
 	//effects
 	sound.load("Assets/douf.wav");
@@ -268,7 +269,7 @@ void playClick()
 	if (Globals::nBlocks > 0 && blocks.remove(clickPos[0], clickPos[1], clickPos[2]))
 	{
 		Globals::nBlocks -= 1;
-		sound.play("Assets/blub.wav");
+		sound.play("Assets/blub.wav", volume);
 
 		if (Globals::nBlocks <= 0 && Globals::state == Globals::STATE_ALPHA)
 		{
@@ -296,7 +297,7 @@ void playKey()
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
 		//sound.play("Assets/douf.wav");
-		sound.play("Assets/EDCB_02.wav", true);
+		sound.play("Assets/EDCB_02.wav", volume, true);
 		Globals::state = Globals::STATE_MENU;
 		blocks.removeAll();
 		Globals::nBlocks = 0;
@@ -312,18 +313,18 @@ void menuClick()
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (exitButton.isClicked(clickPos)) {
-		sound.play("Assets/douf.wav");
+		sound.play("Assets/douf.wav", volume);
 		shutdownRC();
 		exit(0);
 	} else if (optionsButton.isClicked(clickPos)) {
-		sound.play("Assets/douf.wav");
+		sound.play("Assets/douf.wav", volume);
 		Globals::state = Globals::STATE_OPTIONS;
 	} else if (survivalButton.isClicked(clickPos)) {
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		sound.play("Assets/douf.wav");
-		sound.play("Assets/AGFG_02_rep.wav", true);
+		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/AGFG_02_rep.wav", volume, true);
 		Globals::state = Globals::STATE_SURVIVAL;
 		Globals::lives = 3;
 		Globals::score = 0;
@@ -334,8 +335,8 @@ void menuClick()
 		sound.stop("Assets/EDCB_02.wav");
 		sound.stop("Assets/AGFG_02_rep.wav");
 		sound.stop("Assets/AF#AG_01.wav");
-		sound.play("Assets/douf.wav");
-		sound.play("Assets/AF#AG_01.wav", true);
+		sound.play("Assets/douf.wav", volume);
+		sound.play("Assets/AF#AG_01.wav", volume, true);
 		Globals::state = Globals::STATE_ALPHA;
 		blocks.sendWave(10, 0.0f);
 		gameTime.start();	// start/reset time
@@ -347,7 +348,7 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
-		sound.play("Assets/douf.wav");
+		sound.play("Assets/douf.wav", volume);
 		Globals::state = Globals::STATE_MENU;
 	}
 }

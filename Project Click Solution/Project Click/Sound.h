@@ -16,12 +16,14 @@ public:
 	int init();
 	int load(const char *szFileName);
 
-	int play(const char *key, bool loop, ALfloat sourcePos[], ALfloat sourceVel[]);
-	void play(const char *key, bool loop, ALfloat sourcePos[]);
-	void play(const char *key, bool loop);
-	void play(const char *key);
+	int play(const char *key, float vol, bool loop, ALfloat sourcePos[], ALfloat sourceVel[]);
+	void play(const char *key, float vol, bool loop, ALfloat sourcePos[]);
+	void play(const char *key, float vol, bool loop);
+	void play(const char *key, float vol);
 	
 	void stop(const char *key);
+	//void setVolume(const char *key, float vol);
+
 	int endWithError(char *msg, int error = 0);
 	void clearSound(); // Goes in main before terminating program
 	//void clearSoundPartial();

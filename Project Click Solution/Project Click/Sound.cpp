@@ -128,18 +128,19 @@ int Sound::load(const char *szFileName)
 	return 0;
 }
 
-int Sound::play(const char *key, bool loop, ALfloat sourcePos[], ALfloat sourceVel[])
+int Sound::play(const char *key, float vol, bool loop, ALfloat sourcePos[], ALfloat sourceVel[])
 {
 	this->stop(key);
 
 	/*	//Sound setting variables
     ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };                                    //Position of the source sound
     ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };                                    //Velocity of the source sound	*/
+	//std::cout << "sourcePos: " << sourcePos << std::endl << "sourceVel: " << sourceVel << std::endl;
     
     //Source
     alSourcei (source[key], AL_BUFFER,   buffer[key]);								 //Link the buffer to the source
     alSourcef (source[key], AL_PITCH,    1.0f     );                                 //Set the pitch of the source
-    alSourcef (source[key], AL_GAIN,     0.3f     );                                 //Set the gain of the source
+    alSourcef (source[key], AL_GAIN,     vol     );                                 //Set the gain of the source
     alSourcefv(source[key], AL_POSITION, sourcePos);                                 //Set the position of the source
     alSourcefv(source[key], AL_VELOCITY, sourceVel);                                 //Set the velocity of the source
 	if (loop)
@@ -154,32 +155,37 @@ int Sound::play(const char *key, bool loop, ALfloat sourcePos[], ALfloat sourceV
     //system("PAUSE");															//Pause to let the sound play;
 }
 
-void Sound::play(const char *key, bool loop, ALfloat sourcePos[])								//Default value for sourceVel
+void Sound::play(const char *key, float vol, bool loop, ALfloat sourcePos[])								//Default value for sourceVel
 {
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
-	play(key, loop, sourcePos, sourceVel);
+	play(key, vol, loop, sourcePos, sourceVel);
 }
 
-void Sound::play(const char *key, bool loop)														//Default value for sourcePos and sourceVel
+void Sound::play(const char *key, float vol, bool loop)														//Default value for sourcePos and sourceVel
 {
 	ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
-	play(key, loop, sourcePos, sourceVel);
+	play(key, vol, loop, sourcePos, sourceVel);
 }
 
-void Sound::play(const char *key)																//Default value for sourcePos, sourceVel and loop
+void Sound::play(const char *key, float vol)																//Default value for sourcePos, sourceVel and loop
 {
 	bool loop = FALSE;
 	ALfloat sourcePos[] = { 0.0, 0.0, 0.0 };
 	ALfloat sourceVel[] = { 0.0, 0.0, 0.0 };
-	play(key, loop, sourcePos, sourceVel);
+	play(key, vol, loop, sourcePos, sourceVel);
 }
 
 void Sound::stop(const char *key)
 {
 	alSourceStop(source[key]);
 }
-
+/*
+void Sound::setVolume(const char *key, float vol)
+{
+	alSourcef(source[key], AL_GAIN, vol);
+}
+*/
 int Sound::endWithError(char* msg, int error)
 {
     //Display error message in console
