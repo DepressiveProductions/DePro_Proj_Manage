@@ -561,6 +561,10 @@ void menuRender()
 	survivalButton.draw(uiPipeline, gltShaderManager);
 	optionsButton.draw(uiPipeline, gltShaderManager);
 	exitButton.draw(uiPipeline, gltShaderManager);
+
+	glEnable(GL_BLEND);
+	font.showText("     PRESS O TO RETURN HERE ANYTIME     ", 0.0f, 0.0f, 100.0f, 8.0f, gltShaderManager, uiPipeline);
+	glDisable(GL_BLEND);
 }
 
 void optionsRender() {
