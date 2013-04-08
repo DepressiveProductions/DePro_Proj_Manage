@@ -66,6 +66,7 @@ UserInterface			survivalButton;
 UserInterface			optionsButton;
 UserInterface			exitButton;
 UserInterface			menuBG;
+UserInterface			optionsBG;
 UserInterface			optSoundToggle;
 UserInterface			optBackButton;
 Font					font;
@@ -168,7 +169,9 @@ void setup()
 	restartInfo.init(17.0f, 43.0f, 83.0f, 53.0f, 0.5f, 
 					"Assets/FONT_BLOCK.tga");
 	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f,
-					"Assets/menu/MenuBackground2.tga");
+					"Assets/menu/MenuBackground.tga");
+	optionsBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f,
+					"Assets/menu/OptionsBackground.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Alpha_normal.tga");
 	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight + 3.0f, mnuBtnTop - mnuBtnHeight, 0.0f,
@@ -518,6 +521,7 @@ void menuRender()
 }
 
 void optionsRender() {
+	optionsBG.draw(uiPipeline, gltShaderManager);
 	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
 	optSoundToggle.draw(uiPipeline, gltShaderManager);
 }
