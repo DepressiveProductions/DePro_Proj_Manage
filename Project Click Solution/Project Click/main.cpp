@@ -170,7 +170,7 @@ void setup()
 	menuBG.init(0.0f, 0.0f, 100.0f, 100.0f, 0.0f,
 					"Assets/menu/MenuBackground2.tga");
 	alphaButton.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
-					"Assets/menu/Play_normal.tga");
+					"Assets/menu/Alpha_normal.tga");
 	survivalButton.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight + 3.0f, mnuBtnTop - mnuBtnHeight, 0.0f,
 					"Assets/menu/Survival_normal.tga");
 	optionsButton.init(mnuBtnLeft, mnuBtnTop - 3 * mnuBtnHeight, mnuBtnRight + 1.0f, mnuBtnTop - 2 * mnuBtnHeight, 0.0f,
