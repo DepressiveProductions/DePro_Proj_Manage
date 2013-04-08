@@ -54,7 +54,6 @@ void Font::showText(char *text, float x, float y,
 		
 		tempBatch.End();
 		draw(tempBatch, sm, tp);
-		tempBatch.Reset();
 	}
 }
 
