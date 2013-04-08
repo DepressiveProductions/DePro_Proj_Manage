@@ -80,7 +80,7 @@ Sound					sound;
 
 #define W_WIDTH 1280
 #define W_HEIGHT 720
-#define W_TITLE "Project Click - Alpha"
+#define W_TITLE "Johan Kannel - Click Detective"
 
 float					finalTime;
 float					survivedTime;
