@@ -267,6 +267,8 @@ void renderScene()
 	glutPostRedisplay();
 
 	checkInput();
+
+	glFinish();
 }
 
 void playClick()
