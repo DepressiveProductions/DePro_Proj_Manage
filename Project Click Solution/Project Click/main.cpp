@@ -70,6 +70,8 @@ UserInterface			optionsBG;
 UserInterface			optSoundToggle;
 UserInterface			optSoundInc;
 UserInterface			optSoundDec;
+UserInterface			optSoundMute;
+UserInterface			optSoundVolume;
 UserInterface			optBackButton;
 Font					font;
 Sound					sound;
@@ -185,10 +187,14 @@ void setup()
 					"Assets/menu/Quit_normal.tga");
 	optSoundToggle.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Sound_normal.tga");
-	optSoundInc.init(mnuBtnLeft+26.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+21.0f, mnuBtnTop, 0.0f,
+	optSoundInc.init(mnuBtnLeft+26.0f, mnuBtnTop - 14.0f, mnuBtnRight+21.0f, mnuBtnTop-6.0f, 0.0f,
 					"Assets/menu/Plus_normal.tga");
-	optSoundDec.init(mnuBtnLeft+20.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+15.0f, mnuBtnTop, 0.0f,
+	optSoundDec.init(mnuBtnLeft+20.0f, mnuBtnTop - 14.0f, mnuBtnRight+15.0f, mnuBtnTop-6.0f, 0.0f,
 					"Assets/menu/Minus_normal.tga");
+	optSoundMute.init(mnuBtnLeft+32.0f, mnuBtnTop - mnuBtnHeight - 7.0f, mnuBtnRight+32.0f, mnuBtnTop-7.0f, 0.0f,
+					"Assets/menu/Mute.tga");
+	optSoundVolume.init(mnuBtnLeft, mnuBtnTop - 2 * mnuBtnHeight, mnuBtnRight + 3.0f, mnuBtnTop - mnuBtnHeight, 0.0f,
+					"Assets/menu/Volume.tga");
 	optBackButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
 					"Assets/menu/Back_normal.tga");
 
@@ -226,6 +232,8 @@ void shutdownRC()
 	optSoundToggle.clearTexture();
 	optSoundInc.clearTexture();
 	optSoundDec.clearTexture();
+	optSoundMute.clearTexture();
+	optSoundVolume.clearTexture();
 	optBackButton.clearTexture();
 
 	font.clearTexture();
@@ -357,7 +365,7 @@ void optionsClick() {
 	// Clicking position in UI-coords
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
-	if (optSoundToggle.isClicked(clickPos)) {
+	if (optSoundMute.isClicked(clickPos)) {
 		if (volume == 0)
 			volume = 0.25f;
 		else
@@ -560,6 +568,8 @@ void optionsRender() {
 	optSoundToggle.draw(uiPipeline, gltShaderManager);
 	optSoundInc.draw(uiPipeline, gltShaderManager);
 	optSoundDec.draw(uiPipeline, gltShaderManager);
+	optSoundMute.draw(uiPipeline, gltShaderManager);
+	optSoundVolume.draw(uiPipeline, gltShaderManager);
 	optBackButton.draw(uiPipeline, gltShaderManager);
 }
 
