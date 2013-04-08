@@ -68,6 +68,8 @@ UserInterface			exitButton;
 UserInterface			menuBG;
 UserInterface			optionsBG;
 UserInterface			optSoundToggle;
+UserInterface			optSoundInc;
+UserInterface			optSoundDec;
 UserInterface			optBackButton;
 Font					font;
 Sound					sound;
@@ -180,8 +182,14 @@ void setup()
 					"Assets/menu/Options_normal.tga");
 	exitButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
 					"Assets/menu/Quit_normal.tga");
-	optSoundToggle.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+	optSoundToggle.init(mnuBtnLeft, mnuBtnTop - mnuBtnHeight, mnuBtnRight, mnuBtnTop, 0.0f,
 					"Assets/menu/Sound_normal.tga");
+	optSoundInc.init(mnuBtnLeft+26.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+21.0f, mnuBtnTop, 0.0f,
+					"Assets/menu/Plus_normal.tga");
+	optSoundDec.init(mnuBtnLeft+20.0f, mnuBtnTop - mnuBtnHeight, mnuBtnRight+15.0f, mnuBtnTop, 0.0f,
+					"Assets/menu/Minus_normal.tga");
+	optBackButton.init(mnuBtnLeft, mnuBtnBot, mnuBtnRight, mnuBtnTop - 3 * mnuBtnHeight, 0.0f,
+					"Assets/menu/Back_normal.tga");
 
 	font.init("Assets/fatLato.tga");
 
@@ -215,6 +223,8 @@ void shutdownRC()
 	exitButton.clearTexture();
 
 	optSoundToggle.clearTexture();
+	optSoundInc.clearTexture();
+	optSoundDec.clearTexture();
 	optBackButton.clearTexture();
 
 	font.clearTexture();
@@ -347,6 +357,15 @@ void optionsClick() {
 	array<float,2> clickPos = Input::getUICoords(Input::clickPos[0], Input::clickPos[1]);
 
 	if (optSoundToggle.isClicked(clickPos)) {
+		// MUTE SOUND ANTON
+	}
+	else if (optSoundInc.isClicked(clickPos)) {
+		// INCREASE SOUND ANTON
+	}
+	else if (optSoundDec.isClicked(clickPos)) {
+		// DECREASE SOUND ANTON
+	}
+	else if (optBackButton.isClicked(clickPos)) {
 		sound.play("Assets/douf.wav");
 		Globals::state = Globals::STATE_MENU;
 	}
@@ -522,8 +541,10 @@ void menuRender()
 
 void optionsRender() {
 	optionsBG.draw(uiPipeline, gltShaderManager);
-	font.showText("Options", 1.0f, 90.0f, 3.0f*3, 8.0f, gltShaderManager, uiPipeline);
 	optSoundToggle.draw(uiPipeline, gltShaderManager);
+	optSoundInc.draw(uiPipeline, gltShaderManager);
+	optSoundDec.draw(uiPipeline, gltShaderManager);
+	optBackButton.draw(uiPipeline, gltShaderManager);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
