@@ -28,8 +28,8 @@ void Font::showText(char *text, float x, float y,
 
 	for (int i = 0 ; i < len ; i++)
 	{
-		GLBatch				tempBatch;
-		tempBatch.Begin(GL_TRIANGLE_FAN, 4, 1);
+		std::unique_ptr<GLBatch> tempBatch(new GLBatch);
+		tempBatch->Begin(GL_TRIANGLE_FAN, 4, 1);
 
 		xc = x + (glyphWidth * i); //Current xpos
 
@@ -38,23 +38,23 @@ void Font::showText(char *text, float x, float y,
 		float ytex = float((int(int(text[i])/16)))	/ 16;
 
 		// Lower left hand corner
-		tempBatch.MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
-		tempBatch.Vertex3f(xc, y, z);
+		tempBatch->MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
+		tempBatch->Vertex3f(xc, y, z);
 
 		// Upper left hand corner
-		tempBatch.MultiTexCoord2f(0, xtex, 1.0f - ytex);
-		tempBatch.Vertex3f(xc, y + height, z);
+		tempBatch->MultiTexCoord2f(0, xtex, 1.0f - ytex);
+		tempBatch->Vertex3f(xc, y + height, z);
 
 		// Upper right hand corner
-		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0f - ytex);
-		tempBatch.Vertex3f(xc + glyphWidth, y + height, z);
+		tempBatch->MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0f - ytex);
+		tempBatch->Vertex3f(xc + glyphWidth, y + height, z);
 
 		// Lower right hand corner
-		tempBatch.MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
-		tempBatch.Vertex3f(xc + glyphWidth, y, z);
+		tempBatch->MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
+		tempBatch->Vertex3f(xc + glyphWidth, y, z);
 		
-		tempBatch.End();
-		draw(tempBatch, sm, tp);
+		tempBatch->End();
+		draw(*tempBatch, sm, tp);
 	}
 }
 

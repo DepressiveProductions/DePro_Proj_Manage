@@ -6,6 +6,7 @@
 #include <GLFrame.h>
 #include <string>
 #include <iostream>
+#include <memory>
 
 class Font
 {
