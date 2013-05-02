@@ -1,45 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Blocks.cpp" />
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="font_parser.cpp" />
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Shaders.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="UserInterface.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Blocks.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="font_parser.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="Block.h" />
-    <ClInclude Include="Blocks.h" />
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="font_parser.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Shaders.h" />
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="stb_truetype.h" />
-    <ClInclude Include="UserInterface.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Actor.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Blocks.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_truetype.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="font_parser.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\ADS_fragment.fp" />
-    <None Include="Shaders\ADS_fragment.vp" />
-    <None Include="Shaders\ADS_vertex.fp" />
-    <None Include="Shaders\ADS_vertex.vp" />
-    <None Include="Shaders\diffuse_vertex.fp" />
-    <None Include="Shaders\diffuse_vertex.vp" />
-    <None Include="Shaders\RectReplace.fp" />
-    <None Include="Shaders\RectReplace.vp" />
-    <None Include="Shaders\UIShader.fp" />
-    <None Include="Shaders\UIShader.vp" />
+    <None Include="Shaders\ADS_fragment.fp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ADS_fragment.vp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ADS_vertex.fp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\ADS_vertex.vp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\diffuse_vertex.fp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\diffuse_vertex.vp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\RectReplace.fp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\RectReplace.vp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\UIShader.fp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\UIShader.vp">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{da7eda8f-8e63-4f9b-9d45-847edac09dab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{30ba59ef-da4a-42cc-8dbc-d4c5b2e2a9a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{2e113f8c-7d9c-4cee-a6ec-e0ece86979d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
