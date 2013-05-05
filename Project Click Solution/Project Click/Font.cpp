@@ -37,6 +37,19 @@ void Font::showText(char *text, float x, float y,
 		float xtex = float((int(text[i]) % 16))		/ 16;
 		float ytex = float((int(int(text[i])/16)))	/ 16;
 
+		GLfloat verts[] = {xc, y, z,
+						   xc, y + height, z,
+						   xc + glyphWidth, y + height, z,
+						   xc + glyphWidth, y, z };
+		GLfloat texVerts[] = {xtex, 1.0 - (ytex + (1.0f / 16.0f)),
+							  xtex, 1.0f - ytex,
+							  xtex + (1.0f / 16.0f), 1.0f - ytex,
+							  xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)) };
+
+		tempBatch->CopyVertexData3f(verts);
+		tempBatch->CopyTexCoordData2f(texVerts, 0);
+
+		/*
 		// Lower left hand corner
 		tempBatch->MultiTexCoord2f(0, xtex, 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch->Vertex3f(xc, y, z);
@@ -52,6 +65,7 @@ void Font::showText(char *text, float x, float y,
 		// Lower right hand corner
 		tempBatch->MultiTexCoord2f(0, xtex + (1.0f / 16.0f), 1.0 - (ytex + (1.0f / 16.0f)));
 		tempBatch->Vertex3f(xc + glyphWidth, y, z);
+		*/
 		
 		tempBatch->End();
 		draw(*tempBatch, sm, tp);
