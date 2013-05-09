@@ -1,0 +1,164 @@
+%
+%  untitled
+%
+%  Created by Marcus Weiderstål on 2013-04-10.
+%  Copyright (c) 2013 - Marcus Weiderstål/Tullinge Gymnasium
+%
+% Rapportmall för projektarbete på gymnasiet i programmering/datavetenskap
+%
+%
+
+
+\documentclass[a4paper]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+% Fotnötter och korsreferenser
+\usepackage{hyperref}
+
+% To be able to use colors in the text
+\usepackage[usenames,dvipsnames]{color, xcolor}
+
+% Package for including code in the document
+\usepackage{listings}
+%\lstset{escapeinside={\%*}{*)}}
+
+% Formaterar saker enligt svenska standard (datum med mera)
+\usepackage[swedish]{babel}
+
+% To be able to control the header better
+\usepackage{fancyhdr}
+\setlength{\headsep}{1.5 em}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{Projektarbete}
+\author{Marcus Weiderstål}
+
+\date{\today}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+
+
+\pagestyle{fancyplain}
+ 
+\fancyhf{}
+ 
+\lhead{\fancyplain{}{Marcus Weiderstål}}
+\rhead{\fancyplain{}{Projektarbete}}
+
+\cfoot{\fancyplain{}{\thepage}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Innehåll %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Gör så att innehållssidan är en egen sida %
+\newpage
+% infogar innehållsförteckning %
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Inledning  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Inledning}
+En kort sammanfattning av ditt/erat projektarbete.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Bakgrund  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Bakgrund}
+\subsection{Syfte}
+Varför gjorde ni det här
+\subsection{Målgrupp}
+Vilka ska använda erat program?
+\subsection{Metod}
+Metoder - hur har vi gått tillväga? 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Resultat  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Resultat}
+Vad kom ni fram till med ert program?
+
+\subsection{Exempel 1}
+\subsubsection{underribrik 2}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Diskussion  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Diskussion}
+Diskutera både arbetsprocessen samt ert resultat. 
+\newpage
+\appendix
+\section{Tips inför rapportskrivandet}
+Den här delen ska inte vara med i den slutgiltiga rapporten utan innehåller några råd inför skrivandet av den.
+
+\begin{itemize}
+	\item Tänk på att vara formell och korrekt i ditt språk. Slanguttryck hör inte hemma i en rapport.
+	\item Använd stavningskontroll.
+	\item Tänk på att följa mallen. Glöm inte saker som sidhuvud, sidfot och innehållsförteckning.
+	
+	
+\end{itemize}
+
+\end{document}
