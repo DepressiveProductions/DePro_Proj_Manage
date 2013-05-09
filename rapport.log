@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2013.4.18)  9 MAY 2013 21:08
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2013.4.18)  9 MAY 2013 21:20
 entering extended mode
 **rapport.tex
 (D:\New_stuff\GitHub\DePro_Proj_Manage\rapport.tex
@@ -704,41 +704,39 @@ Underfull \hbox (badness 10000) in paragraph at lines 200--204
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--228
-
- []
-
 [6]
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--228
+
+ []
+
 Package minitoc Info: I0009
 (minitoc)             Listing minitoc auxiliary files. 
 (minitoc)             Creating the rapport.maf file.
-
 
 Package minitoc(hints) Warning: W0024
 (minitoc(hints))                Some hints have been written 
@@ -755,7 +753,7 @@ Package rerunfilecheck Info: File `rapport.out' has not changed.
 Here is how much of TeX's memory you used:
  8805 strings out of 495285
  124454 string characters out of 3180910
- 236356 words of memory out of 3000000
+ 230356 words of memory out of 3000000
  11646 multiletter control sequences out of 15000+200000
  7895 words of font info for 28 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -765,7 +763,7 @@ MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Program/MiKTeX 2.8/fon
 ts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program/MiKTeX 2.8/fonts/type1/public
 /amsfonts/cm/cmr12.pfb><D:/Program/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cm
 r17.pfb><D:/Program/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on rapport.pdf (7 pages, 108063 bytes).
+Output written on rapport.pdf (7 pages, 108104 bytes).
 PDF statistics:
  137 PDF objects out of 1000 (max. 8388607)
  23 named destinations out of 1000 (max. 500000)
